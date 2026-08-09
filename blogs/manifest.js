@@ -370,5 +370,6 @@ window.BLOG_MANIFEST = [
   "2026-08-05-the-blue-whale-challenge.js",
   "2026-08-06-the-crunch-gym.js",
   "2026-08-07-changes-are-constant.js",
-  "2026-08-08-flowers-that-remains.js"
+  "2026-08-08-flowers-that-remains.js",
+  "2026-08-09-ai-age-a-time-with-no-space-of-ego.js"
 ];
