@@ -7923,7 +7923,7 @@ window.BLOG_REGISTRY.push({
 });
 window.BLOG_REGISTRY.push({
   "id": "2026-08-08-flowers-that-remains",
-  "title": "Flowers that Remains",
+  "title": "Flowers that Remain",
   "author": "Sukee Parker",
   "date": "2026-08-08",
   "category": "Philosophy",
