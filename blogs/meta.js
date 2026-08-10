@@ -388,8 +388,8 @@ window.BLOG_META = {
   ],
   "posts": [
     {
-      "id": "2026-08-10-what-is-kindness",
-      "title": "What is Kindness",
+      "id": "2026-08-10-retirement-party",
+      "title": "Retirement Party",
       "date": "2026-08-10"
     },
     {
