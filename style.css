@@ -406,18 +406,19 @@ body.player-active main { padding-bottom: 5.5rem; }
   align-items: center;
   gap: 0.4rem;
   background: none;
-  border: none;
-  padding: 0.35rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 0.35rem 0.85rem;
   font-family: var(--sans);
   font-size: 0.78rem;
   font-weight: 600;
-  color: var(--gold);
+  color: var(--text-muted);
   cursor: pointer;
   text-decoration: none;
-  transition: opacity 0.15s;
-  margin-left: 0.25rem;
+  transition: all 0.15s;
+  margin-left: 0.5rem;
 }
-.post-kindness-btn:hover { opacity: 0.75; }
+.post-kindness-btn:hover { border-color: var(--gold); color: var(--gold); background: rgba(196,154,40,0.06); }
 
 #appToast {
   position: fixed;
