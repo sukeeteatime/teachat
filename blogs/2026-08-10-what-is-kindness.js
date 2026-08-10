@@ -3,7 +3,7 @@ window.BLOG_REGISTRY.push({
   "id": "2026-08-10-what-is-kindness",
   "title": "What is Kindness",
   "author": "Sukee Parker",
-  "date": "2026-08-11",
+  "date": "2026-08-10",
   "category": "Philosophy",
   "tags": [
     "Life Skills"
