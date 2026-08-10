@@ -1086,9 +1086,11 @@ function renderCalendar() {
   if (calOpen) {
     html += `<div class="cal-body">
       <div class="cal-header">
+        <button class="cal-nav cal-nav-jump" onclick="calJumpPrev()" title="Previous month with articles">&#171;</button>
         <button class="cal-nav" onclick="calPrev()">&#8249;</button>
         <span class="cal-month-label">${state.lang === 'zh' ? `${calYear}年${calMonth + 1}月` : `${t('calMonths')[calMonth]} ${calYear}`}</span>
         <button class="cal-nav" onclick="calNext()">&#8250;</button>
+        <button class="cal-nav cal-nav-jump" onclick="calJumpNext()" title="Next month with articles">&#187;</button>
       </div>
       <div class="cal-grid">
         ${t('calDays').map(d => `<div class="cal-day-label">${d}</div>`).join('')}
@@ -1148,6 +1150,28 @@ window.calNext = function() {
   else state.calMonth++;
   renderCalendar();
 };
+
+window.calJumpPrev = function() {
+  const months = [...new Set([...articlesDateSet()].map(d => d.slice(0, 7)))].sort();
+  const current = `${state.calYear}-${String(state.calMonth + 1).padStart(2, '0')}`;
+  const prev = [...months].reverse().find(m => m < current);
+  if (prev) {
+    state.calYear = parseInt(prev.slice(0, 4));
+    state.calMonth = parseInt(prev.slice(5, 7)) - 1;
+    renderCalendar();
+  }
+};
+window.calJumpNext = function() {
+  const months = [...new Set([...articlesDateSet()].map(d => d.slice(0, 7)))].sort();
+  const current = `${state.calYear}-${String(state.calMonth + 1).padStart(2, '0')}`;
+  const next = months.find(m => m > current);
+  if (next) {
+    state.calYear = parseInt(next.slice(0, 4));
+    state.calMonth = parseInt(next.slice(5, 7)) - 1;
+    renderCalendar();
+  }
+};
+
 window.filterByDate = function(ds) {
   state.calDateFilter = ds;
   renderCalendar();
