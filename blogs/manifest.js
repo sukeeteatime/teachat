@@ -373,5 +373,5 @@ window.BLOG_MANIFEST = [
   "2026-08-07-changes-are-constant.js",
   "2026-08-08-flowers-that-remains.js",
   "2026-08-09-ai-age-a-time-with-no-space-of-ego.js",
-  "2026-08-11-what-is-kindness.js"
+  "2026-08-10-what-is-kindness.js"
 ];
