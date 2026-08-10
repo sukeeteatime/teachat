@@ -1,6 +1,6 @@
 window.BLOG_REGISTRY = window.BLOG_REGISTRY || [];
 window.BLOG_REGISTRY.push({
-  "id": "2026-08-11-what-is-kindness",
+  "id": "2026-08-10-what-is-kindness",
   "title": "What is Kindness",
   "author": "Sukee Parker",
   "date": "2026-08-11",
