@@ -316,11 +316,16 @@ body.player-active main { padding-bottom: 5.5rem; }
   margin-bottom: 0.35rem;
 }
 
+.post-date-row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
 .post-date {
   font-family: var(--sans);
   font-size: 0.78rem;
   color: var(--text-muted);
-  margin-bottom: 1rem;
 }
 
 .post-hr { border: none; border-top: 1px solid var(--border); margin-bottom: 1rem; }

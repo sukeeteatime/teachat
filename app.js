@@ -910,7 +910,13 @@ function blogCardHtml(blog) {
         ${blog.pinned ? '<span class="post-pin-badge">📌 Pinned</span>' : ''}
       </div>
       <h2 class="post-title">${titleHtml}</h2>
-      <div class="post-date">${date}</div>
+      <div class="post-date-row">
+        <span class="post-date">${date}</span>
+        <button class="modal-listen-mini" onclick="readArticle('${blog.id}')">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+          ${t('listenCardBtn', listenMins(blog))}
+        </button>
+      </div>
       <hr class="post-hr">
       <div class="post-body">${bodyHtml}</div>
       ${tagPillsHtml(blog.tags, q)}
