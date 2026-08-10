@@ -769,20 +769,20 @@ body.player-active main { padding-bottom: 5.5rem; }
 .modal-listen-mini {
   display: inline-flex;
   align-items: center;
-  gap: 0.3rem;
-  background: rgba(196,154,40,0.1);
-  border: none;
+  gap: 0.4rem;
+  background: none;
+  border: 1px solid var(--border);
   border-radius: 20px;
-  padding: 0.15rem 0.55rem;
+  padding: 0.3rem 0.8rem;
   font-family: var(--sans);
-  font-size: 0.72rem;
+  font-size: 0.76rem;
   font-weight: 600;
-  color: var(--gold-dark);
+  color: var(--text-muted);
   cursor: pointer;
-  transition: background 0.15s;
+  transition: all 0.15s;
   white-space: nowrap;
 }
-.modal-listen-mini:hover { background: rgba(196,154,40,0.22); }
+.modal-listen-mini:hover { border-color: var(--gold); color: var(--gold); background: rgba(196,154,40,0.06); }
 
 .modal-tags-row {
   display: flex;

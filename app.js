@@ -43,8 +43,8 @@ const STRINGS = {
     startBtn: '▶ Start Listening',
     cancelBtn: 'Cancel',
     modalListenBtn: 'Listen',
-    byline: (author, date, mins) =>
-      `<span>By ${escHtml(author)}</span><span>·</span><span>${date}</span><span>·</span><span>~${mins} min read</span>`,
+    byline: (author, date) =>
+      `<span>By ${escHtml(author)}</span><span>·</span><span>${date}</span>`,
     listenCardBtn: mins => `Listen · ~${mins} min`,
     nowReading: '🎧 Now Reading',
     skipBtn: '⏭ Skip',
@@ -79,8 +79,8 @@ const STRINGS = {
     startBtn: '▶ 开始收听',
     cancelBtn: '取消',
     modalListenBtn: '收听',
-    byline: (author, date, mins) =>
-      `<span>作者：${escHtml(author)}</span><span>·</span><span>${date}</span><span>·</span><span>约${mins}分钟</span>`,
+    byline: (author, date) =>
+      `<span>作者：${escHtml(author)}</span><span>·</span><span>${date}</span>`,
     listenCardBtn: mins => `收听 · 约${mins}分钟`,
     nowReading: '🎧 正在收听',
     skipBtn: '⏭ 跳过',
@@ -1009,10 +1009,10 @@ window.openBlog = function(id) {
 
   const mins = listenMins(blog);
   $('modalByline').innerHTML =
-    t('byline', blog.author, fmtDate(blog.date), mins) +
+    t('byline', blog.author, fmtDate(blog.date)) +
     `<button class="modal-listen-mini" onclick="readArticle('${blog.id}')">` +
-      `<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>` +
-      ` ~${mins} min` +
+      `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>` +
+      ` ${t('modalListenBtn')} · ~${mins} min` +
     `</button>`;
 
   const tagsEl = document.getElementById('modalTags');
