@@ -40,9 +40,12 @@ header {
   z-index: 100;
   background: var(--gold);
   display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
   align-items: center;
-  height: 58px;
+  height: 66px;
   padding: 0 0.75rem;
+  gap: 0.1rem;
 }
 
 .hamburger, .speaker-btn, .tea-chat-btn {
@@ -76,12 +79,21 @@ header {
   letter-spacing: 0.04em;
   cursor: pointer;
   transition: background 0.15s;
-  margin-right: auto;
+  flex-shrink: 0;
 }
 .lang-toggle:hover { background: rgba(255,255,255,0.28); }
 
-.site-name {
+
+.site-title-group {
   flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.12rem;
+}
+.site-name {
+  display: block;
   text-align: center;
   font-family: var(--sans);
   font-weight: 700;
@@ -89,6 +101,18 @@ header {
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: white;
+  white-space: nowrap;
+}
+.site-tagline {
+  display: block;
+  text-align: center;
+  font-family: var(--serif, 'Lora', Georgia, serif);
+  font-size: 0.58rem;
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.78);
+  white-space: nowrap;
 }
 
 /* === Sidebar === */
