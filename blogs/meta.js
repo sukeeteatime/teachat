@@ -398,7 +398,7 @@ window.BLOG_META = {
       "date": "2026-08-09"
     },
     {
-      "id": "2026-08-08-flowers-that-remains",
+      "id": "2026-08-08-flowers-that-remain",
       "title": "Flowers that Remain",
       "date": "2026-08-08"
     },
@@ -1038,8 +1038,8 @@ window.BLOG_META = {
       "date": "2023-10-22"
     },
     {
-      "id": "2023-10-15-health-breast-cancer-awareness-month",
-      "title": "Health | Breast Cancer Awareness Month (Video)",
+      "id": "2023-10-15-october-the-breast-cancer-awareness-month-video",
+      "title": "October: The Breast Cancer Awareness Month (Video)",
       "date": "2023-10-15"
     },
     {

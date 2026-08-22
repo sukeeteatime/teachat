@@ -5499,30 +5499,22 @@ This modest time investment can yield significant, sustained health improvements
 Recommended starting point: a YouTube playlist titled "30 Minutes Exercise at Home" to begin building the habit without needing equipment or a gym.`
 });
 window.BLOG_REGISTRY.push({
-  id: "2023-10-15-health-breast-cancer-awareness-month",
-  title: "Health | Breast Cancer Awareness Month (Video)",
-  author: "Sukee Parker",
-  date: "2023-10-15",
-  category: "Health",
-  tags: ["Breast Cancer", "Health", "Awareness", "Prevention"],
-  excerpt: "October is National Breast Cancer Awareness Month; October 13th is Metastatic Breast Cancer Awareness Day. Preventative measures through holistic wellness and dietary choices.",
-  content: `October is National Breast Cancer Awareness Month. October 13th is Metastatic Breast Cancer Awareness Day.
-
-<b>Key recommendations for holistic wellness:</b>
-
-- Regular exercise and at least 6,000 daily steps
-- "More than 20 varieties of colorful, anti-inflammatory, plant-based foods daily"
-
-<b>Dietary approach:</b>
-Two-thirds of food intake from plant-based sources: vegetables, whole grains, legumes, fruits, nuts, seeds, and tofu. The remaining third from organic meats, particularly fish. Vitamin D+K supplementation is also advised.
-
-<b>Mental wellness:</b>
-Visualization techniques can support positivity — imagining "a stream of cooling water washing out any sick cells" or visualizing "the sun shining through the body."
-
-<b>Essential steps:</b>
-Regular breast cancer screenings and physical examinations for early detection.
-
-Prevention and awareness work together. Holistic wellness practices reduce risk; early detection improves outcomes.`
+  "id": "2023-10-15-october-the-breast-cancer-awareness-month-video",
+  "title": "October: The Breast Cancer Awareness Month (Video)",
+  "author": "Sukee Parker",
+  "date": "2023-10-15",
+  "category": "Health",
+  "tags": [
+    "Breast Cancer",
+    "Health",
+    "Awareness",
+    "Prevention"
+  ],
+  "excerpt": "Let’s remember to take preventive measures through holistic wellness and mindful dietary choices.",
+  "content": "<p>October is National Breast Cancer Awareness Month, and October 13th is Metastatic Breast Cancer Awareness Day.&nbsp;<span>Here are some key recommendations for holistic wellness:</span></p><p></p><ul><li><span>Engage in regular exercise and aim for at least 6,000 daily steps.</span><br></li><li><span>Consume a diverse range of colorful, anti-inflammatory, plant-based foods daily.</span></li></ul><p></p><p>Dietary Approach:Prioritize plant-based sources for two-thirds of your food intake, including vegetables, whole grains, legumes, fruits, nuts, seeds, and tofu. The remaining third should come from <b>organic meats, especially fish</b>. Additionally, consider supplementing with Vitamin D and K.</p><p><span>Mental Wellness:&nbsp;</span><span>Incorporate visualization techniques into your routine to promote positivity. Imagine a stream of cooling water washing away any sick cells or visualize the sun shining through your body.</span></p><p><span>Essential Steps:&nbsp;</span><span>Regular breast cancer screenings and physical examinations are crucial for early detection.</span></p><p>Prevention and awareness work hand in hand. By adopting holistic wellness practices, you can reduce your risk of breast cancer, and early detection significantly improves outcomes.</p>",
+  "contentType": "html",
+  "autoRead": true,
+  "pinned": false
 });
 window.BLOG_REGISTRY.push({
   id: "2023-10-22-thoughts-tv-past-time-or-connect-with-the-world",
@@ -7930,7 +7922,7 @@ window.BLOG_REGISTRY.push({
   "pinned": false
 });
 window.BLOG_REGISTRY.push({
-  "id": "2026-08-08-flowers-that-remains",
+  "id": "2026-08-08-flowers-that-remain",
   "title": "Flowers that Remain",
   "author": "Sukee Parker",
   "date": "2026-08-08",
@@ -7939,7 +7931,7 @@ window.BLOG_REGISTRY.push({
     "Life Lessons"
   ],
   "excerpt": "The environment will eventually determine which item will persist and which will be eliminated. This process may not align with our desires, but it is guided by the natural selection principle.",
-  "content": "<p>As spring arrived early in the year, I planted some beautiful flowers in my front yard. I didn’t pay much attention to whether wild animals would eat them; instead, I focused on their appearance and my preference for colors and shapes. I planted them, keep watering them, so they’ve been thriving for at least three months. The variety of colors and shapes have bloomed truly transforming my front yard into a vibrant display. I couldn’t help but feel proud of my unique garden, as many of my flowers weren’t cultivated by others.</p><p>However, I noticed that some animals began eating some of my flowers after three months. Initially, the flowers recovered, but I didn’t see much change. However, today,&nbsp;<span>after six months passed, I was shocked to find that my entire variety of flowers had disappeared. What remained were the types of flowers that others had planted in their front yards! It took time, but nature clearly communicated its message to me: if something is not in harmony with the environment, it will suffer and eventually disappear.&nbsp;</span></p><p><span>This experience has made me realize the power of natural selection, which patiently works its magic over time.&nbsp;</span></p>",
+  "content": "<p>My last special specie of flower in the front yard got eaten by the wild animals overnight, after 6 months since I planted some beautiful flowers in my front yard early in spring. It's an interesting life lesson from this experience.&nbsp;</p><p>Early spring, when I was planning my front yard, I didn’t pay much attention to whether wild animals would eat them; instead, I focused on their appearance and my preference for colors and shapes. I planted them, kept watering them, so they’ve been thriving for at least three months. The variety of colors and shapes have bloomed, truly transforming my front yard into a vibrant display. I couldn’t help but feel proud of my unique garden, as many of my flowers weren’t cultivated by others.</p><p>However, I noticed that some animals began eating some of my flowers after three months. Initially, the flowers recovered, but I didn’t see much change. However, today, after six months had passed, I was shocked to find that my entire variety of flowers had disappeared. What remained were the types of flowers that others had planted in their front yards! It took time, but nature clearly communicated its message to me: if something is not in harmony with the environment, it will suffer and eventually disappear.&nbsp;</p><p>This experience has made me realize <b>the power of natural selection, which patiently works its magic over time</b>.&nbsp;</p>",
   "contentType": "html",
   "autoRead": true,
   "pinned": false
