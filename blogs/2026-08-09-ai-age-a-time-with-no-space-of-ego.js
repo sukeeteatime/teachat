@@ -1,7 +1,7 @@
 window.BLOG_REGISTRY = window.BLOG_REGISTRY || [];
 window.BLOG_REGISTRY.push({
   "id": "2026-08-09-ai-age-a-time-with-no-space-of-ego",
-  "title": "The AI Age: A Time With No Space for Ego",
+  "title": "The AI Age: No Room for Ego",
   "author": "Sukee Parker",
   "date": "2026-08-09",
   "category": "Philosophy",
