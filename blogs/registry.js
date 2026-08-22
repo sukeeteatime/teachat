@@ -145,33 +145,6 @@ I see it differently. Possessions we value personally may lose their significanc
 Meaningful legacy isn't about preserving what we treasure. It's about what endures in others' hearts. True impact comes from creating value that matters to future generations — not merely safeguarding our own cherished things.`
 });
 window.BLOG_REGISTRY.push({
-  id: "1996-01-07-chat-95-conversation-starter",
-  title: "95 Conversation Starter",
-  author: "Sukee Parker",
-  date: "1996-01-07",
-  category: "Lifestyle",
-  tags: ["Social", "Tea"],
-  excerpt: "A curated collection of discussion prompts organized by context — social gatherings, professional settings, college life, and childhood memories — designed to encourage meaningful storytelling.",
-  content: `Good conversations start with good questions. Here are 95 prompts organized by setting to help move past small talk and into real storytelling.
-
-<b>Social Settings (20 questions)</b>
-What's the most unexpected adventure you've ever had? Have you ever had a random encounter with a stranger that changed your day? And 18 more to spark an evening of real stories.
-
-<b>Workplace Conversations (20 questions)</b>
-Can you remember your very first day at work? What's the most rewarding challenge you've faced in your career? Use these to move beyond project updates and into shared experience.
-
-<b>College Conversations (20 questions)</b>
-What's the strangest thing that happened in one of your classes? What's a campus tradition that made you feel like you belonged?
-
-<b>School Conversations (20 questions)</b>
-What's a memory from childhood that always makes you smile? Have you ever had a teacher who made a huge difference?
-
-<b>Bonus / Miscellaneous (15 questions)</b>
-Have you ever had a moment where you felt like you were in the right place at the right time? If you could invite anyone from history to dinner, who would it be?
-
-The best conversations are not interviews — they are exchanges. Let one question lead naturally to the next.`
-});
-window.BLOG_REGISTRY.push({
   id: "1996-01-07-chat-1996-tea-time-ideas",
   title: "1996 Tea Time Ideas",
   author: "Sukee Parker",
@@ -208,6 +181,33 @@ window.BLOG_REGISTRY.push({
 25. Look up a DIY project and gather materials for it.
 
 Small rituals, done consistently, shape the texture of a life.`
+});
+window.BLOG_REGISTRY.push({
+  id: "1996-01-07-chat-95-conversation-starter",
+  title: "95 Conversation Starter",
+  author: "Sukee Parker",
+  date: "1996-01-07",
+  category: "Lifestyle",
+  tags: ["Social", "Tea"],
+  excerpt: "A curated collection of discussion prompts organized by context — social gatherings, professional settings, college life, and childhood memories — designed to encourage meaningful storytelling.",
+  content: `Good conversations start with good questions. Here are 95 prompts organized by setting to help move past small talk and into real storytelling.
+
+<b>Social Settings (20 questions)</b>
+What's the most unexpected adventure you've ever had? Have you ever had a random encounter with a stranger that changed your day? And 18 more to spark an evening of real stories.
+
+<b>Workplace Conversations (20 questions)</b>
+Can you remember your very first day at work? What's the most rewarding challenge you've faced in your career? Use these to move beyond project updates and into shared experience.
+
+<b>College Conversations (20 questions)</b>
+What's the strangest thing that happened in one of your classes? What's a campus tradition that made you feel like you belonged?
+
+<b>School Conversations (20 questions)</b>
+What's a memory from childhood that always makes you smile? Have you ever had a teacher who made a huge difference?
+
+<b>Bonus / Miscellaneous (15 questions)</b>
+Have you ever had a moment where you felt like you were in the right place at the right time? If you could invite anyone from history to dinner, who would it be?
+
+The best conversations are not interviews — they are exchanges. Let one question lead naturally to the next.`
 });
 window.BLOG_REGISTRY.push({
   id: "1996-01-28-chat-managing-your-dunbar-circle",
@@ -7752,6 +7752,18 @@ Similarly, when it comes to content creation, I must adhere to specific constrai
 ​Minimalism’s core principle is simplicity. Focus on your core values and let go of what you can’t hold on to.`
 });
 window.BLOG_REGISTRY.push({
+  id: "2026-07-29-clothes-hard-to-wear-out",
+  title: "Clothes Hard to Wear Out",
+  author: "Sukee Parker",
+  date: "2026-07-29",
+  category: "Philosophy",
+  tags: ["Lifestyle"],
+  excerpt: "There’s something less to worry about. Something to fill the void.",
+  content: `Today, I had a sudden realization: my clothes are incredibly durable. Unlike the past, where clothes could easily break or wear out after a while, these days, they’re made of high-quality materials. Some of them have been with me for a year, and they’re still in pristine condition! This makes me feel no need to buy new ones. In fact, buying clothes is not even on my agenda anymore because it’s a rare occasion when I actually need to.
+
+It’s the advancement of technology that has reduced our worries. Now, we can focus on something more fulfilling. What that might be, I’m not sure yet.`
+});
+window.BLOG_REGISTRY.push({
   "id": "2026-07-29-memorizing-father-in-law",
   "title": "Memorizing Father In-Law",
   "author": "Sukee Parker",
@@ -7763,18 +7775,6 @@ window.BLOG_REGISTRY.push({
   "contentType": "html",
   "autoRead": true,
   "pinned": false
-});
-window.BLOG_REGISTRY.push({
-  id: "2026-07-29-clothes-hard-to-wear-out",
-  title: "Clothes Hard to Wear Out",
-  author: "Sukee Parker",
-  date: "2026-07-29",
-  category: "Philosophy",
-  tags: ["Lifestyle"],
-  excerpt: "There’s something less to worry about. Something to fill the void.",
-  content: `Today, I had a sudden realization: my clothes are incredibly durable. Unlike the past, where clothes could easily break or wear out after a while, these days, they’re made of high-quality materials. Some of them have been with me for a year, and they’re still in pristine condition! This makes me feel no need to buy new ones. In fact, buying clothes is not even on my agenda anymore because it’s a rare occasion when I actually need to.
-
-It’s the advancement of technology that has reduced our worries. Now, we can focus on something more fulfilling. What that might be, I’m not sure yet.`
 });
 window.BLOG_REGISTRY.push({
   "id": "2026-07-30-dislike-more-and-cherish-less",
@@ -7818,19 +7818,6 @@ window.BLOG_REGISTRY.push({
   "pinned": false
 });
 window.BLOG_REGISTRY.push({
-  "id": "2026-08-02-organizing-principles-with-excel",
-  "title": "Organizing Principles with Excel",
-  "author": "Sukee Parker",
-  "date": "2026-08-02",
-  "category": "Technology",
-  "tags": ["Productivity", "Excel"],
-  "excerpt": "Use Excel like Pro - tips to help you become more productive",
-  "content": "<p>Excel, one of the most successful software programs in history, is incredibly user-friendly. You can start using it without reading any documentation, and it can help you accomplish a lot of work. If you’re good at problem-solving, you can even become a data analysis hero. However, using Excel effectively can be challenging. Today, I’d like to share some organizing principles that can take your Excel skills to the next level.</p><p><b>Make sure your Excel spreadsheet is sortable and filterable</b>. This will allow you to showcase Excel’s strength as a data analytics tool. To achieve this, <i>avoid merging cells or adding row separators</i> that disrupt the consistency across rows. The goal is to enable filtering to filter all the data and then perform necessary statistics on top.</p><p>G<b>roup columns so that your working cells are close to each other. </b>The best grouping is based on the current operation, not the content displayed. You can always update the display format later. If you’re using Excel as a data processing platform, make it easy to edit the columns, keeping things handy. </p><p><b>Use data validation whenever you can.</b> If your data is a list of known values, enable data validation so you can select options instead of typing them. This is also helpful with statistics.</p><p>After you have your data, try <b>creating one or multiple pivot tables to display the statistics</b>. Pivot tables are the ultimate data processing tool.</p><p>Finally, <b>use color to differentiate columns between who should pay attention and who should update</b>. You can also use color to highlight statuses with data validation. However, <b>don’t use color unless it has a functional need</b>.</p><p><span>I hope these tips help you think before creating your next Excel spreadsheet. It may seem easy to get started, but it can be difficult to use it fully. </span><br></p>",
-  "contentType": "html",
-  "autoRead": false,
-  "pinned": false
-});
-window.BLOG_REGISTRY.push({
   "id": "2026-08-02-opening-a-restaurant",
   "title": "Opening a Restaurant",
   "author": "Sukee Parker",
@@ -7843,6 +7830,19 @@ window.BLOG_REGISTRY.push({
   "content": "<p>I attended a lunch gathering organized to support the grand opening of a new restaurant. It was opened by a member of our social group, and the owner clearly put in a lot of effort. Everyone appreciated her dedication. The gathering went well, and the dishes were flavorful, although a bit salty.</p><p>Frankly, the owner is a talented cook, but not a professional chef. Given the high cost of renting a restaurant venue, the pressure and financial risk are clear. Therefore, I understand why she rented a remote place like this. The quality dishes is good, but it can’t convince me to drive 40 minutes to visit again. I hope she can attract local visitors from the nearby community. Instead of the high-risk/cost restaurant, offering group orders or operating a food truck might be a safer option in this situation. The owner may be overconfident, and I perceive it as risky because risk is beyond our abilities to control. The perilous situation arises from a<b> lack of awareness of our limitations</b>. </p><p>The most significant challenge in this situation is the <b>absence of honest feedback</b>. Everyone praised the dishes because most people don't have skin in the game, so they prefer to avoid negative comments or discourage her. We have observed this phenomenon in our other discussions, such as <a href=\"#2026-07-22-bridgewater-culture\"><span>bridge water culture</span></a>. Providing honest feedback can be difficult, painful, and naturally excludes from human interactions. As suggested, <b>make your choice to leave rather than offering suggestions to change anyone. </b></p><p>I genuinely wish the restaurant’s success and hope she approaches her journey with caution. </p>",
   "contentType": "html",
   "autoRead": true,
+  "pinned": false
+});
+window.BLOG_REGISTRY.push({
+  "id": "2026-08-02-organizing-principles-with-excel",
+  "title": "Organizing Principles with Excel",
+  "author": "Sukee Parker",
+  "date": "2026-08-02",
+  "category": "Technology",
+  "tags": ["Productivity", "Excel"],
+  "excerpt": "Use Excel like Pro - tips to help you become more productive",
+  "content": "<p>Excel, one of the most successful software programs in history, is incredibly user-friendly. You can start using it without reading any documentation, and it can help you accomplish a lot of work. If you’re good at problem-solving, you can even become a data analysis hero. However, using Excel effectively can be challenging. Today, I’d like to share some organizing principles that can take your Excel skills to the next level.</p><p><b>Make sure your Excel spreadsheet is sortable and filterable</b>. This will allow you to showcase Excel’s strength as a data analytics tool. To achieve this, <i>avoid merging cells or adding row separators</i> that disrupt the consistency across rows. The goal is to enable filtering to filter all the data and then perform necessary statistics on top.</p><p>G<b>roup columns so that your working cells are close to each other. </b>The best grouping is based on the current operation, not the content displayed. You can always update the display format later. If you’re using Excel as a data processing platform, make it easy to edit the columns, keeping things handy. </p><p><b>Use data validation whenever you can.</b> If your data is a list of known values, enable data validation so you can select options instead of typing them. This is also helpful with statistics.</p><p>After you have your data, try <b>creating one or multiple pivot tables to display the statistics</b>. Pivot tables are the ultimate data processing tool.</p><p>Finally, <b>use color to differentiate columns between who should pay attention and who should update</b>. You can also use color to highlight statuses with data validation. However, <b>don’t use color unless it has a functional need</b>.</p><p><span>I hope these tips help you think before creating your next Excel spreadsheet. It may seem easy to get started, but it can be difficult to use it fully. </span><br></p>",
+  "contentType": "html",
+  "autoRead": false,
   "pinned": false
 });
 window.BLOG_REGISTRY.push({
@@ -7962,6 +7962,21 @@ window.BLOG_REGISTRY.push({
   ],
   "excerpt": "Before leaving the workplace, consider what you want to gain: friendship from your kindness, hardworking ethics, or achievements. Define who you want to be and plan accordingly.",
   "content": "<p>I recently attended a retirement party for a friend. His career may not have been remarkable by conventional standards, but he is one of the kindest people I’ve ever met. This experience made me reflect on my own career goals: should I pursue achievement or focus more on relationships? It’s worth considering the end in mind.</p><p>First, let’s consider the fact that being kind and enjoying everyday life doesn’t conflict with taking on challenges and pursuing meaningful outcomes. The key is to not set limits for ourselves and stay true to our values. Embrace the learning and growth that comes with it. One important thing to remember is to prioritize our well-being and then do whatever interests us.</p><p>Second, we must acknowledge that no matter how hard we try, we cannot control every outcome. Therefore, we should simply focus on doing the right thing and let time reveal what truly matters.</p><p>Third, what makes me feel most blessed is having kind and supportive friends who openly share their lives and experiences. That warmth is difficult to measure by titles, money, or achievements. Like work achievements, we can accomplish things, but we must also stay grounded and focused on our journey.</p><p>A career takes most of our lifetime, so it’s important to make wise choices and concise decisions. A fulfilling life means achieving some accomplishments, but it also means surrounding yourself with kindness and friendship, protecting your heart, and enjoying the journey.</p>",
+  "contentType": "html",
+  "autoRead": true,
+  "pinned": false
+});
+window.BLOG_REGISTRY.push({
+  "id": "2026-08-21-the-yellow-watermelon-",
+  "title": "The Yellow Watermelon",
+  "author": "Sukee Parker",
+  "date": "2026-08-21",
+  "category": "Philosophy",
+  "tags": [
+    "Choice"
+  ],
+  "excerpt": "Make the choice.",
+  "content": "<p>I’ve recently fallen in love with yellow watermelon. I wouldn't mind running around to visit various grocery stores looking for it. It's hard to find because yellow watermelon only makes up less than 5% of the watermelon population.&nbsp;</p><p>The yellow watermelon has a taste that is amazing—light, sweet, delicate, and somehow more flavorful than red watermelon with the unique tastes of honey and tropical flavor. The familiar red color comes from lycopene, while yellow watermelon has a different balance of pigments. Different varieties also have different balances of sugar, acidity, texture, and aroma, which can deliver its unique flavor.</p><p>While I was eating it, I started thinking about something beyond watermelon. So much of what we expect in life comes from familiarity. A watermelon should be red, a successful career should look a certain way, and a good life should follow a certain path. We become so accustomed to these expectations that when something looks different, our first instinct is to think something is missing.&nbsp;</p><p>But sometimes, like with yellow watermelon, <b>the unexpected can be bette</b>r. <b>Life becomes more interesting when we dare to be different and leave room for surprises.</b> So next time something looks different from what you expect, don’t reject it too quickly.\\ When you’re walking down an unconventional path, take courage and explore with your full effort.&nbsp;</p>",
   "contentType": "html",
   "autoRead": true,
   "pinned": false
