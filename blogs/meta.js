@@ -398,6 +398,11 @@ window.BLOG_META = {
       "date": "2026-08-21"
     },
     {
+      "id": "2026-08-20-busy-at-difficult-time",
+      "title": "Busy at Difficult Time",
+      "date": "2026-08-20"
+    },
+    {
       "id": "2026-08-10-retirement-party",
       "title": "Retirement Party",
       "date": "2026-08-10"
