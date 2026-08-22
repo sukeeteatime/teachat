@@ -1,51 +1,19 @@
 window.BLOG_REGISTRY = window.BLOG_REGISTRY || [];
 window.BLOG_REGISTRY.push({
-  id: "1995-01-01-chat-1995-tea-time-ideas",
-  title: "1995 Tea Time Ideas",
-  author: "Sukee Parker",
-  date: "1995-01-01",
-  category: "Lifestyle",
-  tags: ["Tea", "Wellness"],
-  excerpt: "A collection of 31 activity ideas to incorporate into daily tea time rituals for stress reduction, mindfulness, and overall well-being.",
-  content: `F.M. Alexander once said: "People do not decide their futures, they decide their habits and their habits decide their futures."
-
-Tea sessions function similarly to meditation or yoga — they reduce stress and provide structured breaks for mental and physical rejuvenation. The ritual creates moments of calm while fostering mindfulness and decreasing anxiety.
-
-Here are 31 ideas to make the most of your tea time:
-
-1. Read a book
-2. Practice meditation for positivity and gratitude
-3. Listen to calming music
-4. Call a friend or family member
-5. Watch a TED talk
-6. Take photographs
-7. Stretch or practice yoga
-8. Use breathing exercise apps
-9. Organize your workspace
-10. Watch funny videos
-11. Practice guided mindfulness
-12. Create a music playlist
-13. Daydream while sipping tea
-14. Write thank-you notes
-15. Research topics of interest
-16. Try crafting activities
-17. Reflect on achievements
-18. Clean your devices
-19. Try herbal teas
-20. Practice minimalist tips
-21. Taste new vegetables
-22. Make flower arrangements
-23. Create bookmarks from leaves
-24. Do cardio exercise
-25. Go for a run
-26. Write poetry
-27. Listen to water sounds
-28. Visit high vantage points
-29. Journal
-30. Write opinion pieces
-31. Stretch and release negative energy
-
-Combining relaxing lifestyle habits with daily tea time enhances health and wellness.`
+  "id": "1995-01-01-1995-tea-time-ideas",
+  "title": "1995 Tea Time Ideas",
+  "author": "Sukee Parker",
+  "date": "1995-01-01",
+  "category": "Lifestyle",
+  "tags": [
+    "Tea",
+    "Wellness"
+  ],
+  "excerpt": "A collection of activity ideas to incorporate into your daily tea time rituals to reduce stress, cultivate mindfulness, and enhance overall well-being.",
+  "content": "<p>F.M. Alexander once said, “People don’t decide their futures; they decide their habits, and their habits decide their futures.”</p>\n<p><span>Teatime sessions, similar to meditation or yoga, offer stress reduction and structured breaks for mental and physical rejuvenation. The ritual creates moments of calm, fosters mindfulness, and decreases anxiety.&nbsp;</span></p><p><span>Here are 28 ideas to make the most of your tea time:</span></p><p></p><ol><li><span>Read a book</span><br></li><li><span>Practice meditation for positivity and gratitude</span><br></li><li><span>Listen to calming music</span><br></li><li><span>Call a friend or family member</span><br></li><li>Watch a <a href=\"https://www.ted.com\" target=\"_blank\" rel=\"noopener noreferrer\">TED talk</a><br></li><li><span>Take a few photos</span><br></li><li><span>Stretch or practice yoga&nbsp;</span><span>and release negative energy</span><br></li><li>Take the <a href=\"https://youtu.be/Mn4kUw5uXQU?si=C5mvG8z71ZjPFSsZ\" target=\"_blank\" rel=\"noopener noreferrer\">breathing exercise</a></li><li><span>Organize your workspace by decluttering your computer files, notes, and documents.&nbsp;</span></li><li><span>Watch funny videos</span></li><li><span>Practice guided mindfulness</span></li><li><span>Create a music playlist</span></li><li><span>Daydream while sipping tea</span></li><li><span>Write thank-you notes</span></li><li><span>Research topics of interest</span></li><li><span>Try crafting activities</span></li><li><span>Reflect on achievements</span></li><li><span>Try herbal teas</span></li><li>Practice <a href=\"#2020-05-13-become-a-minimalist\">minimalist</a> tips</li><li><span>Taste new vegetables</span></li><li><span>Make flower arrangements</span></li><li><span>Create bookmarks from leaves</span></li><li><span>Do cardio exercise</span></li><li><span>Go for a run</span></li><li><span><a href=\"#2024-06-18-teatime-write-a-poem\">Write poetry</a></span></li><li><span>Listen to water sounds</span></li><li><span>Visit high vantage points</span></li><li><span>Journaling with your</span><span>&nbsp;opinions and discoveries.&nbsp;</span></li></ol><p></p><p>Combining relaxing lifestyle habits with daily tea time enhances health and wellness.</p>",
+  "contentType": "html",
+  "autoRead": false,
+  "pinned": false
 });
 window.BLOG_REGISTRY.push({
   id: "1995-02-05-chat-read-a-book-freemasonry",
