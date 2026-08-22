@@ -8011,3 +8011,18 @@ window.BLOG_REGISTRY.push({
   "autoRead": true,
   "pinned": false
 });
+window.BLOG_REGISTRY.push({
+  "id": "2026-08-25-mind-your-portion",
+  "title": "Mind Your Portion",
+  "author": "Sukee Parker",
+  "date": "2026-08-25",
+  "category": "Lifestyle",
+  "tags": [
+    "Cooking"
+  ],
+  "excerpt": "Some practical advice if you plan to cook your own meals.",
+  "content": "<p data-start=\"421\" data-end=\"574\" class=\"PDq2pG_selectionAnchorContainer\">One day, a younger brother asked his older brother for advice before he started cooking for himself. The older brother gave him only one piece of advice:&nbsp;<strong data-start=\"576\" data-end=\"600\">“Mind your portion.”&nbsp;</strong><span>It sounds simple, but it is surprisingly important. If you cook too much and hate wasting food, you may end up eating the same dish for the entire week! Even your favorite meal may no longer look exciting.</span></p><p data-start=\"823\" data-end=\"1127\">Living by yourself, especially when you finally have an apartment with a kitchen, opens a new chapter of life. Instead of always eating out or ordering takeout, you begin thinking about cooking for yourself. Cooking can be healthier, more economical, and also one of the small pleasures of everyday life.</p><p data-start=\"1129\" data-end=\"1164\">A few things are worth remembering:</p><ul data-start=\"1166\" data-end=\"2200\"><li data-section-id=\"ym7jhx\" data-start=\"1166\" data-end=\"1290\"><strong data-start=\"1168\" data-end=\"1189\">Mind the portion.</strong>&nbsp;Cook and buy smaller amounts so you can eat fresher food and enjoy more variety throughout the week.</li><li data-section-id=\"18lun2p\" data-start=\"1291\" data-end=\"1449\"><strong data-start=\"1293\" data-end=\"1338\">Start with whole foods whenever possible.</strong>&nbsp;Fresh vegetables, fruit, grains, eggs, meat, and seafood give you more control over what goes into your meals.</li><li data-section-id=\"94zgm2\" data-start=\"1450\" data-end=\"1693\"><strong data-start=\"1452\" data-end=\"1488\">Buy a few excellent ingredients.</strong>&nbsp;Wagyu beef, scallops, halibut, hamachi kama, or simply very fresh seasonal vegetables can make a meal taste wonderful without complicated preparation. Good ingredients often require less effort, not more.</li><li data-section-id=\"nggmia\" data-start=\"1694\" data-end=\"1948\"><strong data-start=\"1696\" data-end=\"1719\">Keep sauces simple.</strong>&nbsp;Look for sauces with short ingredient lists, or learn a few basic combinations using olive oil, soy sauce, vinegar, lemon, herbs, garlic, or spices. You do not need a cabinet full of complicated bottled sauces to make good food.</li><li data-section-id=\"1utulnv\" data-start=\"1949\" data-end=\"2200\"><strong data-start=\"1951\" data-end=\"1984\">Treat leftovers thoughtfully.</strong>&nbsp;Cooking a little less means you can enjoy food closer to when it was made. When you do have leftovers, refrigerate them promptly and eat them within a safe period rather than repeatedly reheating food for many days.</li><li><b>Use healthy cooking utensils, pans, and bowls</b>. Avoid plastic, teflon surfaces and use cast iron, stainless steel, ceramic, glass, wood, and bamboo materials instead.&nbsp;</li></ul><p data-start=\"2202\" data-end=\"2445\">Most importantly, do not think of cooking as another household chore. It can become part of the pleasure of living independently: choosing ingredients, learning what you like, making something with your own hands, and sitting down to enjoy it.&nbsp;<strong data-start=\"2447\" data-end=\"2513\">Cook a little. Eat it fresh. Try something different tomorrow.</strong></p>",
+  "contentType": "html",
+  "autoRead": true,
+  "pinned": false
+});

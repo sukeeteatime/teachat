@@ -19,6 +19,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;1,400&family=Noto+Sans+SC:wght@400;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="icon" href="images/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -26,8 +29,10 @@
   <!-- Header -->
   <header>
     <button class="hamburger" id="hamburgerBtn" aria-label="Menu">&#9776;</button>
-    <span class="site-name">Sukee Tea Time</span>
-    <button class="lang-toggle" id="langToggle" aria-label="Switch language">中文</button>
+    <div class="site-title-group">
+      <span class="site-name">Sukee Tea Time</span>
+      <span class="site-tagline">Live thoughtfully. Explore curiously. Enjoy ordinary life.</span>
+    </div>
     <button class="speaker-btn" id="speakerBtn" aria-label="Read article aloud">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
         <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
@@ -35,6 +40,7 @@
         <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
       </svg>
     </button>
+    <button class="lang-toggle" id="langToggle" aria-label="Switch language">中文</button>
     <a class="tea-chat-btn" href="https://buymeacoffee.com/teatimemissiom" target="_blank" rel="noopener" aria-label="Share Kindness">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M17 8h1a4 4 0 0 1 0 8h-1"/>
@@ -152,9 +158,9 @@
   <script async src="https://www.youtube.com/iframe_api"></script>
 
   <!-- All posts bundled into one file by the pre-commit hook (was 365 separate requests) -->
-  <script src="blogs/registry.js?v=44" defer></script>
-  <script src="blogs-ch/registry.js?v=44" defer></script>
-  <script src="app.js?v=44" defer></script>
+  <script src="blogs/registry.js?v=45" defer></script>
+  <script src="blogs-ch/registry.js?v=45" defer></script>
+  <script src="app.js?v=45" defer></script>
 
 </body>
 </html>
