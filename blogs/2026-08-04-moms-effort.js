@@ -6,7 +6,7 @@ window.BLOG_REGISTRY.push({
   "date": "2026-08-04",
   "category": "Life Story",
   "tags": [
-    "love",
+    "Love",
     "Family"
   ],
   "excerpt": "Mom's effort is unforgettable and profoundly shaping our lives.",

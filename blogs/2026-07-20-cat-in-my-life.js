@@ -6,7 +6,7 @@ window.BLOG_REGISTRY.push({
   "date": "2026-07-20",
   "category": "Life Story",
   "tags": [
-    "love",
+    "Love",
     "Philosophy"
   ],
   "excerpt": "Cats have shaped more of my life than I ever imagined.",
