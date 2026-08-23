@@ -4,7 +4,7 @@ window.BLOG_REGISTRY.push({
   title: "Finding Peace",
   author: "Sukee Parker",
   date: "2020-01-01",
-  category: "Healthy",
+  category: "Health",
   tags: ["Peace", "Mindfulness", "Zen"],
   excerpt: "The body benefits from movement, and the mind benefits from stillness. Cultivating inner calmness despite complex circumstances is essential — and it is possible.",
   content: `"The body benefits from movement, and the mind benefits from stillness."

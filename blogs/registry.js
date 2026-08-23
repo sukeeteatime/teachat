@@ -36,7 +36,7 @@ window.BLOG_REGISTRY.push({
   title: "Mullen Herb Tea",
   author: "Sukee Parker",
   date: "1995-02-12",
-  category: "Healthy",
+  category: "Health",
   tags: ["Tea", "Health"],
   excerpt: "An exploration of mullein herb tea and its traditional uses for respiratory health, combined with a reflection on the wisdom of rest.",
   content: `Mullein (毛蕊花) is an herbal remedy traditionally used to address cough, upper respiratory tract issues, bronchitis, and other respiratory symptoms. It is frequently combined with other herbs that treat colds and coughs. Chinese traditional medicine recommends consuming mullein tea during autumn when weather patterns become dry.
@@ -93,7 +93,7 @@ window.BLOG_REGISTRY.push({
   title: "Meditation to Be Positive and Grateful",
   author: "Sukee Parker",
   date: "1995-05-07",
-  category: "Healthy",
+  category: "Health",
   tags: ["Mindfulness", "Tea"],
   excerpt: "Using tea time as a practice for cultivating appreciation through meditation — a moment of self-care and personal connection.",
   content: `Today, I use tea time to focus on nurturing a deep sense of appreciation through meditation — be grateful for where I am and foster optimism. It is a moment of self-care and personal connection.`
@@ -208,7 +208,7 @@ window.BLOG_REGISTRY.push({
   title: "4 Journaling Prompts",
   author: "Sukee Parker",
   date: "1996-02-04",
-  category: "Healthy",
+  category: "Health",
   tags: ["Journaling", "Mindfulness"],
   excerpt: "Journaling is a time for reflection — the more varied the prompts, the broader the scope of contemplation.",
   content: `Journaling is a time for reflection. As the brain exercises, the more diverse the prompts we use, the more we expand our scope of contemplation.
@@ -659,7 +659,7 @@ window.BLOG_REGISTRY.push({
   title: "How to Create a Feeling of Accomplishment for Yourself",
   author: "Sukee Parker",
   date: "2003-12-07",
-  category: "Healthy",
+  category: "Health",
   tags: ["Mindset", "Productivity"],
   excerpt: "When no amount of effort seems to move the needle, the problem may not be effort — it may be where you are looking for results.",
   content: `No matter how hard we try, there are times when we cannot achieve our goals or get recognized for our efforts. A manager who does not notice your work, an audience that does not engage, peers who show no interest — these situations create genuine feelings of helplessness.
@@ -868,7 +868,7 @@ window.BLOG_REGISTRY.push({
   title: "Pantry Choices",
   author: "Sukee Parker",
   date: "2010-03-14",
-  category: "Healthy",
+  category: "Health",
   tags: ["Food", "Health"],
   excerpt: "Mindful pantry selections — what to look for, what to avoid, and a couple of Trader Joe's finds worth knowing about.",
   content: `Pantry choices are worth thinking through carefully. The criteria I use: non-GMO, low sugar, low fat, low carb, organic where possible, non-inflammatory, and made with simple natural ingredients. Preferred oils are olive or avocado — not corn or sunflower. No artificial flavors, preservatives, or corn syrups. And it still needs to taste good.
@@ -992,7 +992,7 @@ window.BLOG_REGISTRY.push({
   title: "Manifestation Mantra",
   author: "Sukee Parker",
   date: "2016-09-18",
-  category: "Healthy",
+  category: "Health",
   tags: ["Mindfulness", "Zen"],
   excerpt: "Words that flow smoothly like cool water — purifying and nurturing the inner self.",
   content: `I came across a collection of manifestation mantras recently and found the language surprisingly moving. The words flowed smoothly like cool water, purifying and nurturing the inner self.
@@ -1728,7 +1728,7 @@ window.BLOG_REGISTRY.push({
   title: "Thought | Sleep",
   author: "Sukee Parker",
   date: "2019-04-07",
-  category: "Healthy",
+  category: "Health",
   tags: ["Sleep", "Subconscious", "Mindset"],
   excerpt: "We dedicate roughly one-third of our lives to sleep. Neville Goddard taught that the emotional state we enter sleep with programs the subconscious — and becomes our future experience.",
   content: `Benjamin Franklin's adage about early rising frames the importance of sleep in shaping our lives. Neville Goddard identified three pathways to the subconscious: feelings, sleep, and prayer. Sleep deserves particular priority since we dedicate roughly one-third of our lives to it.
@@ -1956,7 +1956,7 @@ window.BLOG_REGISTRY.push({
   title: "Thought | The Art of Slowing Down",
   author: "Sukee Parker",
   date: "2019-08-25",
-  category: "Healthy",
+  category: "Health",
   tags: ["Mindfulness", "Patience", "Lifestyle"],
   excerpt: "Waiting is a natural aspect of life. Boiling water takes time. Learning takes time. The art is not in going faster — it is in being present enough to appreciate what is already here.",
   content: `It is natural to chase quick results in life, but sometimes things don't go as wished — no matter how much effort we put in.
@@ -1974,7 +1974,7 @@ window.BLOG_REGISTRY.push({
   title: "Health | Harmful Exposures",
   author: "Sukee Parker",
   date: "2019-09-01",
-  category: "Healthy",
+  category: "Health",
   tags: ["Health", "Chemicals", "Environment"],
   excerpt: "Many everyday products contain chemicals capable of disrupting hormones and causing significant health issues. Understanding these ten substances helps protect personal wellness.",
   content: `Many everyday products contain chemicals capable of disrupting hormones and causing significant health issues. Understanding these substances helps protect personal wellness.
@@ -2014,7 +2014,7 @@ window.BLOG_REGISTRY.push({
   title: "Health | UV Protection with Food",
   author: "Sukee Parker",
   date: "2019-09-15",
-  category: "Healthy",
+  category: "Health",
   tags: ["Health", "Nutrition", "Skin"],
   excerpt: "While sunscreen remains essential, certain foods can complement your skin's defense against UV rays through natural protective compounds.",
   content: `Sunny days require extra care for our skin. While most people use sunscreens to shield against the sun, certain foods can also help protect us from harmful rays.
@@ -2087,7 +2087,7 @@ window.BLOG_REGISTRY.push({
   title: "Negative Thoughts",
   author: "Sukee Parker",
   date: "2019-11-10",
-  category: "Healthy",
+  category: "Health",
   tags: ["Mental Health", "Mindset", "Positivity"],
   excerpt: "Rather than trying to suppress negative thoughts — which often intensifies them — the more effective approach is to fill the mind with positive imagery that naturally crowds them out.",
   content: `Worry, fear, regret, self-blame — these are common visitors. The question is what to do with them.
@@ -2129,7 +2129,7 @@ window.BLOG_REGISTRY.push({
   title: "Finding Peace",
   author: "Sukee Parker",
   date: "2020-01-01",
-  category: "Healthy",
+  category: "Health",
   tags: ["Peace", "Mindfulness", "Zen"],
   excerpt: "The body benefits from movement, and the mind benefits from stillness. Cultivating inner calmness despite complex circumstances is essential — and it is possible.",
   content: `"The body benefits from movement, and the mind benefits from stillness."
@@ -2564,7 +2564,7 @@ window.BLOG_REGISTRY.push({
   title: "Losing Weight",
   author: "Sukee Parker",
   date: "2021-01-10",
-  category: "Healthy",
+  category: "Health",
   tags: ["Health", "Weight Loss", "Wellness"],
   excerpt: "80% of weight loss plans fail within 12 months. Understanding why helps address the real obstacles.",
   content: `Weight loss products and services represent an enormous market with continuous discussion. According to Global News Wire, "the world market is growing by $254.9 billion in 2021 and will reach $377.3 billion by 2026 with a compound annual growth rate (CAGR) of 8.2%."
@@ -2797,7 +2797,7 @@ window.BLOG_REGISTRY.push({
   title: "Review | Know More about Water",
   author: "Sukee Parker",
   date: "2021-06-20",
-  category: "Healthy",
+  category: "Health",
   tags: ["Health", "Water", "Environment"],
   excerpt: "Two things worth knowing about your water utility: when conservation affects your annual cost, and how to check your water quality report.",
   content: `Water is something most people use without thinking much about. Becoming an informed consumer takes less effort than expected — and can have real financial and health benefits.
@@ -2839,7 +2839,7 @@ window.BLOG_REGISTRY.push({
   title: "Understanding Our Emotions",
   author: "Sukee Parker",
   date: "2021-07-11",
-  category: "Healthy",
+  category: "Health",
   tags: ["Emotions", "Psychology", "Self-awareness"],
   excerpt: "People aren't defined by their emotions — but understanding what each emotion signals gives us valuable self-knowledge rather than letting feelings control behavior.",
   content: `People aren't defined by their emotions — but understanding what each emotion signals gives us valuable self-knowledge rather than letting feelings control behavior.
@@ -2893,7 +2893,7 @@ window.BLOG_REGISTRY.push({
   title: "Why Do We Feel Jealous",
   author: "Sukee Parker",
   date: "2021-07-25",
-  category: "Healthy",
+  category: "Health",
   tags: ["Emotions", "Jealousy", "Self-awareness"],
   excerpt: "Jealousy stems from discontent with what we have and excessive desire for what we lack. Recognizing existing blessings can diminish it — but first we have to understand what it's telling us.",
   content: `Jealousy is a natural emotional response stemming from discontent with what we possess and excessive desire for what we lack.
@@ -3105,7 +3105,7 @@ window.BLOG_REGISTRY.push({
   title: "Food Poisoning",
   author: "Sukee Parker",
   date: "2021-12-19",
-  category: "Healthy",
+  category: "Health",
   tags: ["Health", "Food Safety", "Wellness"],
   excerpt: "A sudden onset of dizziness and disorientation — a reminder that what we eat shapes how we feel, and that food safety deserves more attention than we typically give it.",
   content: `A sudden onset of dizziness and disorientation. A friend nearby asked first: do you need emergency services? Then brought warm water to help.
@@ -3330,7 +3330,7 @@ window.BLOG_REGISTRY.push({
   title: "Weight Loss",
   author: "Sukee Parker",
   date: "2022-05-28",
-  category: "Healthy",
+  category: "Health",
   tags: ["Health", "Nutrition", "Habits"],
   excerpt: "Every food is good — even a chocolate cookie. We just need to control the portions.",
   content: `"Choose the right food. Every food is good, even a chocolate cookie. We just need to control the portions."
@@ -3385,7 +3385,7 @@ window.BLOG_REGISTRY.push({
   title: "Fraud and Scam",
   author: "Sukee Parker",
   date: "2022-06-19",
-  category: "Healthy",
+  category: "Health",
   tags: ["Fraud", "Security", "Awareness"],
   excerpt: "Ignore unsolicited contact from strangers via text or phone. Delete the message and mark it as spam — don't engage.",
   content: `Practical guidance for protecting yourself from common scams and frauds: ignore unsolicited contact from strangers via text or phone. "Delete the message and mark it as spam" rather than engaging with suspicious callers.
@@ -3518,7 +3518,7 @@ window.BLOG_REGISTRY.push({
   title: "Setting Boundaries: Why Is It Important?",
   author: "Sukee Parker",
   date: "2022-08-01",
-  category: "Healthy",
+  category: "Health",
   tags: ["Boundaries", "Self-care", "Relationships"],
   excerpt: "During emergencies, we must put on our masks before helping others. Boundaries work the same way — self-care is the foundation for supporting others effectively.",
   content: `Boundaries are necessary limits we establish to protect our time and energy.
@@ -3704,7 +3704,7 @@ window.BLOG_REGISTRY.push({
   title: "Basic Nutrition Knowledge for Health",
   author: "Sukee Parker",
   date: "2022-09-23",
-  category: "Healthy",
+  category: "Health",
   tags: ["Nutrition", "Health", "Wellness"],
   excerpt: "Notes from a nutrition consulting session covered by health insurance. Practical basics: 2000 calories, vegetable sequencing, sugar reduction, and step targets.",
   content: `Notes from a nutrition consulting session covered by health insurance — a useful reminder that many insurance plans cover preventive nutrition consultations.
@@ -4004,7 +4004,7 @@ window.BLOG_REGISTRY.push({
   title: "Leaving the Worries to God",
   author: "Sukee Parker",
   date: "2022-11-06",
-  category: "Healthy",
+  category: "Health",
   tags: ["Faith", "Anxiety", "Peace"],
   excerpt: "A colleague shared: 'When I learned to give all my troubles to God, I could focus on what I can and love to do.' A Christian perspective on coping with life's inevitable difficulties.",
   content: `A colleague shared something that stayed: "When I learned to give all my troubles to God, I could focus on what I can and love to do."
@@ -4059,7 +4059,7 @@ window.BLOG_REGISTRY.push({
   title: "Zen Food",
   author: "Sukee Parker",
   date: "2022-11-13",
-  category: "Healthy",
+  category: "Health",
   tags: ["Zen", "Vegan", "Nutrition"],
   excerpt: "Zen food is a plant-based diet used by Buddhist monks for thousands of years, designed to show care for others and respect for nature with no waste.",
   content: `Zen food is "a plant-based diet that has been used by Buddhist Monks for thousands of years."
@@ -4324,7 +4324,7 @@ window.BLOG_REGISTRY.push({
   title: "Spicing Up Daily Walk",
   author: "Sukee Parker",
   date: "2023-01-01",
-  category: "Healthy",
+  category: "Health",
   tags: ["Walking", "Exercise", "Habits"],
   excerpt: "Twelve strategies for making the 10,000-step routine more engaging and sustainable — from walking with family to using iNaturalist to identify local species.",
   content: `Twelve strategies for making daily walking more engaging and sustainable:
@@ -4548,7 +4548,7 @@ window.BLOG_REGISTRY.push({
   title: "National Tooth Fairy Day",
   author: "Sukee Parker",
   date: "2023-02-28",
-  category: "Healthy",
+  category: "Health",
   tags: ["Dental Health", "Wellness", "Family"],
   excerpt: "National Tooth Fairy Day (February 28 and August 22) — the childhood tradition plus practical dental hygiene guidance beyond the folklore.",
   content: `National Tooth Fairy Day is celebrated twice a year: February 28 and August 22.
@@ -4576,7 +4576,7 @@ window.BLOG_REGISTRY.push({
   title: "National Day of Unplugging",
   author: "Sukee Parker",
   date: "2023-03-03",
-  category: "Healthy",
+  category: "Health",
   tags: ["Digital Detox", "Mindfulness", "Tech"],
   excerpt: "Reboot launched the first National Day of Unplugging in 2010 as a 24-hour digital detox, drawing inspiration from the Jewish Sabbath concept of disconnecting and reconnecting with what matters.",
   content: `National Day of Unplugging is observed annually on the first Friday in March.
@@ -4632,7 +4632,7 @@ window.BLOG_REGISTRY.push({
   title: "Vision Pro: The Social and Mental Health Concerns",
   author: "Sukee Parker",
   date: "2023-03-12",
-  category: "Healthy",
+  category: "Health",
   tags: ["Technology", "Mental Health", "Social Media"],
   excerpt: "Extended use of immersive devices like Apple's Vision Pro could intensify social isolation, reward instant gratification, and reduce productive focus. A case for slow living.",
   content: `Examining potential negative effects of Apple's Vision Pro technology on human wellbeing.
@@ -5133,7 +5133,7 @@ window.BLOG_REGISTRY.push({
   title: "Losing the Bigger Pictures",
   author: "Sukee Parker",
   date: "2023-08-06",
-  category: "Healthy",
+  category: "Health",
   tags: ["Health", "Holistic Thinking", "Systems"],
   excerpt: "A patient struggled with sleep issues, stomach discomfort, and high blood pressure. Multiple specialists, no resolution. Traditional Chinese medicine, treating the whole system, succeeded where symptom-focused approaches failed.",
   content: `A patient struggled with sleep issues, stomach discomfort, and high blood pressure. Multiple specialists were consulted — cardiologist, gastroenterologist, endocrinologist — but none could address the underlying interconnected problems.
@@ -5732,7 +5732,7 @@ window.BLOG_REGISTRY.push({
   title: "Sukee's Pick | Flowers by Miley Cyrus (Song)",
   author: "Sukee Parker",
   date: "2023-12-24",
-  category: "Sukee's Pick",
+  category: "Lifestyle",
   tags: ["Music", "Miley Cyrus", "Flowers", "Sukee's Pick"],
   excerpt: "Sukee's pick: 'Flowers' by Miley Cyrus — pour a cup of tea and relax for a moment.",
   content: `Sukee's Pick: "Flowers" by Miley Cyrus. Pour a cup of tea and relax for a moment.`
@@ -5909,7 +5909,7 @@ window.BLOG_REGISTRY.push({
   title: "Review | Top 10 Thinking Frameworks for Management Consulting",
   author: "Sukee Parker",
   date: "2024-02-25",
-  category: "Review",
+  category: "Productivity",
   tags: ["Management", "Consulting", "Frameworks", "Business"],
   excerpt: "Ten essential frameworks: SWOT, Gantt Charts, Tuckman's model, Kotter's 8-Step, 7 Cs, Pyramid Principle, AIDA Model, McKinsey's 7S, Six Sigma DMAIC, and Design Thinking.",
   content: `Ten essential frameworks for management consulting professionals:
@@ -5939,7 +5939,7 @@ window.BLOG_REGISTRY.push({
   title: "Sukee's Pick | The Shawshank Redemption (Movie)",
   author: "Sukee Parker",
   date: "2024-03-03",
-  category: "Sukee's Pick",
+  category: "Lifestyle",
   tags: ["Movies", "Sukee's Pick", "The Shawshank Redemption"],
   excerpt: "Sukee's pick: The Shawshank Redemption — one of the most beloved films about hope, perseverance, and the enduring human spirit.",
   content: `Sukee's Pick: The Shawshank Redemption.
@@ -5977,7 +5977,7 @@ window.BLOG_REGISTRY.push({
   title: "Sukee's Pick | News for Data Engineering",
   author: "Sukee Parker",
   date: "2024-03-11",
-  category: "Sukee's Pick",
+  category: "Lifestyle",
   tags: ["Data Engineering", "Technology", "News", "Sukee's Pick"],
   excerpt: "Sukee's pick for data engineering news: Venture Beat — covering AI, technology, and data trends.",
   content: `Sukee's Pick: News for Data Engineering.
@@ -6513,7 +6513,7 @@ window.BLOG_REGISTRY.push({
   title: "Zen | Manifestation, Visualization, and Law of Attraction",
   author: "Sukee Parker",
   date: "2024-09-08",
-  category: "Zen",
+  category: "Philosophy",
   tags: ["Manifestation", "Law of Attraction", "Visualization", "Zen"],
   excerpt: "Three interconnected practices: the Law of Attraction ('similar energies attract each other'), Manifestation (bringing desires into reality), and Visualization (mental rehearsal of achieved goals).",
   content: `Three interconnected spiritual concepts for personal development:
@@ -6563,7 +6563,7 @@ window.BLOG_REGISTRY.push({
   title: "Zen | Minimalism",
   author: "Sukee Parker",
   date: "2024-09-22",
-  category: "Zen",
+  category: "Philosophy",
   tags: ["Minimalism", "Lifestyle", "Decluttering", "Zen"],
   excerpt: "Minimalism: 'The lifestyle allows us to stay present and save money, time, and energy to focus on the most important things.' Originating in art with Frank Stella in the late 1950s.",
   content: `Minimalism as a lifestyle philosophy: "The lifestyle allows us to stay present and save money, time, and energy to focus on the most important things."
@@ -7342,7 +7342,7 @@ window.BLOG_REGISTRY.push({
   title: "Eye Protection",
   author: "Sukee Parker",
   date: "2026-01-05",
-  category: "Healthy",
+  category: "Health",
   tags: ["wellness", "health", "eye care"],
   excerpt: "This teatime brings our attention back to my eyes. Learning how to massage the eye to relax.",
   content: `This teatime brings our attention back to my eyes. Learning how to massage the eye to relax. Additionally, remember to follow the 20-20-20 rule (taking a 20-second break every 20 minutes to look 20 feet away or roll eyes) to reduce strain, and wear sunglasses with UV protection to safeguard the vision.`
@@ -7352,7 +7352,7 @@ window.BLOG_REGISTRY.push({
   title: "Take Time to Relax",
   author: "Sukee Parker",
   date: "2026-01-11",
-  category: "Healthy",
+  category: "Health",
   tags: ["wellness", "relaxation", "lifestyle"],
   excerpt: "Surprisingly, watching AI-generated videos is enjoyable.",
   content: `Surprisingly, watching AI-generated videos is enjoyable.`

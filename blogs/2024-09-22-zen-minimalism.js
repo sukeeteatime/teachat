@@ -4,7 +4,7 @@ window.BLOG_REGISTRY.push({
   title: "Zen | Minimalism",
   author: "Sukee Parker",
   date: "2024-09-22",
-  category: "Zen",
+  category: "Philosophy",
   tags: ["Minimalism", "Lifestyle", "Decluttering", "Zen"],
   excerpt: "Minimalism: 'The lifestyle allows us to stay present and save money, time, and energy to focus on the most important things.' Originating in art with Frank Stella in the late 1950s.",
   content: `Minimalism as a lifestyle philosophy: "The lifestyle allows us to stay present and save money, time, and energy to focus on the most important things."

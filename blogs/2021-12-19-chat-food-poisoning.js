@@ -4,7 +4,7 @@ window.BLOG_REGISTRY.push({
   title: "Food Poisoning",
   author: "Sukee Parker",
   date: "2021-12-19",
-  category: "Healthy",
+  category: "Health",
   tags: ["Health", "Food Safety", "Wellness"],
   excerpt: "A sudden onset of dizziness and disorientation — a reminder that what we eat shapes how we feel, and that food safety deserves more attention than we typically give it.",
   content: `A sudden onset of dizziness and disorientation. A friend nearby asked first: do you need emergency services? Then brought warm water to help.

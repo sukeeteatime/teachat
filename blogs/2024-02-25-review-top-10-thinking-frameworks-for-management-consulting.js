@@ -4,7 +4,7 @@ window.BLOG_REGISTRY.push({
   title: "Review | Top 10 Thinking Frameworks for Management Consulting",
   author: "Sukee Parker",
   date: "2024-02-25",
-  category: "Review",
+  category: "Productivity",
   tags: ["Management", "Consulting", "Frameworks", "Business"],
   excerpt: "Ten essential frameworks: SWOT, Gantt Charts, Tuckman's model, Kotter's 8-Step, 7 Cs, Pyramid Principle, AIDA Model, McKinsey's 7S, Six Sigma DMAIC, and Design Thinking.",
   content: `Ten essential frameworks for management consulting professionals:

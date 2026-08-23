@@ -4,7 +4,7 @@ window.BLOG_REGISTRY.push({
   title: "Sukee's Pick | The Shawshank Redemption (Movie)",
   author: "Sukee Parker",
   date: "2024-03-03",
-  category: "Sukee's Pick",
+  category: "Lifestyle",
   tags: ["Movies", "Sukee's Pick", "The Shawshank Redemption"],
   excerpt: "Sukee's pick: The Shawshank Redemption — one of the most beloved films about hope, perseverance, and the enduring human spirit.",
   content: `Sukee's Pick: The Shawshank Redemption.

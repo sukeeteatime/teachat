@@ -4,7 +4,7 @@ window.BLOG_REGISTRY.push({
   title: "Take Time to Relax",
   author: "Sukee Parker",
   date: "2026-01-11",
-  category: "Healthy",
+  category: "Health",
   tags: ["wellness", "relaxation", "lifestyle"],
   excerpt: "Surprisingly, watching AI-generated videos is enjoyable.",
   content: `Surprisingly, watching AI-generated videos is enjoyable.`

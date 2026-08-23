@@ -4,7 +4,7 @@ window.BLOG_REGISTRY.push({
   title: "Understanding Our Emotions",
   author: "Sukee Parker",
   date: "2021-07-11",
-  category: "Healthy",
+  category: "Health",
   tags: ["Emotions", "Psychology", "Self-awareness"],
   excerpt: "People aren't defined by their emotions — but understanding what each emotion signals gives us valuable self-knowledge rather than letting feelings control behavior.",
   content: `People aren't defined by their emotions — but understanding what each emotion signals gives us valuable self-knowledge rather than letting feelings control behavior.

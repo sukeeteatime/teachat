@@ -4,7 +4,7 @@ window.BLOG_REGISTRY.push({
   title: "Sukee's Pick | News for Data Engineering",
   author: "Sukee Parker",
   date: "2024-03-11",
-  category: "Sukee's Pick",
+  category: "Lifestyle",
   tags: ["Data Engineering", "Technology", "News", "Sukee's Pick"],
   excerpt: "Sukee's pick for data engineering news: Venture Beat — covering AI, technology, and data trends.",
   content: `Sukee's Pick: News for Data Engineering.

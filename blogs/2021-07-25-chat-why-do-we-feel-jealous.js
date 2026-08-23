@@ -4,7 +4,7 @@ window.BLOG_REGISTRY.push({
   title: "Why Do We Feel Jealous",
   author: "Sukee Parker",
   date: "2021-07-25",
-  category: "Healthy",
+  category: "Health",
   tags: ["Emotions", "Jealousy", "Self-awareness"],
   excerpt: "Jealousy stems from discontent with what we have and excessive desire for what we lack. Recognizing existing blessings can diminish it — but first we have to understand what it's telling us.",
   content: `Jealousy is a natural emotional response stemming from discontent with what we possess and excessive desire for what we lack.

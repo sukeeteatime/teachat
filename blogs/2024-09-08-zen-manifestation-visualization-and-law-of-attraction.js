@@ -4,7 +4,7 @@ window.BLOG_REGISTRY.push({
   title: "Zen | Manifestation, Visualization, and Law of Attraction",
   author: "Sukee Parker",
   date: "2024-09-08",
-  category: "Zen",
+  category: "Philosophy",
   tags: ["Manifestation", "Law of Attraction", "Visualization", "Zen"],
   excerpt: "Three interconnected practices: the Law of Attraction ('similar energies attract each other'), Manifestation (bringing desires into reality), and Visualization (mental rehearsal of achieved goals).",
   content: `Three interconnected spiritual concepts for personal development:
