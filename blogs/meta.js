@@ -21,7 +21,6 @@ window.BLOG_META = {
   ],
   "tags": [
     "Activities",
-    "Andrea Bocelli",
     "Authenticity",
     "Awareness",
     "Books",

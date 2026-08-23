@@ -6154,7 +6154,6 @@ window.BLOG_REGISTRY.push({
   "category": "Music",
   "tags": [
     "Music",
-    "Andrea Bocelli",
     "Opera",
     "Tea Time"
   ],
