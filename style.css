@@ -955,7 +955,7 @@ footer a:hover { color: var(--gold-dark); }
   border: none;
   background: transparent;
   font-family: var(--sans);
-  font-size: 0.95rem;
+  font-size: 0.78rem;
   color: var(--text);
   outline: none;
   min-width: 0;
