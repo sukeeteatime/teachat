@@ -20,7 +20,6 @@ window.BLOG_META = {
     "Travel"
   ],
   "tags": [
-    "2024",
     "Activities",
     "Andrea Bocelli",
     "Authenticity",
