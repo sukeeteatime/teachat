@@ -333,6 +333,7 @@ window.BLOG_MANIFEST = [
   "2025-12-14-chat-the-social-wealth.js",
   "2025-12-21-chat-self-imposed-limitations.js",
   "2025-12-28-chat-the-taste-of-korean-cuisine-bom-in-new-york.js",
+  "2026-01-01-2026-teatime-ideas.js",
   "2026-01-05-chat-eye-protection.js",
   "2026-01-11-chat-take-time-to-relax.js",
   "2026-01-18-chat-2026-vision-board.js",
