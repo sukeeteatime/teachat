@@ -6,7 +6,7 @@ window.BLOG_REGISTRY.push({
   "date": "1995-01-01",
   "category": "Lifestyle",
   "tags": [
-    "Tea",
+    "Tea Time",
     "Wellness"
   ],
   "excerpt": "A collection of activity ideas to incorporate into your daily tea time rituals to reduce stress, cultivate mindfulness, and enhance overall well-being.",
