@@ -36,7 +36,6 @@ window.BLOG_META = {
     "Culture",
     "Customer Service",
     "Decision Making",
-    "Excel",
     "Family",
     "Goals",
     "Health",
