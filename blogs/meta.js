@@ -54,7 +54,6 @@ window.BLOG_META = {
     "Patience",
     "Personal Growth",
     "Philosophy",
-    "Pop Music",
     "Prevention",
     "Problem Solving",
     "Productivity",

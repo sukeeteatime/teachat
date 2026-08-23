@@ -7040,8 +7040,6 @@ window.BLOG_REGISTRY.push({
   "category": "Music",
   "tags": [
     "Music",
-    "Pop Music",
-    "2024",
     "Tea Time"
   ],
   "excerpt": "Pop music hits from 2024 for a tea time listening moment.",
