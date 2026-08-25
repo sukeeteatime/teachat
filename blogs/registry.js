@@ -2835,34 +2835,21 @@ This applies in every professional context. The unfamiliar acronym, the unexplai
 The people who know ask. The people who don't know pretend.`
 });
 window.BLOG_REGISTRY.push({
-  id: "2021-07-11-chat-understanding-our-emotions",
-  title: "Understanding Our Emotions",
-  author: "Sukee Parker",
-  date: "2021-07-11",
-  category: "Health",
-  tags: ["Emotions", "Psychology", "Self-awareness"],
-  excerpt: "People aren't defined by their emotions — but understanding what each emotion signals gives us valuable self-knowledge rather than letting feelings control behavior.",
-  content: `People aren't defined by their emotions — but understanding what each emotion signals gives us valuable self-knowledge rather than letting feelings control behavior.
-
-<b>What emotions tell us:</b>
-- Anger indicates violated values or boundaries
-- Sorrow reflects loss or grief
-- Happiness shows fulfilled desires
-- Depression often masks hidden anger
-- Anxiety warns of potential loss
-- Jealousy stems from unmet wants
-
-<b>Managing emotions effectively:</b>
-
-<b>Journaling and catharsis</b> — Writing down emotions, their causes, and intended responses prevents burdening others and allows processing without suppression. Externalizing an emotion reduces its grip.
-
-<b>Focus switching</b> — Redirecting attention can divert from tension while maintaining emotional awareness. Not avoidance — deliberate redirection.
-
-Daniel Goleman's five self-regulation competencies provide a useful framework: self-control, trustworthiness, conscientiousness, adaptability, and innovation.
-
-The "Siberian North Railroad" method offers a practical in-the-moment tool: Stop, Breathe, Notice, Reflect, Respond.
-
-Emotional mastery creates peaceful lives for oneself and others, particularly within families. The goal is not the absence of difficult emotions — it is the ability to respond rather than react.`
+  "id": "2021-07-11-understanding-our-emotions",
+  "title": "Understanding Our Emotions",
+  "author": "Sukee Parker",
+  "date": "2021-07-11",
+  "category": "Health",
+  "tags": [
+    "Emotions",
+    "Psychology",
+    "Self-awareness"
+  ],
+  "excerpt": "People aren't defined by their emotions — but understanding what each emotion signals gives us valuable self-knowledge rather than letting feelings control behavior.",
+  "content": "<p><span>“Emotional intelligence is the ability to understand, interpret, and respond to your emotions in an enlightened and healthy way.”</span><span>―&nbsp;</span><span>Brianna Wiest,&nbsp;</span><span>The Mountain Is You: Transforming Self-Sabotage Into Self-Mastery</span></p><div class=\"paragraph\">​<span>We are not our emotions. Before we understand our emotions, we have to relieve the burden on ourselves to feel obligated to take responsibility. Emotions are our experiences. However, we also can't let emotion lead us and take us to wherever it wants to. &nbsp;We need to understand them to find out important information they carry:</span></div><div class=\"paragraph\"><ul><li>​Angry indicates that something is against our core values or something important is impacted.&nbsp;</li><li>Sorrow happens when something important is lost.&nbsp;</li><li>Happy comes when our desires are fulfilled.&nbsp;</li><li>Depression is hidden anger.&nbsp;</li><li>Anxiety originates when we worry about losing something valuable.</li><li><a href=\"https://www.sukeeteatime.com/teachat/jealousy\">Jealousy</a>&nbsp;emerges when we have unfulfilled desires.</li></ul><span>By recognizing and comprehending these emotions, we gain insights into ourselves and improve our ability to navigate&nbsp;our inner world,&nbsp;relationships and life's challenges</span></div><blockquote><span>&nbsp;</span><span>“Anxiety is the warning sign that we’re too much in the past or the future—and being there is affecting how we make choices in the present”―&nbsp;Brianna Wiest,&nbsp;</span><a href=\"https://www.sukeeteatime.com/reading/book-101-essays-that-can-change-the-way-you-think-2016\">101 Essays That Will Change The Way You Think</a></blockquote><div class=\"paragraph\"><span>​However, we should not stop here. We need to master our emotions to bring a peaceful life to ourselves and others, especially with our family. There are two effective techniques for avoiding engaging mouth before brain so we can keep our emotions under control. The first is&nbsp;writing them down, and the second is&nbsp;switching focus.<br><br>​The most effective method to deal with emotions is catharsis. Many people will choose to talk to friends and family. Although this option is good, the best way is to record their emotions, for example, by keeping a personal journal, noting the emotion, the causes, and what we plan to do next and then back to life as usual. In this way, we can avoid affecting others, let alone turn friends and family into our spiritual trash cans.<br><br>​Switching focus means channeling our emotions by finding something else to divert us from our current tension.&nbsp;It's important to not suppress the emotions but regulate them to stay calm our next emotional turbulence to a serene and peaceful moment.&nbsp;</span>​</div><div></div><div class=\"paragraph\"><strong><br></strong></div><div class=\"paragraph\"><strong>Resources</strong><ol><li>Daniel Goleman identifies five emotional competencies under the domain of self-regulation: Self-control: Keeping disruptive emotions and impulses in check Trustworthiness: Maintaining standards of honesty and integrity ﻿﻿﻿Conscientiousness: Taking responsibility for personal performance ﻿﻿﻿Adaptability: Flexibility in handling chang ﻿﻿﻿Innovation: Being comfortable with novel ideas, approaches, and information<br></li><li>The Siberian North Railroad for dealing with negative emotion: stop, breath, notice, reflect, and respond.&nbsp;</li></ol></div>",
+  "contentType": "html",
+  "autoRead": true,
+  "pinned": false
 });
 window.BLOG_REGISTRY.push({
   id: "2021-07-18-chat-others-promise",
