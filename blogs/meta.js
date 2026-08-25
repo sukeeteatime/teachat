@@ -75,6 +75,11 @@ window.BLOG_META = {
       "date": "2026-08-25"
     },
     {
+      "id": "2026-08-25-the-goodharts-law",
+      "title": "The Goodhart’s Law",
+      "date": "2026-08-25"
+    },
+    {
       "id": "2026-08-22-singing-from-the-roof",
       "title": "Singing from the Roof",
       "date": "2026-08-22"
