@@ -315,6 +315,7 @@ function renderSidebar() {
 
 window.filterBy = function(cat) {
   state.filterCategory = cat;
+  saveFilterState();
   closeSidebar();
   renderFeed();
   renderSidebar();
@@ -1178,8 +1179,25 @@ window.calJumpNext = function() {
   }
 };
 
+function saveFilterState() {
+  try {
+    sessionStorage.setItem('stt_filter', JSON.stringify({
+      calDateFilter: state.calDateFilter,
+      calYearFilter: state.calYearFilter,
+      calYear: state.calYear,
+      calMonth: state.calMonth,
+      filterCategory: state.filterCategory,
+    }));
+  } catch (e) {}
+}
+
+function clearFilterState() {
+  try { sessionStorage.removeItem('stt_filter'); } catch (e) {}
+}
+
 window.filterByDate = function(ds) {
   state.calDateFilter = ds;
+  saveFilterState();
   renderCalendar();
   renderFeed();
 };
@@ -1195,6 +1213,7 @@ window.filterByYear = function(year) {
       .map(b => parseInt(b.date.slice(5, 7)) - 1);
     state.calMonth = months.length ? Math.min(...months) : 0;
   }
+  saveFilterState();
   renderCalendar();
   renderFeed();
 
@@ -1328,6 +1347,18 @@ function init() {
   // Pre-compute word counts for active registry
   deduped().forEach(b => { if (b._wc === undefined) b._wc = wordCount(b.content || ''); });
 
+  // Restore calendar/filter state from previous refresh
+  try {
+    const saved = JSON.parse(sessionStorage.getItem('stt_filter') || 'null');
+    if (saved) {
+      if (saved.filterCategory) state.filterCategory = saved.filterCategory;
+      if (saved.calDateFilter)  state.calDateFilter  = saved.calDateFilter;
+      if (saved.calYearFilter)  state.calYearFilter  = saved.calYearFilter;
+      if (saved.calYear)        state.calYear        = saved.calYear;
+      if (saved.calMonth != null) state.calMonth     = saved.calMonth;
+    }
+  } catch (e) {}
+
   applyLang();
   renderCalendar();
   renderFeed();
@@ -1342,8 +1373,20 @@ function init() {
 
 init();
 
-// Clicking the site title closes any open article and scrolls to top
+// Clicking the site title resets all filters and goes home
 document.querySelector('.site-title-group').addEventListener('click', function() {
   if (state.openBlog) closeBlog();
+  state.filterCategory = 'All';
+  state.calDateFilter  = null;
+  state.calYearFilter  = null;
+  state.calYear        = new Date().getFullYear();
+  state.calMonth       = new Date().getMonth();
+  state.searchQuery    = '';
+  clearFilterState();
+  const search = document.getElementById('mainSearch');
+  if (search) { search.value = ''; }
+  renderFeed();
+  renderSidebar();
+  renderCalendar();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 });
