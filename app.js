@@ -1051,6 +1051,18 @@ function closeBlog() {
 
 // modalClose opens talk.sukeeteatime.com in a new tab (target="_blank")
 $('modalOverlay').addEventListener('click', e => { if (e.target === $('modalOverlay')) closeBlog(); });
+
+// Intercept internal article links (href="#article-id") inside modal content
+$('modalContent').addEventListener('click', function(e) {
+  const a = e.target.closest('a[href^="#"]');
+  if (!a) return;
+  const id = a.getAttribute('href').slice(1);
+  const blog = activeRegistry().find(b => b.id === id);
+  if (blog) {
+    e.preventDefault();
+    openBlog(id);
+  }
+});
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeBlog(); });
 
 window.addEventListener('hashchange', function() {
