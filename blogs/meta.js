@@ -9,6 +9,7 @@ window.BLOG_META = {
     "Health",
     "Life Story",
     "Lifestyle",
+    "Mental Model",
     "Music",
     "Philosophy",
     "Productivity",
