@@ -1,7 +1,7 @@
 window.BLOG_REGISTRY = window.BLOG_REGISTRY || [];
 window.BLOG_REGISTRY.push({
   "id": "2021-07-11-understanding-our-emotions",
-  "title": "Understanding Our Emotions",
+  "title": "Understand Emotions",
   "author": "Sukee Parker",
   "date": "2021-07-11",
   "category": "Health",
