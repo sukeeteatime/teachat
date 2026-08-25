@@ -345,11 +345,11 @@ body.player-active main { padding-bottom: 5.5rem; }
   font-size: 0.985rem;
   line-height: 1.82;
   color: var(--text);
-  text-align: justify;
+  text-align: left;
   margin-bottom: 1.25rem;
 }
-.post-body p { margin-bottom: 1.6rem; }
-.post-body p:last-child { margin-bottom: 0; }
+.post-body p, .post-body .paragraph { margin-bottom: 1.6rem; }
+.post-body p:last-child, .post-body .paragraph:last-child { margin-bottom: 0; }
 
 .post-tags {
   display: flex;
@@ -812,7 +812,7 @@ body.player-active main { padding-bottom: 5.5rem; }
   font-size: 0.9rem;
   line-height: 1.85;
   color: var(--text);
-  text-align: justify;
+  text-align: left;
 }
 .modal-body a, .post-body a {
   color: var(--gold);
@@ -820,8 +820,8 @@ body.player-active main { padding-bottom: 5.5rem; }
   text-underline-offset: 2px;
 }
 .modal-body a:hover, .post-body a:hover { opacity: 0.75; }
-.modal-body p { margin-bottom: 1.75rem; }
-.modal-body p:last-child { margin-bottom: 0; }
+.modal-body p, .modal-body .paragraph { margin-bottom: 1.75rem; }
+.modal-body p:last-child, .modal-body .paragraph:last-child { margin-bottom: 0; }
 .modal-body ul, .modal-body ol { list-style: none; padding-left: 0; margin-bottom: 1.25rem; }
 .modal-body li { position: relative; padding-left: 1.25em; margin-bottom: 0.4rem; }
 .modal-body ul > li::before { content: "•"; position: absolute; left: 0; }
