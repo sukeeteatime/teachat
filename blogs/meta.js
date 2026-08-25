@@ -261,6 +261,11 @@ window.BLOG_META = {
       "date": "2026-04-28"
     },
     {
+      "id": "2026-03-26-woop-for-dreamers",
+      "title": "WOOP for Dreamers",
+      "date": "2026-03-26"
+    },
+    {
       "id": "2026-03-16-regression-to-mean",
       "title": "Regression to Mean",
       "date": "2026-03-16"

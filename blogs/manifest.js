@@ -343,6 +343,7 @@ window.BLOG_MANIFEST = [
   "2026-01-25-chat-career-fast-food-or-michelin.js",
   "2026-02-16-living-in-your-own-world.js",
   "2026-03-16-regression-to-mean.js",
+  "2026-03-26-woop-for-dreamers.js",
   "2026-04-28-chat-ai-stress.js",
   "2026-05-12-a-garden-pruning-scissor.js",
   "2026-05-26-chat-the-art-of-less.js",
