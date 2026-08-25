@@ -686,6 +686,11 @@ window.BLOG_META = {
       "date": "2024-01-21"
     },
     {
+      "id": "2024-01-07-101-essays-that-will-change-the-way-you-think",
+      "title": "101 Essays That Will Change The Way You Think",
+      "date": "2024-01-07"
+    },
+    {
       "id": "2024-01-01-2024-teatime-ideas",
       "title": "2024 Teatime Ideas",
       "date": "2024-01-01"

@@ -259,6 +259,7 @@ window.BLOG_MANIFEST = [
   "2023-12-24-sukees-pick-flowers-by-miley-cyrus-song.js",
   "2023-12-29-chat-long-missed-warm-feeling.js",
   "2024-01-01-chat-365-teatime-ideas.js",
+  "2024-01-07-101-essays-that-will-change-the-way-you-think.js",
   "2024-01-21-chat-where-to-begin-your-job-search.js",
   "2024-01-28-chat-how-to-manage-social-circles-efficiently.js",
   "2024-02-04-chat-give-people-roses-leave-fragrance-in-your-hands.js",
