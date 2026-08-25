@@ -329,6 +329,7 @@ window.BLOG_MANIFEST = [
   "2025-11-02-chat-hey-thats-snake-oil.js",
   "2025-11-02-chat-how-to-prevent-locusts-swarm.js",
   "2025-11-30-chat-what-to-read-the-five-types-of-wealth.js",
+  "2025-11-30-the-five-types-of-wealth.js",
   "2025-12-07-chat-building-habits.js",
   "2025-12-14-chat-the-social-wealth.js",
   "2025-12-21-chat-self-imposed-limitations.js",

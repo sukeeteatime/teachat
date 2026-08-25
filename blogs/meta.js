@@ -325,6 +325,11 @@ window.BLOG_META = {
       "date": "2025-11-30"
     },
     {
+      "id": "2025-11-30-the-five-types-of-wealth",
+      "title": "The Five Types of Wealth",
+      "date": "2025-11-30"
+    },
+    {
       "id": "2025-11-02-chat-hey-thats-snake-oil",
       "title": "Hey, That's Snake Oil!",
       "date": "2025-11-02"
