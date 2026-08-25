@@ -70,13 +70,13 @@ window.BLOG_META = {
   ],
   "posts": [
     {
-      "id": "2026-08-25-mind-your-portion",
-      "title": "Mind Your Portion",
-      "date": "2026-08-25"
+      "id": "2026-08-26-the-goodharts-law",
+      "title": "The Goodhart’s Law",
+      "date": "2026-08-26"
     },
     {
-      "id": "2026-08-25-the-goodharts-law",
-      "title": "The Goodhart’s Law",
+      "id": "2026-08-25-mind-your-portion",
+      "title": "Mind Your Portion",
       "date": "2026-08-25"
     },
     {

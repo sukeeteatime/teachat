@@ -8014,10 +8014,10 @@ window.BLOG_REGISTRY.push({
   "pinned": false
 });
 window.BLOG_REGISTRY.push({
-  "id": "2026-08-25-the-goodharts-law",
+  "id": "2026-08-26-the-goodharts-law",
   "title": "The Goodhart’s Law",
   "author": "Sukee Parker",
-  "date": "2026-08-25",
+  "date": "2026-08-26",
   "category": "Psychology",
   "tags": [
     "Critical Thinking"
