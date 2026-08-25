@@ -1286,7 +1286,7 @@ window.BLOG_META = {
       "date": "2021-08-01"
     },
     {
-      "id": "2021-07-25-chat-why-do-we-feel-jealous",
+      "id": "2021-07-25-why-do-we-feel-jealous",
       "title": "Why Do We Feel Jealous",
       "date": "2021-07-25"
     },

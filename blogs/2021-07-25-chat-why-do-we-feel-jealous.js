@@ -1,29 +1,18 @@
 window.BLOG_REGISTRY = window.BLOG_REGISTRY || [];
 window.BLOG_REGISTRY.push({
-  id: "2021-07-25-chat-why-do-we-feel-jealous",
-  title: "Why Do We Feel Jealous",
-  author: "Sukee Parker",
-  date: "2021-07-25",
-  category: "Health",
-  tags: ["Emotions", "Jealousy", "Self-awareness"],
-  excerpt: "Jealousy stems from discontent with what we have and excessive desire for what we lack. Recognizing existing blessings can diminish it — but first we have to understand what it's telling us.",
-  content: `Jealousy is a natural emotional response stemming from discontent with what we possess and excessive desire for what we lack.
-
-From "101 Essays That Will Change the Way You Think": "The things you hate about others are the things you cannot see in yourself." Jealousy connects to insufficient self-confidence — it is often a mirror, not a complaint about someone else.
-
-<b>Four strategies that help:</b>
-
-1. <b>Practice appreciation</b>
-Recognize existing blessings — good health, family safety, the resources you already have. Self-approval meditation can help shift attention from what's missing to what's present.
-
-2. <b>Establish realistic goals</b>
-Pursue concrete action rather than mere wishing. Jealousy thrives in the gap between wanting and doing. Movement closes that gap.
-
-3. <b>Celebrate others' achievements</b>
-Reframe others' success as a contribution to society rather than a subtraction from your share. Collaboration and competition are both choices.
-
-4. <b>Recognize your own purpose</b>
-Each life carries unique purpose and individual challenges worth appreciating. Someone else's success exists in a context you don't fully see.
-
-Jealousy signals something we want but haven't pursued. That information is worth having — not the feeling itself, but what it points to.`
+  "id": "2021-07-25-why-do-we-feel-jealous",
+  "title": "Why Do We Feel Jealous",
+  "author": "Sukee Parker",
+  "date": "2021-07-25",
+  "category": "Health",
+  "tags": [
+    "Emotions",
+    "Jealousy",
+    "Self-awareness"
+  ],
+  "excerpt": "Jealousy stems from discontent with what we have and excessive desire for what we lack. Recognizing existing blessings can diminish it — but first we have to understand what it's telling us.",
+  "content": "<p>Do you feel jealous when hearing about others' joy and accomplishments? Rather than blaming yourself, it is essential to understand the reasons behind this&nbsp;<a href=\"https://www.sukeeteatime.com/teachat/understanding-emotions\">emotion</a>&nbsp;to gain self-awareness.&nbsp;</p>\n<p><span>Jealousy is a natural feeling that arises when we are not content with what we have and strongly desire something we don't possess. If we consider the things that we already have, like the ability to&nbsp;</span><span>walk, good health, and the safety of our family members, we won't feel jealous of others who have these things. It's often said, \"The things you hate about others are the things you cannot see in yourself.\" (</span><a href=\"https://www.sukeeteatime.com/readingblog/book-101-essays-that-can-change-the-way-you-think-2016\">101 Essays that Can Change the Way You Think</a><span>) This means that comparing and competing with others usually comes from needing more self-confidence.</span></p>\n<p>To overcome jealousy, we can take the following steps:&nbsp;</p>\n<ul>\n<li>Firstly, we should learn to&nbsp;<b>appreciate what we have and the support we have received so far</b>. We can do this through&nbsp;<a href=\"https://www.sukeeteatime.com/zenblog/november-15th-2023\">self-approval meditation</a>.&nbsp;</li>\n<li>Secondly, we should&nbsp;<b>set realistic goals and take concrete steps to achieve them</b>&nbsp;instead of just wishing for them.</li>\n<li>Thirdly, we should&nbsp;<b>view the accomplishments of others as a positive contribution to the world</b>, which can make our own lives more interesting. Rather than competing with them, we should strive to collaborate with them, creating a better environment for everyone. There is more than enough room for success for everyone, so let's focus on taking only what we need.(各取所需)</li>\n<li>Finally, we should feel blessed for the life we have.&nbsp;<b>Every life is unique and comes with a specific purpose. Every individual faces different challenges.</b>&nbsp;We should learn to appreciate our own journey.</li>\n</ul><p><span style=\"color: rgb(13, 13, 20); font-family: Helvetica; font-size: 14px; text-align: justify;\">The following video narrates a captivating tale that serves as a powerful reminder to remain focused in</span><span style=\"text-align: justify; font-width: normal; font-size: 14.1px; line-height: normal; font-family: &quot;Helvetica Neue&quot;; font-size-adjust: none; font-kerning: auto; font-variant-alternates: normal; font-variant-ligatures: normal; font-variant-numeric: normal; font-variant-east-asian: normal; font-variant-position: normal; font-feature-settings: normal; font-optical-sizing: auto; font-variation-settings: normal; color: rgb(24, 23, 21);\"> our mission and effectively eliminate any distractions that may hinder our progress.</span><strong>.</strong><br></p><div class=\"yt-embed\"><iframe src=\"https://www.youtube.com/embed/Ln5rz46gAis\" title=\"YouTube video\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen=\"\"></iframe></div>",
+  "contentType": "html",
+  "autoRead": true,
+  "pinned": false
 });
