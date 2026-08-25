@@ -1341,3 +1341,9 @@ function init() {
 }
 
 init();
+
+// Clicking the site title closes any open article and scrolls to top
+document.querySelector('.site-title-group').addEventListener('click', function() {
+  if (state.openBlog) closeBlog();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
