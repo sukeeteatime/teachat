@@ -1297,7 +1297,7 @@ window.BLOG_META = {
     },
     {
       "id": "2021-07-11-understanding-our-emotions",
-      "title": "Understand Emotions",
+      "title": "Understanding Our Emotions",
       "date": "2021-07-11"
     },
     {
