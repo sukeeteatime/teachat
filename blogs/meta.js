@@ -276,9 +276,9 @@ window.BLOG_META = {
       "date": "2026-02-16"
     },
     {
-      "id": "2026-02-16-my-pe-teacher",
+      "id": "2026-02-09-my-pe-teacher",
       "title": "My PE Teacher",
-      "date": "2026-02-16"
+      "date": "2026-02-09"
     },
     {
       "id": "2026-01-25-chat-career-fast-food-or-michelin",

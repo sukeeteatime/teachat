@@ -7425,6 +7425,21 @@ The 3rd question, the long-term planning is riskier because you can't get immedi
 In summary, when considering career options, we are very likely to choose between fast food or Michelin cooking. One is fast and obvious, one takes time and requires highly trained skills and persistent hard work. Both have pros and cons. If you are making your decision now, ask yourself "Should I plan for the long run or the short term? Do I know what I am good at? Do I need follow a more predictable path?" Hope this can be helpful for you to make your judgment and plan your career.`
 });
 window.BLOG_REGISTRY.push({
+  "id": "2026-02-09-my-pe-teacher",
+  "title": "My PE Teacher",
+  "author": "Sukee Parker",
+  "date": "2026-02-09",
+  "category": "Life Story",
+  "tags": [
+    "Life Lessons"
+  ],
+  "excerpt": "Everyone you pass by is a teacher, and they can teach you more and influence you more than you ever imagined.",
+  "content": "<p>During my childhood, athletics became an integral part of my life. It all began when t<span>wo young PE teachers in their twenties</span>&nbsp;arrived at our elementary school. Our school was small and had limited space, so there was a strong desire to improve physical education. The two teachers replaced our older PE teacher, who was in his sixties. The new teachers brought a fresh perspective and introduced several changes.&nbsp;<span>One &nbsp;them was the formation of two teams: one for long-distance running and the other for short-distance running. The long-distance team would go out for field runs every morning, while the short-distance team would practice on the computer. Both team start exercise at&nbsp;</span><span>6 a.m. everyday! Because of this, we&nbsp;</span><span>started learning how to run and perform high and long jumps.</span></p><p>His energy and enthusiasm were infectious. We also went on field trips, and since I was good at running, my PE teacher kept teaching me one-on-one. I improved my running skills, and he was proud of my progress. <span>Once, he even taught us football, allowing us to play games with other schools. I spent three years with him, and I still have fond memories of those times.</span><span>He always reminded us to remember our teachers and come back to visit. &nbsp;</span><span>However, as time passed, I moved away from the school. Despite this, I would always remember his teaching and appreciate his contributions to my development. He taught me the importance of persistence and staying calm during intense competitions.</span></p><p>Another memorable lesson was playing with heavy football balls during practice. When we switched to using normal balls during matches, things became much easier. I still use this approach to over-practice and improve my performance.</p><p><span style=\"color: rgb(24, 23, 21); font-family: &quot;Helvetica Neue&quot;; font-size: 14.1px;\">I’m certain there are people in your life who have had a profound impact on you. Take the time to remember them for who they are, the lessons they’ve imparted, and carry their message forward on your journey.</span><span style=\"color: rgb(24, 23, 21); font-family: &quot;Helvetica Neue&quot;; font-size: 14.1px;\">&nbsp;</span>&nbsp;</p>",
+  "contentType": "html",
+  "autoRead": true,
+  "pinned": false
+});
+window.BLOG_REGISTRY.push({
   "id": "2026-02-16-living-in-your-own-world",
   "title": "Living in Your Own World",
   "author": "Sukee Parker",
@@ -7436,21 +7451,6 @@ window.BLOG_REGISTRY.push({
   ],
   "excerpt": "When you can’t hear others’ suggestions, you’re living in your own world.",
   "content": "<p>I had been working with a project manager who had over two decades of experience. He was diligent, accountable, detail-oriented, and knowledgeable. It was an incredible experience working with him. However, I noticed that his <b>meticulous nature sometimes hindered effective communication and execution.</b> He tends to get bogged down in the details and makes the project management process unnecessarily complex. This complexity requires him to exert more effort to manage.  It also makes his communication difficult to follow.</p><p>I started coaching him in the past year with over ten suggestions in various ways. However, it’s like<b> talking to a deaf ear.</b> He’s naturally ignorant of the words and resistant to change. He keeps returning to his same approach, so I had to find ways to avoid it: either don’t assign tasks that require simplification to him or prevent him from presenting to executives. Interestingly, I recently received similar feedback that I tend to be not direct enough when giving executive briefings. I decided to change my approach and incorporate the feedback. </p><p>Actually, <b>every piece of feedback, especially those pointing out my shortcomings, is invaluable. </b>As someone who offers such advice is putting their social interactions at risk when giving it out. They have to really care about your growth so that they share their perspectives. If they don’t care, they will simply ignore it. And this is 99% of people would do! So, I encourage you to pay close attention to all of these feedbacks.</p><p>When you receive feedback next time, take the time to appreciate it and critically consider it. It’s a great opportunity for growth and adjustment. </p>",
-  "contentType": "html",
-  "autoRead": true,
-  "pinned": false
-});
-window.BLOG_REGISTRY.push({
-  "id": "2026-02-16-my-pe-teacher",
-  "title": "My PE Teacher",
-  "author": "Sukee Parker",
-  "date": "2026-02-16",
-  "category": "Life Story",
-  "tags": [
-    "Life Lessons"
-  ],
-  "excerpt": "Everyone you pass by is a teacher, and they can teach you more and influence you more than you ever imagined.",
-  "content": "<p>During my childhood, athletics became an integral part of my life when&nbsp;<span>Two young PE teachers in their twenties</span>&nbsp;arrived at our elementary school. Our school was small and had limited space, so there was a strong desire to improve physical education. The two teachers replaced our older PE teacher, who was in his sixties. The new teachers brought a fresh perspective and introduced several changes.&nbsp;<span>One &nbsp;them was the formation of two teams: one for long-distance running and the other for short-distance running. The long-distance team would go out for field runs every morning, while the short-distance team would practice on the computer. Both team start exercise at&nbsp;</span><span>6 a.m. everyday! Because of this, we&nbsp;</span><span>started learning how to run and perform high and long jumps.</span></p><p>His energy and enthusiasm were infectious. We also went on field trips, and since I was good at running, my PE teacher kept teaching me one-on-one. I improved my running skills, and he was proud of my progress. <span>Once, he even taught us football, allowing us to play games with other schools. I spent three years with him, and I still have fond memories of those times.</span><span>He always reminded us to remember our teachers and come back to visit. &nbsp;</span><span>However, as time passed, I moved away from the school. Despite this, I would always remember his teaching and appreciate his contributions to my development. He taught me the importance of persistence and staying calm during intense competitions.</span></p><p>Another memorable lesson was playing with heavy football balls during practice. When we switched to using normal balls during matches, things became much easier. I still use this approach to over-practice and improve my performance.</p><p><span style=\"color: rgb(24, 23, 21); font-family: &quot;Helvetica Neue&quot;; font-size: 14.1px;\">I’m certain there are people in your life who have had a profound impact on you. Take the time to remember them for who they are, the lessons they’ve imparted, and carry their message forward on your journey.</span><span style=\"color: rgb(24, 23, 21); font-family: &quot;Helvetica Neue&quot;; font-size: 14.1px;\">&nbsp;</span>&nbsp;</p>",
   "contentType": "html",
   "autoRead": true,
   "pinned": false
