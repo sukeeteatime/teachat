@@ -71,6 +71,11 @@ window.BLOG_META = {
   ],
   "posts": [
     {
+      "id": "2026-08-31-2026-mental-models-",
+      "title": "2026 Mental Models",
+      "date": "2026-08-31"
+    },
+    {
       "id": "2026-08-27-the-power-of-majority-",
       "title": "The Power of Majority",
       "date": "2026-08-27"
