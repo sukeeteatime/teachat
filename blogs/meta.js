@@ -291,6 +291,11 @@ window.BLOG_META = {
       "date": "2026-02-09"
     },
     {
+      "id": "2026-02-04-we-are-all-different",
+      "title": "We are All Different",
+      "date": "2026-02-04"
+    },
+    {
       "id": "2026-01-25-chat-career-fast-food-or-michelin",
       "title": "Career: Fast Food or Michelin",
       "date": "2026-01-25"
