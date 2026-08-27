@@ -135,15 +135,26 @@ function stripHtml(html) {
 }
 
 function stripHtmlNoFaq(html) {
-  const withPauses = html
-    .replace(/<\/p>/gi, '.  ')
-    .replace(/<\/li>/gi, '.  ')
-    .replace(/<\/h[1-6]>/gi, '.  ')
-    .replace(/<br\s*\/?>/gi, '.  ');
   const d = document.createElement('div');
-  d.innerHTML = withPauses;
+  d.innerHTML = html;
   d.querySelectorAll('.faq-block').forEach(el => el.remove());
-  return (d.textContent || d.innerText || '').replace(/\.{2,}/g, '. ').replace(/\s{3,}/g, '  ').trim();
+  return d.textContent || d.innerText || '';
+}
+
+function _getParagraphTexts(html) {
+  const d = document.createElement('div');
+  d.innerHTML = html;
+  d.querySelectorAll('.faq-block').forEach(el => el.remove());
+  const chunks = [];
+  d.querySelectorAll('p, h1, h2, h3, h4, h5, h6, ul, ol, blockquote').forEach(el => {
+    const t = (el.textContent || '').replace(/\s+/g, ' ').trim();
+    if (t) chunks.push(t);
+  });
+  if (!chunks.length) {
+    const t = (d.textContent || d.innerText || '').trim();
+    if (t) chunks.push(t);
+  }
+  return chunks;
 }
 
 function initFaqToggles(container) {
@@ -473,6 +484,9 @@ function buildQueue(minutes) {
 /* === Speech === */
 let _currentUtt = null;
 let _currentSpeechArticle = null;
+let _speechPauseTimer = null;
+let _speechResumeFn = null;
+let _currentChunkOffset = 0;
 let _ytPlayer = null;
 let _ytFallback = null;
 let _ytApiLoaded = false;
@@ -530,16 +544,69 @@ window.onYouTubeIframeAPIReady = function() {
 };
 
 function _doSpeakArticle(article, index) {
-  const text = `${article.title}. By ${article.author}. ${stripHtmlNoFaq(article.content)}`;
-  const utt = speak(text, () => {
-    _currentUtt = null;
-    _currentSpeechArticle = null;
-    clearSpeechHighlight();
-    if (state.isPlaying && !state.isPaused) {
-      setTimeout(() => playArticle(index + 1), 600);
+  if (_speechPauseTimer) { clearTimeout(_speechPauseTimer); _speechPauseTimer = null; }
+  _speechResumeFn = null;
+  window.speechSynthesis.cancel();
+
+  const paras = _getParagraphTexts(article.content);
+  const prefix = `${article.title}. By ${article.author}. `;
+  const chunks = paras.length ? [prefix + paras[0], ...paras.slice(1)] : [prefix];
+
+  let chunkIdx = 0;
+  let charOffset = 0;
+
+  function speakChunk() {
+    if (chunkIdx >= chunks.length || !state.isPlaying) {
+      if (chunkIdx >= chunks.length) {
+        _currentUtt = null;
+        _currentSpeechArticle = null;
+        clearSpeechHighlight();
+        if (state.isPlaying && !state.isPaused) setTimeout(() => playArticle(index + 1), 600);
+      }
+      return;
     }
-  });
-  if (utt) setupSpeechHighlight(article, utt, text);
+    const text = chunks[chunkIdx];
+    _currentChunkOffset = charOffset;
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.rate = 0.92;
+    utt.pitch = 1.0;
+    const isChinese = /[一-鿿㐀-䶿]/.test(text);
+    const voices = window.speechSynthesis.getVoices();
+    if (isChinese) {
+      utt.lang = 'zh-CN';
+      const pick = voices.find(v => v.lang === 'zh-CN' || v.lang === 'zh-TW' || v.lang.startsWith('zh'))
+                 || voices.find(v => v.name.toLowerCase().includes('chinese') || v.name.toLowerCase().includes('mandarin') || v.name.includes('Ting-Ting') || v.name.includes('Mei-Jia') || v.name.includes('Sin-Ji'));
+      if (pick) utt.voice = pick;
+    } else {
+      utt.lang = 'en-US';
+      const pick = voices.find(v =>
+        v.name.includes('Samantha') || v.name.includes('Daniel') ||
+        v.name.includes('Google UK') || v.name.includes('Karen') ||
+        v.lang === 'en-US' || v.lang.startsWith('en')
+      );
+      if (pick) utt.voice = pick;
+    }
+    setupSpeechHighlight(article, utt, '');
+    utt.onend = () => {
+      charOffset += text.length + 1;
+      chunkIdx++;
+      if (chunkIdx >= chunks.length) {
+        _currentUtt = null;
+        _currentSpeechArticle = null;
+        clearSpeechHighlight();
+        if (state.isPlaying && !state.isPaused) setTimeout(() => playArticle(index + 1), 600);
+      } else if (state.isPlaying && !state.isPaused) {
+        _speechPauseTimer = setTimeout(speakChunk, 1000);
+      } else if (state.isPlaying && state.isPaused) {
+        _speechResumeFn = () => { _speechResumeFn = null; _speechPauseTimer = setTimeout(speakChunk, 1000); };
+      }
+    };
+    utt.onerror = e => { if (e.error !== 'interrupted') utt.onend(); };
+    _currentUtt = utt;
+    window.speechSynthesis.speak(utt);
+  }
+
+  speakChunk();
 }
 
 function speak(text, onEnd) {
@@ -608,7 +675,7 @@ function setupSpeechHighlight(article, utt, fullText) {
 
   let lastActive = null;
   utt.onboundary = (e) => {
-    const ci = e.charIndex;
+    const ci = _currentChunkOffset + e.charIndex;
     for (const r of ranges) {
       if (ci >= r.start && ci < r.end) {
         if (lastActive !== r.el) {
@@ -757,7 +824,11 @@ function pauseSession() {
   if (!state.isPlaying) return;
   if (state.isPaused) {
     state.isPaused = false;
-    window.speechSynthesis.resume();
+    if (_speechResumeFn) {
+      _speechResumeFn();
+    } else {
+      window.speechSynthesis.resume();
+    }
     if (state.isSession) {
       $('sbPause').textContent = '⏸';
     } else {
@@ -780,6 +851,8 @@ function skipArticle() {
   if (!state.isPlaying) return;
   _clearYt();
   clearInterval(progressInterval);
+  if (_speechPauseTimer) { clearTimeout(_speechPauseTimer); _speechPauseTimer = null; }
+  _speechResumeFn = null;
   state.isPlaying = false; // block onend auto-advance while cancelling
   window.speechSynthesis.cancel();
   state.isPaused = false;
@@ -812,6 +885,8 @@ function _closeModalUI() {
 
 function stopSession() {
   _clearYt();
+  if (_speechPauseTimer) { clearTimeout(_speechPauseTimer); _speechPauseTimer = null; }
+  _speechResumeFn = null;
   const wasSession = state.isSession;
   state.isPlaying = false;
   state.isPaused = false;
@@ -1065,6 +1140,8 @@ function closeBlog() {
     state.isPaused = false;
     state.queue = [];
     clearInterval(progressInterval);
+    if (_speechPauseTimer) { clearTimeout(_speechPauseTimer); _speechPauseTimer = null; }
+    _speechResumeFn = null;
     window.speechSynthesis.cancel();
     hideSessionBar();
   }
