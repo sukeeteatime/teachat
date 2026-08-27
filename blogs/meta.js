@@ -71,6 +71,11 @@ window.BLOG_META = {
   ],
   "posts": [
     {
+      "id": "2026-08-27-the-power-of-majority-",
+      "title": "The Power of Majority",
+      "date": "2026-08-27"
+    },
+    {
       "id": "2026-08-26-the-goodharts-law",
       "title": "The Goodhart’s Law",
       "date": "2026-08-26"
