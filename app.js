@@ -134,6 +134,21 @@ function stripHtml(html) {
   return d.textContent || d.innerText || '';
 }
 
+function stripHtmlNoFaq(html) {
+  const d = document.createElement('div');
+  d.innerHTML = html;
+  d.querySelectorAll('.faq-block').forEach(el => el.remove());
+  return d.textContent || d.innerText || '';
+}
+
+function initFaqToggles(container) {
+  container.querySelectorAll('.faq-q').forEach(q => {
+    q.addEventListener('click', () => {
+      q.closest('.faq-item').classList.toggle('open');
+    });
+  });
+}
+
 function escHtml(str) {
   return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
@@ -510,7 +525,7 @@ window.onYouTubeIframeAPIReady = function() {
 };
 
 function _doSpeakArticle(article, index) {
-  const text = `${article.title}. By ${article.author}. ${stripHtml(article.content)}`;
+  const text = `${article.title}. By ${article.author}. ${stripHtmlNoFaq(article.content)}`;
   const utt = speak(text, () => {
     _currentUtt = null;
     _currentSpeechArticle = null;
@@ -941,6 +956,7 @@ function appendFeedPage() {
   const div = document.createElement('div');
   div.innerHTML = batch.map(blogCardHtml).join('');
   $('blogFeed').appendChild(div);
+  initFaqToggles(div);
   feedRendered += batch.length;
   updateSentinel();
 }
@@ -1022,6 +1038,7 @@ window.openBlog = function(id) {
   if (tagsEl) tagsEl.innerHTML = tagPillsHtml(blog.tags, '');
 
   $('modalContent').innerHTML = contentToHtml(blog);
+  initFaqToggles($('modalContent'));
 
   $('modalOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -1209,6 +1226,10 @@ function clearFilterState() {
 
 window.filterByDate = function(ds) {
   state.calDateFilter = ds;
+  // If the clicked date is outside the active year filter, sync the year filter to it
+  if (ds && state.calYearFilter && !ds.startsWith(state.calYearFilter)) {
+    state.calYearFilter = ds.slice(0, 4);
+  }
   saveFilterState();
   renderCalendar();
   renderFeed();
