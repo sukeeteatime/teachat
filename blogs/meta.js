@@ -382,7 +382,7 @@ window.BLOG_META = {
     },
     {
       "id": "2025-08-31-2026-mental-models",
-      "title": "2026 Mental Models",
+      "title": "2025 Mental Models",
       "date": "2025-08-31"
     },
     {

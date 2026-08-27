@@ -7123,7 +7123,7 @@ The conclusion: respect, grace, emotional availability, and connection over cont
 });
 window.BLOG_REGISTRY.push({
   "id": "2025-08-31-2026-mental-models",
-  "title": "2026 Mental Models",
+  "title": "2025 Mental Models",
   "author": "Sukee Parker",
   "date": "2025-08-31",
   "category": "Mental Model",
