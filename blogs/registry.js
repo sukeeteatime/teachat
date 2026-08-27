@@ -7441,7 +7441,7 @@ In summary, when considering career options, we are very likely to choose betwee
 });
 window.BLOG_REGISTRY.push({
   "id": "2026-02-04-we-are-all-different",
-  "title": "We are All Different",
+  "title": "We are Different",
   "author": "Sukee Parker",
   "date": "2026-02-04",
   "category": "Philosophy",

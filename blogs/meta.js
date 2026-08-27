@@ -292,7 +292,7 @@ window.BLOG_META = {
     },
     {
       "id": "2026-02-04-we-are-all-different",
-      "title": "We are All Different",
+      "title": "We are Different",
       "date": "2026-02-04"
     },
     {
