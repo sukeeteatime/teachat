@@ -326,6 +326,7 @@ window.BLOG_MANIFEST = [
   "2025-06-29-chat-happy-copycats.js",
   "2025-07-20-chat-what-to-study-in-the-age-of-ai.js",
   "2025-08-03-chat-things-moms-should-know.js",
+  "2025-08-31-2026-mental-models.js",
   "2025-09-07-chat-the-roof-problem.js",
   "2025-10-05-chat-the-minimalist-spending-habit.js",
   "2025-11-02-chat-hey-thats-snake-oil.js",
