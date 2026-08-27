@@ -144,6 +144,7 @@ window.BLOG_MANIFEST = [
   "2021-09-11-chat-family-first.js",
   "2021-09-21-things-to-do-world-peace-day.js",
   "2021-10-17-stay-true-to-yourself.js",
+  "2021-11-06-the-wolf-in-cios-clothing-2013-book-summary.js",
   "2021-11-07-paying-attention-to-the-details.js",
   "2021-11-28-indian-history-in-movies.js",
   "2021-12-01-chat-read-a-book-every-week.js",

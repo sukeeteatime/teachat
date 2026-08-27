@@ -1,7 +1,7 @@
 window.BLOG_REGISTRY = window.BLOG_REGISTRY || [];
 window.BLOG_REGISTRY.push({
-  "id": "2026-02-26-how-response-to-challenging-questions",
-  "title": "How response to challenging questions",
+  "id": "2026-02-26-how-response-to-challenging-questions-at-work",
+  "title": "How Response to Challenging Questions at Work",
   "author": "Sukee Parker",
   "date": "2026-02-26",
   "category": "Career",

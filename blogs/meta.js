@@ -271,8 +271,8 @@ window.BLOG_META = {
       "date": "2026-03-16"
     },
     {
-      "id": "2026-02-26-how-response-to-challenging-questions",
-      "title": "How response to challenging questions",
+      "id": "2026-02-26-how-response-to-challenging-questions-at-work",
+      "title": "How Response to Challenging Questions at Work",
       "date": "2026-02-26"
     },
     {
@@ -1274,6 +1274,11 @@ window.BLOG_META = {
       "id": "2021-11-07-paying-attention-to-the-details",
       "title": "Paying Attention to the Details",
       "date": "2021-11-07"
+    },
+    {
+      "id": "2021-11-06-the-wolf-in-cios-clothing-2013-book-summary",
+      "title": "The Wolf in CIO's Clothing (2013) | Book Summary",
+      "date": "2021-11-06"
     },
     {
       "id": "2021-10-17-stay-true-to-yourself",
