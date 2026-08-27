@@ -135,10 +135,15 @@ function stripHtml(html) {
 }
 
 function stripHtmlNoFaq(html) {
+  const withPauses = html
+    .replace(/<\/p>/gi, '.  ')
+    .replace(/<\/li>/gi, '.  ')
+    .replace(/<\/h[1-6]>/gi, '.  ')
+    .replace(/<br\s*\/?>/gi, '.  ');
   const d = document.createElement('div');
-  d.innerHTML = html;
+  d.innerHTML = withPauses;
   d.querySelectorAll('.faq-block').forEach(el => el.remove());
-  return d.textContent || d.innerText || '';
+  return (d.textContent || d.innerText || '').replace(/\.{2,}/g, '. ').replace(/\s{3,}/g, '  ').trim();
 }
 
 function initFaqToggles(container) {
