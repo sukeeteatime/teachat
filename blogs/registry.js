@@ -8126,7 +8126,7 @@ window.BLOG_REGISTRY.push({
 });
 window.BLOG_REGISTRY.push({
   "id": "2026-08-28-avoid-losing-monday-after-aging-",
-  "title": "Avoid Losing Monday after Aging",
+  "title": "Avoid Losing Money after Aging",
   "author": "Sukee Parker",
   "date": "2026-08-28",
   "category": "Life Story",

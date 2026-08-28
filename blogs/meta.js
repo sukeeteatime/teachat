@@ -72,7 +72,7 @@ window.BLOG_META = {
   "posts": [
     {
       "id": "2026-08-28-avoid-losing-monday-after-aging-",
-      "title": "Avoid Losing Monday after Aging",
+      "title": "Avoid Losing Money after Aging",
       "date": "2026-08-28"
     },
     {
