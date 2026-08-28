@@ -71,6 +71,11 @@ window.BLOG_META = {
   ],
   "posts": [
     {
+      "id": "2026-08-28-avoid-losing-monday-after-aging-",
+      "title": "Avoid Losing Monday after Aging",
+      "date": "2026-08-28"
+    },
+    {
       "id": "2026-08-27-the-power-of-majority",
       "title": "The Power of Majority",
       "date": "2026-08-27"

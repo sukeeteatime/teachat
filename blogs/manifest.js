@@ -390,5 +390,6 @@ window.BLOG_MANIFEST = [
   "2026-08-25-the-goodharts-law.js",
   "2026-08-26-the-goodharts-law.js",
   "2026-08-27-the-power-of-majority-.js",
+  "2026-08-28-avoid-losing-monday-after-aging-.js",
   "2026-08-31-2026-mental-models-.js"
 ];
