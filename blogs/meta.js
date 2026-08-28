@@ -71,7 +71,7 @@ window.BLOG_META = {
   ],
   "posts": [
     {
-      "id": "2026-08-27-the-power-of-majority-",
+      "id": "2026-08-27-the-power-of-majority",
       "title": "The Power of Majority",
       "date": "2026-08-27"
     },
