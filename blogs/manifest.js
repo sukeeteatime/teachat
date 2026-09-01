@@ -317,6 +317,7 @@ window.BLOG_MANIFEST = [
   "2025-02-23-music-country-music.js",
   "2025-03-02-chat-show-not-tell.js",
   "2025-03-09-chat-what-to-read-next-measure-what-matters.js",
+  "2025-03-09-measure-what-matters.js",
   "2025-04-06-chat-words-carrying-emotions.js",
   "2025-04-25-chat-blessed-life.js",
   "2025-04-27-chat-as-unique-as-snowflake.js",

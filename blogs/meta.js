@@ -441,6 +441,11 @@ window.BLOG_META = {
       "date": "2025-03-09"
     },
     {
+      "id": "2025-03-09-measure-what-matters",
+      "title": "Measure What Matters",
+      "date": "2025-03-09"
+    },
+    {
       "id": "2025-03-02-chat-show-not-tell",
       "title": "Show Not Tell",
       "date": "2025-03-02"
