@@ -436,11 +436,6 @@ window.BLOG_META = {
       "date": "2025-04-06"
     },
     {
-      "id": "2025-03-09-chat-what-to-read-next-measure-what-matters",
-      "title": "What to Read Next: Measure What Matters",
-      "date": "2025-03-09"
-    },
-    {
       "id": "2025-03-09-measure-what-matters",
       "title": "Measure What Matters",
       "date": "2025-03-09"
