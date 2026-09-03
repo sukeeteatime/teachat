@@ -71,6 +71,11 @@ window.BLOG_META = {
   ],
   "posts": [
     {
+      "id": "2026-09-03-when-life-throws-you-lemon",
+      "title": "When Life Throws You Lemon",
+      "date": "2026-09-03"
+    },
+    {
       "id": "2026-08-28-avoid-losing-monday-after-aging-",
       "title": "Avoid Losing Money after Aging",
       "date": "2026-08-28"
