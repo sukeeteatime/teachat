@@ -1,0 +1,1364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tea Chat — Sukee Tea Time</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;1,400&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ── Header ── -->
+<header class="chat-header">
+  <a href="../index.html" class="site-back" aria-label="Home">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    <span class="site-back-name">Sukee Tea Time</span>
+  </a>
+  <div class="header-title">Tea Chat Room</div>
+  <div class="header-actions">
+    <button class="btn btn-header-ghost btn-sm" id="newRoomBtn" style="display:none">+ New Room</button>
+    <div id="userChip" style="display:none;align-items:center;gap:8px;font-size:13px;color:#fff;">
+      <button class="avatar avatar-sm" id="userAvatar" title="My profile &amp; Tea Crew" style="border:none;cursor:pointer"></button>
+      <span id="userName" style="font-family:var(--sans)"></span>
+      <button class="btn btn-header-ghost btn-sm" id="signOutBtn">Sign out</button>
+    </div>
+    <button class="btn btn-header-ghost btn-sm" id="signInBtn">Sign in</button>
+    <button class="btn btn-sm" style="background:#fff;color:var(--gold-dark);font-weight:700;" id="signUpBtn">Sign up</button>
+  </div>
+</header>
+
+<!-- ── Stats Bar ── -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <span class="stat-dot active"></span>
+    <strong id="statActive">0</strong> active rooms
+  </div>
+  <button class="stat-item stat-item-btn" id="statWaitingBtn" title="Show rooms with people waiting">
+    <span class="stat-dot waiting"></span>
+    <strong id="statWaiting">0</strong> people waiting
+  </button>
+  <span style="font-size:12px;color:var(--text-muted)">Each room · 15 min · up to 6 people</span>
+</div>
+
+<!-- ── Main ── -->
+<main class="container">
+
+  <!-- Search -->
+  <div class="room-search-wrap">
+    <svg class="room-search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input type="search" id="roomSearch" class="room-search-input" placeholder="Search rooms…" autocomplete="off">
+    <button class="room-search-clear" id="roomSearchClear" style="display:none">✕</button>
+  </div>
+
+  <!-- Calendar — collapsible, collapsed by default -->
+  <div class="schedule-calendar" id="scheduleCalendar">
+    <div class="cal-section-header">
+      <div class="cal-section-title">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Calendar
+      </div>
+      <button class="cal-collapse-btn" id="calCollapseBtn" aria-expanded="false">▼</button>
+    </div>
+    <div class="cal-body" id="calBody" style="display:none">
+      <div class="cal-nav-row">
+        <button class="cal-nav" id="calPrevYear">«</button>
+        <button class="cal-nav" id="calPrevMonth">‹</button>
+        <span class="cal-month-label" id="calMonthLabel"></span>
+        <button class="cal-nav" id="calNextMonth">›</button>
+        <button class="cal-nav" id="calNextYear">»</button>
+      </div>
+      <div class="cal-weekdays">
+        <span class="cal-wday">SU</span><span class="cal-wday">MO</span><span class="cal-wday">TU</span>
+        <span class="cal-wday">WE</span><span class="cal-wday">TH</span><span class="cal-wday">FR</span><span class="cal-wday">SA</span>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+      <div class="cal-year-chips" id="calYearChips"></div>
+    </div>
+  </div>
+
+  <div class="filter-tabs" id="filterTabs">
+    <button class="filter-tab active" data-filter="all">All</button>
+    <button class="filter-tab" data-filter="active">Active</button>
+    <button class="filter-tab" data-filter="open">Open for Enrollment</button>
+    <button class="filter-tab" data-filter="scheduled">Scheduled</button>
+    <button class="filter-tab" data-filter="closed">Closed</button>
+  </div>
+
+  <div class="rooms-grid" id="roomsGrid">
+    <div class="empty-state">
+      <div class="empty-state-icon">🌿</div>
+      <div class="empty-state-title">No rooms yet</div>
+      <div class="empty-state-body">Sign in and start the first conversation.</div>
+    </div>
+  </div>
+
+
+</main>
+
+<!-- ── Sign In Modal ── -->
+<div class="modal-overlay" id="signInModal">
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Sign in">
+    <button class="modal-close" id="closeSignIn">✕</button>
+    <div class="modal-title">Sign in</div>
+    <div class="form-group">
+      <label class="form-label" for="siEmail">Email</label>
+      <input class="form-input" type="email" id="siEmail" autocomplete="email" placeholder="you@example.com">
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="siPassword">Password</label>
+      <input class="form-input" type="password" id="siPassword" autocomplete="current-password" placeholder="••••••••">
+    </div>
+    <div class="form-error" id="siError" style="margin-bottom:8px;display:none"></div>
+    <div class="form-actions">
+      <button class="btn btn-ghost" id="goToSignUp">Create account</button>
+      <button class="btn btn-primary" id="doSignIn">Sign in</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Sign Up Modal ── -->
+<div class="modal-overlay" id="signUpModal">
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Create account">
+    <button class="modal-close" id="closeSignUp">✕</button>
+    <div class="modal-title">Create your profile</div>
+    <div class="form-group">
+      <label class="form-label" for="suName">Display name</label>
+      <input class="form-input" type="text" id="suName" maxlength="40" placeholder="How others see you">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Avatar colour</label>
+      <div class="color-picker" id="colorPicker"></div>
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="suEmail">Email</label>
+      <input class="form-input" type="email" id="suEmail" autocomplete="email" placeholder="you@example.com">
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="suPassword">Password</label>
+      <input class="form-input" type="password" id="suPassword" autocomplete="new-password" placeholder="At least 6 characters">
+    </div>
+    <div class="form-error" id="suError" style="margin-bottom:8px;display:none"></div>
+    <div class="form-actions">
+      <button class="btn btn-ghost" id="goToSignIn2">Already have an account</button>
+      <button class="btn btn-primary" id="doSignUp">Create account</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Profile + Tea Crew Modal ── -->
+<div class="modal-overlay" id="profileModal">
+  <div class="modal modal-wide" role="dialog" aria-modal="true" aria-label="My profile">
+    <button class="modal-close" id="closeProfileModal">✕</button>
+    <div class="modal-tabs">
+      <button class="modal-tab active" data-tab="profileTab">Profile</button>
+      <button class="modal-tab" data-tab="crewTab">☕ Tea Crew</button>
+    </div>
+
+    <!-- Profile Tab -->
+    <div id="profileTab">
+      <div class="modal-title" style="margin-top:12px">My Profile</div>
+      <div class="form-group">
+        <label class="form-label" for="pmName">Display name</label>
+        <input class="form-input" type="text" id="pmName" maxlength="40" placeholder="How others see you">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Avatar colour</label>
+        <div class="color-picker" id="pmColorPicker"></div>
+      </div>
+      <div class="form-error" id="pmError" style="margin-bottom:8px;display:none"></div>
+      <div class="form-actions">
+        <button class="btn btn-primary" id="doSaveProfile">Save</button>
+      </div>
+    </div>
+
+    <!-- Tea Crew Tab -->
+    <div id="crewTab" style="display:none">
+      <div class="modal-title" style="margin-top:12px">My Tea Crew</div>
+      <p style="font-family:var(--sans);font-size:13px;color:var(--text-muted);margin-bottom:16px">
+        Save contacts you often invite. Green dot = they're in the system; grey = email only.
+      </p>
+      <div class="form-group" style="display:flex;gap:8px;align-items:flex-end">
+        <div style="flex:1">
+          <label class="form-label" for="crewEmail">Email address</label>
+          <input class="form-input" type="email" id="crewEmail" placeholder="friend@example.com">
+        </div>
+        <div style="min-width:110px">
+          <label class="form-label" for="crewNick">Nickname <span style="font-weight:400;color:var(--text-muted)">(opt.)</span></label>
+          <input class="form-input" type="text" id="crewNick" maxlength="30" placeholder="e.g. Sarah">
+        </div>
+        <button class="btn btn-primary btn-sm" id="doAddCrew" style="margin-bottom:1px">Add</button>
+      </div>
+      <div class="form-error" id="crewError" style="margin-bottom:8px;display:none"></div>
+      <div class="crew-list" id="crewList">
+        <div class="crew-empty">No contacts yet — add one above.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Create Room Modal ── -->
+<div class="modal-overlay" id="createRoomModal">
+  <div class="modal" role="dialog" aria-modal="true" aria-label="New chat room">
+    <button class="modal-close" id="closeCreateRoom">✕</button>
+    <div class="modal-title">Start a new room</div>
+    <div class="form-group">
+      <label class="form-label" for="crTitle">Room title</label>
+      <input class="form-input" type="text" id="crTitle" maxlength="80" placeholder="e.g. Morning mindfulness chat">
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="crTopic">Discussion topic <span style="color:var(--text-muted);font-weight:400">(optional)</span></label>
+      <textarea class="form-textarea" id="crTopic" maxlength="300" rows="2" placeholder="What would you like to discuss?"></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Tags <span style="color:var(--text-muted);font-weight:400">(optional — press Enter or comma to add)</span></label>
+      <div class="tag-input-wrap" id="tagInputWrap">
+        <div class="tag-pills" id="tagPills"></div>
+        <input class="tag-text-input" id="crTagInput" placeholder="Add a tag…" autocomplete="off">
+      </div>
+      <div class="tag-suggestions" id="tagSuggestions" style="display:none"></div>
+    </div>
+    <div class="check-row">
+      <input type="checkbox" id="crDeleteOnClose">
+      <label class="check-label" for="crDeleteOnClose">
+        Delete messages when the session closes
+        <small>Messages won't be visible after the session ends</small>
+      </label>
+    </div>
+
+    <!-- Duration -->
+    <div class="form-group" style="margin-top:4px">
+      <label class="form-label">Session duration</label>
+      <div class="duration-control">
+        <button type="button" class="dur-btn" id="crDurMinus">−</button>
+        <span class="duration-display"><span id="crDurValue">15</span> min</span>
+        <button type="button" class="dur-btn dur-btn-add" id="crDurPlus">+</button>
+      </div>
+      <span class="form-helper">Adjusts in 10-minute steps</span>
+    </div>
+
+    <!-- Schedule -->
+    <div class="check-row">
+      <input type="checkbox" id="crSchedule">
+      <label class="check-label" for="crSchedule">
+        Schedule for later
+        <small>Set a future date &amp; time for this tea table</small>
+      </label>
+    </div>
+    <div id="crScheduleGroup" class="form-group" style="display:none">
+      <label class="form-label" for="crScheduledAt">Start date &amp; time</label>
+      <input class="form-input" type="datetime-local" id="crScheduledAt">
+    </div>
+
+    <!-- Access type -->
+    <div class="form-group" style="margin-top:4px">
+      <label class="form-label">Who can join?</label>
+      <div class="access-type-grid">
+        <label class="atc active" data-val="open">
+          <input type="radio" name="crAccess" value="open" checked>
+          <span class="atc-icon">🌍</span>
+          <span class="atc-label">Open</span>
+          <span class="atc-desc">Anyone</span>
+        </label>
+        <label class="atc" data-val="paid">
+          <input type="radio" name="crAccess" value="paid">
+          <span class="atc-icon">💳</span>
+          <span class="atc-label">Paid</span>
+          <span class="atc-desc">Pay to join</span>
+        </label>
+        <label class="atc" data-val="allowlist">
+          <input type="radio" name="crAccess" value="allowlist">
+          <span class="atc-icon">📋</span>
+          <span class="atc-label">Allowlist</span>
+          <span class="atc-desc">By email</span>
+        </label>
+        <label class="atc" data-val="invite_only">
+          <input type="radio" name="crAccess" value="invite_only">
+          <span class="atc-icon">🔗</span>
+          <span class="atc-label">Invite only</span>
+          <span class="atc-desc">Link only</span>
+        </label>
+      </div>
+    </div>
+    <div id="crPriceGroup" class="form-group" style="display:none">
+      <label class="form-label" for="crPrice">Entry price (USD)</label>
+      <div class="price-input-wrap">
+        <span class="price-prefix">$</span>
+        <input class="form-input" type="number" id="crPrice" min="0.50" max="99.99" step="0.01" placeholder="1.00">
+      </div>
+      <small style="color:var(--text-muted);font-size:11px;margin-top:4px;display:block">Powered by Stripe · requires Supabase edge function deployment</small>
+    </div>
+    <div id="crAllowlistGroup" class="form-group" style="display:none">
+      <label class="form-label" for="crAllowedEmails">Allowed emails <span style="color:var(--text-muted);font-weight:400">(one per line or comma-separated)</span></label>
+      <textarea class="form-textarea" id="crAllowedEmails" rows="3" placeholder="alice@example.com&#10;bob@example.com"></textarea>
+    </div>
+
+    <div class="form-error" id="crError" style="margin-bottom:8px;display:none"></div>
+    <div class="form-actions">
+      <button class="btn btn-ghost" id="cancelCreateRoom">Cancel</button>
+      <button class="btn btn-primary" id="doCreateRoom">Create room</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Toast ── -->
+<div class="toast" id="appToast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* ============================================================
+   Config
+   ============================================================ */
+const SB_URL = 'https://gsqjhxvjfnwugsivgzah.supabase.co';
+const SB_KEY = 'sb_publishable_6AMzgqb7WpsEDWPnhcKBRw_zTObt1O1';
+const sb = supabase.createClient(SB_URL, SB_KEY);
+
+const AVATAR_COLORS = [
+  '#8B7355','#c4956a','#6b8e6b','#7a8eb0','#a06b8e',
+  '#c47a6a','#6aacab','#b0a06b','#8e6b9a','#c46a7a',
+];
+
+/* ============================================================
+   State
+   ============================================================ */
+let currentUser = null;
+let currentProfile = null;
+let selectedColor = AVATAR_COLORS[0];
+const ADMIN_EMAILS = ['sukee.parker@gmail.com'];
+const isAdmin = () => !!(currentUser && ADMIN_EMAILS.includes(currentUser.email));
+
+let rooms = [];
+let closedRooms = {};   // keyed by normalised title → array of closed room rows
+let realtimeSub = null;
+let currentFilter = 'all';
+let calViewDate = new Date();
+let calSelectedDay = null;
+let crDuration = 15;
+
+/* ============================================================
+   Utils
+   ============================================================ */
+const $ = id => document.getElementById(id);
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function showToast(msg) {
+  const t = $('appToast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+function fmtTime(ts) {
+  const d = new Date(ts);
+  return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) +
+         ' ' + d.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+}
+function initials(name) {
+  return (name || '?').split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+}
+function toggleSummary(btn) {
+  const open = btn.getAttribute('aria-expanded') === 'true';
+  const body = btn.nextElementSibling;
+  btn.setAttribute('aria-expanded', !open);
+  btn.querySelector('.summary-chevron').textContent = open ? '▸' : '▾';
+  body.style.display = open ? 'none' : '';
+}
+
+/* ============================================================
+   Color Picker
+   ============================================================ */
+function renderColorPicker() {
+  const cp = $('colorPicker');
+  cp.innerHTML = AVATAR_COLORS.map(c => `
+    <div class="color-swatch${c === selectedColor ? ' active' : ''}"
+         style="background:${c}"
+         data-color="${c}"
+         title="${c}"></div>
+  `).join('');
+  cp.querySelectorAll('.color-swatch').forEach(sw => {
+    sw.addEventListener('click', () => {
+      selectedColor = sw.dataset.color;
+      cp.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
+      sw.classList.add('active');
+    });
+  });
+}
+
+/* ============================================================
+   Auth
+   ============================================================ */
+async function loadProfile(uid) {
+  const { data } = await sb.from('profiles').select('*').eq('id', uid).single();
+  currentProfile = data;
+}
+
+function updateHeaderUI() {
+  const loggedIn = !!currentUser;
+  $('signInBtn').style.display  = loggedIn ? 'none' : '';
+  $('signUpBtn').style.display  = loggedIn ? 'none' : '';
+  $('newRoomBtn').style.display = loggedIn ? '' : 'none';
+  $('userChip').style.display   = loggedIn ? 'flex' : 'none';
+
+  if (loggedIn && currentProfile) {
+    $('userName').textContent = currentProfile.display_name;
+    const av = $('userAvatar');
+    av.textContent = initials(currentProfile.display_name);
+    av.style.background = currentProfile.avatar_color || AVATAR_COLORS[0];
+  }
+}
+
+async function signIn() {
+  const email = $('siEmail').value.trim();
+  const pass  = $('siPassword').value;
+  $('siError').style.display = 'none';
+  if (!email || !pass) { showError('siError', 'Email and password required.'); return; }
+  const { error } = await sb.auth.signInWithPassword({ email, password: pass });
+  if (error) { showError('siError', error.message); return; }
+  closeModal('signInModal');
+  showToast('Welcome back!');
+}
+
+async function signUp() {
+  const name  = $('suName').value.trim();
+  const email = $('suEmail').value.trim();
+  const pass  = $('suPassword').value;
+  $('suError').style.display = 'none';
+  if (!name)  { showError('suError', 'Display name required.'); return; }
+  if (!email) { showError('suError', 'Email required.'); return; }
+  if (pass.length < 6) { showError('suError', 'Password must be at least 6 characters.'); return; }
+
+  const { data, error } = await sb.auth.signUp({
+    email, password: pass,
+    options: { data: { display_name: name } }
+  });
+  if (error) { showError('suError', error.message); return; }
+
+  // Update profile color (trigger creates the row on signup)
+  if (data.user) {
+    await sb.from('profiles').update({ avatar_color: selectedColor }).eq('id', data.user.id);
+  }
+  closeModal('signUpModal');
+
+  // If email confirmation is disabled, session is returned immediately
+  if (data.session) {
+    currentUser = data.user;
+    const { data: prof } = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
+    currentProfile = prof;
+    updateHeaderUI();
+    showToast(`Welcome, ${name}! 🍵`);
+  } else {
+    showToast('Account created! Check your email to confirm, then sign in.');
+  }
+}
+
+async function signOut() {
+  await sb.auth.signOut();
+  currentUser = null;
+  currentProfile = null;
+  updateHeaderUI();
+  showToast('Signed out.');
+}
+
+function showError(id, msg) {
+  const el = $(id);
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+/* ============================================================
+   Modal helpers
+   ============================================================ */
+function openModal(id)  { $(id).classList.add('open'); }
+function closeModal(id) { $(id).classList.remove('open'); }
+
+$('signInBtn').addEventListener('click', () => openModal('signInModal'));
+$('signUpBtn').addEventListener('click', () => { renderColorPicker(); openModal('signUpModal'); });
+$('newRoomBtn').addEventListener('click', () => openModal('createRoomModal'));
+
+$('closeSignIn').addEventListener('click', () => closeModal('signInModal'));
+$('closeSignUp').addEventListener('click', () => closeModal('signUpModal'));
+$('closeCreateRoom').addEventListener('click', () => closeModal('createRoomModal'));
+$('cancelCreateRoom').addEventListener('click', () => closeModal('createRoomModal'));
+
+$('signOutBtn').addEventListener('click', signOut);
+$('doSignIn').addEventListener('click', signIn);
+$('doSignUp').addEventListener('click', signUp);
+
+$('goToSignUp').addEventListener('click', () => {
+  closeModal('signInModal'); renderColorPicker(); openModal('signUpModal');
+});
+$('goToSignIn2').addEventListener('click', () => {
+  closeModal('signUpModal'); openModal('signInModal');
+});
+
+// Close on backdrop click
+['signInModal','signUpModal','createRoomModal','profileModal'].forEach(id => {
+  $(id).addEventListener('click', e => { if (e.target === $(id)) closeModal(id); });
+});
+
+/* ============================================================
+   Profile Modal + Tea Crew
+   ============================================================ */
+let pmSelectedColor = null;
+let crewContacts = [];
+
+function openProfileModal() {
+  if (!currentUser) return;
+  renderPmColorPicker();
+  const name = $('userName').textContent;
+  $('pmName').value = name !== 'Guest' ? name : '';
+  hideEl('pmError');
+  openModal('profileModal');
+  loadCrewContacts();
+}
+
+function renderPmColorPicker() {
+  const av = $('userAvatar');
+  pmSelectedColor = av.style.background || AVATAR_COLORS[0];
+  $('pmColorPicker').innerHTML = AVATAR_COLORS.map(c =>
+    `<span class="color-swatch${c===pmSelectedColor?' active':''}" data-color="${c}" style="background:${c}" onclick="pmPickColor(this,'${c}')"></span>`
+  ).join('');
+}
+
+function pmPickColor(el, color) {
+  pmSelectedColor = color;
+  $('pmColorPicker').querySelectorAll('.color-swatch').forEach(s => s.classList.toggle('active', s.dataset.color === color));
+}
+
+$('doSaveProfile').addEventListener('click', async () => {
+  const name = $('pmName').value.trim();
+  if (!name) { showErr('pmError', 'Display name is required'); return; }
+  hideEl('pmError');
+  const { error } = await sb.from('profiles').update({ display_name: name, avatar_color: pmSelectedColor }).eq('id', currentUser.id);
+  if (error) { showErr('pmError', error.message); return; }
+  // Update header UI
+  $('userName').textContent = name;
+  const av = $('userAvatar');
+  av.style.background = pmSelectedColor;
+  av.textContent = initials(name);
+  closeModal('profileModal');
+  showToast('Profile saved');
+});
+
+// Modal tabs
+$('profileModal').querySelectorAll('.modal-tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    $('profileModal').querySelectorAll('.modal-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    ['profileTab','crewTab'].forEach(id => $(id).style.display = 'none');
+    $(btn.dataset.tab).style.display = '';
+    if (btn.dataset.tab === 'crewTab') loadCrewContacts();
+  });
+});
+
+$('closeProfileModal').addEventListener('click', () => closeModal('profileModal'));
+$('userAvatar').addEventListener('click', openProfileModal);
+
+// Helpers
+function showErr(id, msg) { const e=$(id); e.textContent=msg; e.style.display='block'; }
+function hideEl(id) { $(id).style.display='none'; }
+
+/* ---- Tea Crew ---- */
+async function loadCrewContacts() {
+  if (!currentUser) return;
+  const { data } = await sb.from('user_contacts').select('*').eq('user_id', currentUser.id).order('created_at');
+  crewContacts = data || [];
+  if (!crewContacts.length) {
+    $('crewList').innerHTML = '<div class="crew-empty">No contacts yet — add one above.</div>';
+    return;
+  }
+  // Resolve system membership for all emails at once
+  const emails = crewContacts.map(c => c.email);
+  const { data: resolved } = await sb.rpc('resolve_contact_emails', { emails });
+  const info = {};
+  (resolved || []).forEach(r => { info[r.email.toLowerCase()] = r; });
+  $('crewList').innerHTML = crewContacts.map(c => {
+    const sys = info[c.email.toLowerCase()] || {};
+    const inSys = !!sys.in_system;
+    const label = c.nickname || sys.display_name || c.email;
+    return `
+      <div class="crew-row" data-id="${c.id}">
+        <div class="crew-avatar" style="background:${inSys ? (sys.avatar_color||'var(--gold)') : 'var(--border)'}">
+          ${inSys ? initials(sys.display_name||c.email) : '?'}
+        </div>
+        <div class="crew-info">
+          <div class="crew-name">${escHtml(label)}</div>
+          <div class="crew-email">${escHtml(c.email)}
+            ${inSys ? '<span class="crew-status in-system">● in system</span>' : '<span class="crew-status email-only">○ email only</span>'}
+          </div>
+        </div>
+        <button class="crew-remove" title="Remove" onclick="removeCrew('${c.id}')">✕</button>
+      </div>`;
+  }).join('');
+}
+
+$('doAddCrew').addEventListener('click', async () => {
+  const email = $('crewEmail').value.trim().toLowerCase();
+  const nick  = $('crewNick').value.trim();
+  if (!email || !/^[^@]+@[^@]+\.[^@]+$/.test(email)) { showErr('crewError','Enter a valid email address'); return; }
+  hideEl('crewError');
+  const { error } = await sb.from('user_contacts').insert({ user_id: currentUser.id, email, nickname: nick || null });
+  if (error) { showErr('crewError', error.message.includes('unique') ? 'Already in your Tea Crew' : error.message); return; }
+  $('crewEmail').value = ''; $('crewNick').value = '';
+  loadCrewContacts();
+});
+
+async function removeCrew(id) {
+  await sb.from('user_contacts').delete().eq('id', id).eq('user_id', currentUser.id);
+  loadCrewContacts();
+}
+
+/* ============================================================
+   Create Room
+   ============================================================ */
+let _pendingBlogId = null; // set when opened from a blog post card
+
+$('doCreateRoom').addEventListener('click', async () => {
+  if (!currentUser) return;
+  const title      = $('crTitle').value.trim();
+  const topic      = $('crTopic').value.trim();
+  const del        = $('crDeleteOnClose').checked;
+  const accessType = document.querySelector('input[name="crAccess"]:checked')?.value || 'open';
+  $('crError').style.display = 'none';
+  if (!title) { showError('crError', 'Please enter a room title.'); return; }
+
+  let price_cents    = 0;
+  let allowed_emails = [];
+
+  if (accessType === 'paid') {
+    const priceVal = parseFloat($('crPrice').value || '0');
+    if (!priceVal || priceVal < 0.50) { showError('crError', 'Enter a price of at least $0.50.'); return; }
+    price_cents = Math.round(priceVal * 100);
+  }
+  if (accessType === 'allowlist') {
+    allowed_emails = ($('crAllowedEmails').value || '')
+      .split(/[\n,]+/).map(e => e.trim().toLowerCase()).filter(Boolean);
+    if (!allowed_emails.length) { showError('crError', 'Add at least one allowed email address.'); return; }
+  }
+
+  const isScheduled = $('crSchedule').checked;
+  const scheduledAt  = $('crScheduledAt').value;
+  if (isScheduled && !scheduledAt) { showError('crError', 'Please set a start date and time.'); return; }
+  if (isScheduled && new Date(scheduledAt) <= new Date()) { showError('crError', 'Scheduled time must be in the future.'); return; }
+
+  const tags     = crTags.slice();
+  const category = ($('crCategory') ? $('crCategory').value : '') || 'Open Chat';
+
+  // Build payload cascade — strip columns that may not exist yet if migrations haven't run
+  const fullPayload = {
+    title, topic,
+    created_by: currentUser.id,
+    delete_on_close: del,
+    blog_id: _pendingBlogId || null,
+    access_type: accessType,
+    price_cents,
+    allowed_emails,
+    duration_mins: crDuration,
+    status: isScheduled ? 'scheduled' : 'open',
+    scheduled_at: isScheduled ? new Date(scheduledAt).toISOString() : null,
+    category,
+    tags,
+  };
+
+  let res = await sb.from('rooms').insert(fullPayload).select().single();
+
+  // Strip newer columns one layer at a time until the insert succeeds
+  const stripAndRetry = async (payload, ...stripKeys) => {
+    const p = { ...payload };
+    stripKeys.forEach(k => delete p[k]);
+    return sb.from('rooms').insert(p).select().single();
+  };
+
+  const missing = (r) => r.error?.message?.match(/['"]([\w]+)['"]\s+column|column\s+['"]?([\w]+)['"]?/i)?.slice(1).find(Boolean);
+  const knownOptional = ['category','tags','duration_mins','scheduled_at','access_type','price_cents','allowed_emails'];
+  const stripped = [];
+  while (res.error && missing(res) && knownOptional.includes(missing(res))) {
+    stripped.push(missing(res));
+    res = await stripAndRetry(fullPayload, ...stripped);
+  }
+
+  const { data, error } = res;
+
+  if (error) { showError('crError', error.message); return; }
+  // Upsert tag registry (best-effort, ignore if function not deployed)
+  if (tags.length) await sb.rpc('upsert_room_tags', { new_tags: tags }).catch(() => {});
+  closeModal('createRoomModal');
+  $('crTitle').value = ''; $('crTopic').value = ''; $('crDeleteOnClose').checked = false;
+  $('crSchedule').checked = false; $('crScheduleGroup').style.display = 'none'; $('crScheduledAt').value = '';
+  crDuration = 15; $('crDurValue').textContent = '15';
+  document.querySelector('input[name="crAccess"][value="open"]').checked = true;
+  $('crPriceGroup').style.display = 'none'; $('crAllowlistGroup').style.display = 'none';
+  crTags = []; $('tagPills').innerHTML = ''; $('crTagInput').value = '';
+  if ($('crPrice')) $('crPrice').value = '';
+  if ($('crAllowedEmails')) $('crAllowedEmails').value = '';
+  window.location.href = `room.html?id=${data.id}`;
+});
+
+// Toggle access type conditional fields + card highlight
+document.querySelectorAll('input[name="crAccess"]').forEach(radio => {
+  radio.addEventListener('change', () => {
+    $('crPriceGroup').style.display     = radio.value === 'paid'      ? '' : 'none';
+    $('crAllowlistGroup').style.display = radio.value === 'allowlist' ? '' : 'none';
+    document.querySelectorAll('.atc').forEach(c => c.classList.remove('active'));
+    radio.closest('.atc').classList.add('active');
+  });
+});
+
+// Duration control
+$('crDurPlus').addEventListener('click',  () => { crDuration += 10; $('crDurValue').textContent = crDuration; });
+$('crDurMinus').addEventListener('click', () => { if (crDuration > 15) { crDuration -= 10; $('crDurValue').textContent = crDuration; } });
+
+// Schedule toggle
+$('crSchedule').addEventListener('change', () => {
+  $('crScheduleGroup').style.display = $('crSchedule').checked ? '' : 'none';
+  if ($('crSchedule').checked && !$('crScheduledAt').value) {
+    const d = new Date(Date.now() + 30 * 60 * 1000);
+    d.setSeconds(0, 0);
+    $('crScheduledAt').value = d.toISOString().slice(0, 16);
+  }
+});
+
+/* ---- Tag input for create room ---- */
+let crTags = [];
+let allKnownTags = [];
+
+async function loadKnownTags() {
+  const { data } = await sb.from('room_tags').select('tag').order('usage_count', { ascending: false }).limit(50);
+  allKnownTags = (data || []).map(r => r.tag);
+}
+
+function addCrTag(val) {
+  const t = val.trim().toLowerCase().replace(/[^a-z0-9 _-]/g,'').slice(0,30);
+  if (!t || crTags.includes(t) || crTags.length >= 10) return;
+  crTags.push(t);
+  renderCrTags();
+}
+function removeCrTag(t) {
+  crTags = crTags.filter(x => x !== t);
+  renderCrTags();
+}
+function renderCrTags() {
+  $('tagPills').innerHTML = crTags.map(t =>
+    `<span class="tag-pill">${escHtml(t)}<button type="button" onclick="removeCrTag('${t}')" class="tag-pill-remove">×</button></span>`
+  ).join('');
+}
+
+$('crTagInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter' || e.key === ',') {
+    e.preventDefault();
+    addCrTag($('crTagInput').value);
+    $('crTagInput').value = '';
+    $('tagSuggestions').style.display = 'none';
+  }
+});
+$('crTagInput').addEventListener('input', () => {
+  const q = $('crTagInput').value.trim().toLowerCase();
+  if (!q) { $('tagSuggestions').style.display = 'none'; return; }
+  const matches = allKnownTags.filter(t => t.includes(q) && !crTags.includes(t)).slice(0,6);
+  if (!matches.length) { $('tagSuggestions').style.display = 'none'; return; }
+  $('tagSuggestions').style.display = '';
+  $('tagSuggestions').innerHTML = matches.map(t =>
+    `<button type="button" class="tag-suggestion-item" onclick="addCrTag('${t}');$('crTagInput').value='';$('tagSuggestions').style.display='none'">${escHtml(t)}</button>`
+  ).join('');
+});
+document.addEventListener('click', e => {
+  if (!e.target.closest('#tagInputWrap') && !e.target.closest('#tagSuggestions'))
+    $('tagSuggestions').style.display = 'none';
+});
+
+/* ---- Filter tabs (category-based, built dynamically) ---- */
+const PRESET_CATEGORIES = ['Open Chat','Life','Wellness','Mindfulness','Growth','Book Club','Tea Talk'];
+
+function renderFilterTabs() {
+  $('filterTabs').querySelectorAll('.filter-tab').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.filter === currentFilter);
+  });
+}
+
+function initFilterTabs() {
+  $('filterTabs').querySelectorAll('.filter-tab').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      currentFilter = btn.dataset.filter;
+      calSelectedDay = null;
+      renderFilterTabs();
+      if (currentFilter === 'closed') {
+        await loadClosedRooms();
+      } else {
+        await loadRooms();
+      }
+    });
+  });
+}
+
+/* ---- Calendar ---- */
+$('calCollapseBtn').addEventListener('click', () => {
+  const open = $('calCollapseBtn').getAttribute('aria-expanded') === 'true';
+  $('calCollapseBtn').setAttribute('aria-expanded', !open);
+  $('calCollapseBtn').textContent = open ? '▼' : '▲';
+  $('calBody').style.display = open ? 'none' : '';
+});
+
+$('calPrevYear').addEventListener('click',  () => { calViewDate.setFullYear(calViewDate.getFullYear() - 1); renderCalendar(); });
+$('calPrevMonth').addEventListener('click', () => { calViewDate.setMonth(calViewDate.getMonth() - 1); renderCalendar(); });
+$('calNextMonth').addEventListener('click', () => { calViewDate.setMonth(calViewDate.getMonth() + 1); renderCalendar(); });
+$('calNextYear').addEventListener('click',  () => { calViewDate.setFullYear(calViewDate.getFullYear() + 1); renderCalendar(); });
+
+function renderCalendar() {
+  const year  = calViewDate.getFullYear();
+  const month = calViewDate.getMonth();
+  $('calMonthLabel').textContent = calViewDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+  // Collect all room dates (scheduled + active rooms today)
+  const roomDays = new Set(rooms
+    .filter(r => r.scheduled_at)
+    .map(r => new Date(r.scheduled_at).toDateString()));
+  // Also mark active rooms on today
+  if (rooms.some(r => r.status === 'active')) roomDays.add(new Date().toDateString());
+
+  const firstDay    = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const today       = new Date().toDateString();
+
+  let html = '';
+  for (let i = 0; i < firstDay; i++) html += `<span class="cal-day other-month"></span>`;
+  for (let d = 1; d <= daysInMonth; d++) {
+    const ds         = new Date(year, month, d).toDateString();
+    const isToday    = ds === today;
+    const hasRooms   = roomDays.has(ds);
+    const isSelected = calSelectedDay === ds;
+    html += `<button class="cal-day${isToday?' today':''}${hasRooms?' has-rooms':''}${isSelected?' selected':''}" data-ds="${ds}">
+      ${d}${hasRooms?'<span class="cal-dot"></span>':''}
+    </button>`;
+  }
+  $('calGrid').innerHTML = html;
+  $('calGrid').querySelectorAll('.cal-day[data-ds]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      calSelectedDay = calSelectedDay === btn.dataset.ds ? null : btn.dataset.ds;
+      renderCalendar();
+      renderRooms();
+    });
+  });
+
+  // Year chips: show distinct years with room counts
+  const yearCounts = {};
+  rooms.forEach(r => {
+    const y = r.scheduled_at ? new Date(r.scheduled_at).getFullYear() : new Date(r.created_at).getFullYear();
+    yearCounts[y] = (yearCounts[y] || 0) + 1;
+  });
+  const yearsSorted = Object.keys(yearCounts).map(Number).sort((a,b) => b-a);
+  $('calYearChips').innerHTML = yearsSorted.map(y =>
+    `<button class="cal-year-chip${y===year?' active':''}" onclick="calViewDate.setFullYear(${y});renderCalendar()">
+      <strong>${y}</strong> <span class="cal-year-count">${yearCounts[y]}</span>
+    </button>`
+  ).join('');
+}
+
+/* ============================================================
+   Load & Render Rooms
+   ============================================================ */
+async function loadRooms() {
+  const [roomsRes, membersRes, waitRes] = await Promise.all([
+    sb.from('rooms')
+      .select('*, creator:profiles!created_by(display_name, avatar_color)')
+      .in('status', ['open','active','scheduled'])
+      .order('created_at', { ascending: false }),
+    sb.from('room_members').select('room_id'),
+    sb.from('waitlist').select('room_id, user_id, profile:profiles!user_id(display_name, avatar_color)').order('joined_at', { ascending: true }),
+  ]);
+
+  const memberCounts   = {};
+  const waitlistByRoom = {};
+  (membersRes.data || []).forEach(m => { memberCounts[m.room_id] = (memberCounts[m.room_id] || 0) + 1; });
+  (waitRes.data   || []).forEach(w => {
+    if (!waitlistByRoom[w.room_id]) waitlistByRoom[w.room_id] = [];
+    waitlistByRoom[w.room_id].push(w.profile || {});
+  });
+
+  rooms = (roomsRes.data || []).map(r => ({
+    ...r,
+    memberCount:   memberCounts[r.id]     || 0,
+    waitlistCount: (waitlistByRoom[r.id] || []).length,
+    waitlistUsers: waitlistByRoom[r.id]   || [],
+  }));
+
+  renderFilterTabs();
+  renderCalendar();
+  renderRooms();
+  updateStats();
+}
+
+async function loadClosedRooms() {
+  const { data } = await sb.from('rooms')
+    .select('*, creator:profiles!created_by(display_name, avatar_color)')
+    .eq('status', 'closed')
+    .order('expires_at', { ascending: false })
+    .limit(20);
+  rooms = (data || []).map(r => ({ ...r, memberCount: 0, waitlistCount: 0 }));
+  renderFilterTabs();
+  renderRooms();
+}
+
+async function loadRecaps() {
+  const { data } = await sb.from('rooms')
+    .select('id, title, topic, recap_title, recap_excerpt, admin_summary, expires_at, creator:profiles!created_by(display_name)')
+    .eq('status', 'closed')
+    .order('expires_at', { ascending: false })
+    .limit(60);
+
+  closedRooms = {};
+  (data || []).forEach(r => {
+    if (!r.recap_title && !r.recap_excerpt && !r.admin_summary) return; // skip rooms with no recap at all
+    const key = r.title.trim().toLowerCase();
+    if (!closedRooms[key]) closedRooms[key] = [];
+    closedRooms[key].push(r);
+  });
+  renderRooms();
+}
+
+async function deleteRecap(roomId) {
+  if (!isAdmin()) return;
+  if (!confirm('Delete this recap? This cannot be undone.')) return;
+  const { error } = await sb.from('rooms')
+    .update({ recap_title: '', recap_excerpt: '', admin_summary: '' })
+    .eq('id', roomId);
+  if (error) { alert('Could not delete recap: ' + error.message); return; }
+  // Remove from local closedRooms cache
+  for (const key of Object.keys(closedRooms)) {
+    closedRooms[key] = closedRooms[key].filter(r => r.id !== roomId);
+    if (!closedRooms[key].length) delete closedRooms[key];
+  }
+  renderRooms();
+}
+window.deleteRecap = deleteRecap;
+
+// Toggle a past-recap row open/closed
+function toggleRecap(btn) {
+  const body = btn.nextElementSibling;
+  const open = btn.getAttribute('aria-expanded') === 'true';
+  btn.setAttribute('aria-expanded', !open);
+  btn.querySelector('.recap-chevron').textContent = open ? '▸' : '▾';
+  body.hidden = open;
+}
+
+// Toggle the whole "Past Recaps" panel for a card
+function toggleRecapPanel(btn) {
+  const panel = btn.parentElement.querySelector('.recap-panel');
+  const open  = btn.getAttribute('aria-expanded') === 'true';
+  btn.setAttribute('aria-expanded', !open);
+  btn.querySelector('.recap-panel-arrow').textContent = open ? '▸' : '▾';
+  panel.hidden = open;
+}
+
+// Admin presence-choice dropdown
+function showAdminMenu(btn, roomId) {
+  // Remove any existing menu
+  document.querySelectorAll('.admin-menu').forEach(m => m.remove());
+
+  const menu = document.createElement('div');
+  menu.className = 'admin-menu';
+  menu.innerHTML = `
+    <a class="admin-menu-item" href="room.html?id=${roomId}&admin=1">
+      <span>🟢</span> Enter visibly
+      <small>Members see your presence</small>
+    </a>
+    <a class="admin-menu-item" href="room.html?id=${roomId}&admin=1&silent=1">
+      <span>👁</span> Enter silently
+      <small>No presence shown</small>
+    </a>`;
+
+  // Position below the button
+  btn.style.position = 'relative';
+  btn.appendChild(menu);
+
+  // Close on outside click
+  const close = (e) => { if (!btn.contains(e.target)) { menu.remove(); document.removeEventListener('click', close, true); } };
+  setTimeout(() => document.addEventListener('click', close, true), 0);
+}
+
+// Followed topics — stored per user in localStorage
+function followedTopics() {
+  try {
+    const key = `followed_${currentUser?.id || 'anon'}`;
+    return new Set(JSON.parse(localStorage.getItem(key) || '[]'));
+  } catch { return new Set(); }
+}
+function followTopic(titleKey) {
+  try {
+    const key = `followed_${currentUser?.id || 'anon'}`;
+    const set = followedTopics();
+    set.add(titleKey);
+    localStorage.setItem(key, JSON.stringify([...set]));
+    renderRooms();
+  } catch {}
+}
+function unfollowTopic(titleKey) {
+  try {
+    const key = `followed_${currentUser?.id || 'anon'}`;
+    const set = followedTopics();
+    set.delete(titleKey);
+    localStorage.setItem(key, JSON.stringify([...set]));
+    renderRooms();
+  } catch {}
+}
+
+function timeRemaining(expiresAt) {
+  if (!expiresAt) return '';
+  const ms = new Date(expiresAt) - Date.now();
+  if (ms <= 0) return '0 min left';
+  const m = Math.floor(ms / 60000);
+  const s = Math.floor((ms % 60000) / 1000);
+  return m > 0 ? `${m}m ${s}s left` : `${s}s left`;
+}
+
+/* ---- Room thumbnail generator ---- */
+function roomThumb(roomId) {
+  let h = 0;
+  for (const c of String(roomId||'x')) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+  const pals = [
+    { bg:'#f0ede4', fg:'#9B8B6E', acc:'#C49A28' },
+    { bg:'#e8ede0', fg:'#5c7c50', acc:'#7a9e6a' },
+    { bg:'#ede8e0', fg:'#8a6a50', acc:'#b08050' },
+    { bg:'#e0e8ed', fg:'#506070', acc:'#6a8090' },
+    { bg:'#ede0e8', fg:'#7a5070', acc:'#9a6090' },
+  ];
+  const p = pals[h % pals.length];
+  const v = (h >> 8) % 4;
+  const arts = [
+    // Mug with steam
+    `<ellipse cx="60" cy="83" rx="26" ry="5" fill="${p.fg}" opacity="0.18"/>
+     <rect x="36" y="50" width="42" height="34" rx="7" fill="${p.bg}" stroke="${p.fg}" stroke-width="2"/>
+     <path d="M78 60 Q90 60 90 69 Q90 78 78 78" fill="none" stroke="${p.fg}" stroke-width="2"/>
+     <path d="M48 50 Q46 39 50 30" stroke="${p.acc}" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+     <path d="M57 50 Q55 36 59 26" stroke="${p.acc}" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+     <path d="M66 50 Q64 38 68 29" stroke="${p.acc}" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+     <circle cx="88" cy="22" r="11" fill="${p.acc}" opacity="0.18"/>`,
+    // Botanical leaf
+    `<path d="M60 18 Q92 40 82 78 Q60 92 40 68 Q28 40 60 18Z" fill="${p.fg}" opacity="0.25"/>
+     <path d="M60 18 Q92 40 82 78" stroke="${p.fg}" stroke-width="1.5" fill="none"/>
+     <path d="M60 18 L72 56" stroke="${p.fg}" stroke-width="1" fill="none" opacity="0.5"/>
+     <path d="M60 18 L53 52" stroke="${p.fg}" stroke-width="1" fill="none" opacity="0.5"/>
+     <circle cx="86" cy="24" r="9" fill="${p.acc}" opacity="0.22"/>
+     <circle cx="24" cy="72" r="14" fill="${p.acc}" opacity="0.12"/>`,
+    // Concentric circles
+    `<circle cx="60" cy="60" r="36" fill="${p.fg}" opacity="0.12"/>
+     <circle cx="60" cy="60" r="24" fill="${p.fg}" opacity="0.18"/>
+     <circle cx="60" cy="60" r="12" fill="${p.acc}" opacity="0.35"/>
+     <circle cx="88" cy="24" r="11" fill="${p.acc}" opacity="0.2"/>
+     <circle cx="22" cy="82" r="16" fill="${p.fg}" opacity="0.1"/>`,
+    // Wave + branch
+    `<path d="M0 68 Q30 48 60 68 Q90 88 120 68 L120 120 L0 120Z" fill="${p.fg}" opacity="0.18"/>
+     <path d="M70 58 Q70 28 80 14" stroke="${p.fg}" stroke-width="2" fill="none" stroke-linecap="round"/>
+     <path d="M70 44 Q86 33 96 18" stroke="${p.fg}" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+     <path d="M70 54 Q54 40 50 26" stroke="${p.fg}" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+     <circle cx="28" cy="28" r="10" fill="${p.acc}" opacity="0.22"/>`,
+  ];
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120">
+    <rect width="120" height="120" rx="10" fill="${p.bg}"/>
+    <rect width="120" height="120" rx="10" fill="${p.fg}" opacity="0.06"/>
+    ${arts[v]}
+  </svg>`;
+  return `data:image/svg+xml,${encodeURIComponent(svg)}`;
+}
+
+function renderRooms() {
+  const grid = $('roomsGrid');
+
+  // Apply status filter
+  let filtered = rooms;
+  if (currentFilter === 'active')    filtered = rooms.filter(r => r.status === 'active');
+  else if (currentFilter === 'open') filtered = rooms.filter(r => r.status === 'open');
+  else if (currentFilter === 'scheduled') filtered = rooms.filter(r => r.status === 'scheduled');
+  else if (currentFilter === 'closed') filtered = rooms.filter(r => r.status === 'closed');
+  else if (currentFilter === 'waitlist') filtered = rooms.filter(r => r.waitlistCount > 0);
+
+  // Calendar day filter
+  if (calSelectedDay) filtered = filtered.filter(r => {
+    const d = r.scheduled_at || r.created_at;
+    return d && new Date(d).toDateString() === calSelectedDay;
+  });
+
+  // Search filter
+  const q = ($('roomSearch')?.value || '').trim().toLowerCase();
+  if (q) filtered = filtered.filter(r =>
+    r.title.toLowerCase().includes(q) ||
+    (r.topic || '').toLowerCase().includes(q) ||
+    (r.category || '').toLowerCase().includes(q) ||
+    (r.tags || []).some(t => t.toLowerCase().includes(q))
+  );
+
+  if (!filtered.length) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">🌿</div>
+        <div class="empty-state-title">No rooms here yet</div>
+        <div class="empty-state-body">${currentUser ? 'Start the first conversation today.' : 'Sign in to start a room.'}</div>
+      </div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(r => {
+    const isFull      = r.memberCount >= r.capacity;
+    const isActive    = r.status === 'active';
+    const isScheduled = r.status === 'scheduled';
+    const isHost      = currentUser && r.created_by === currentUser.id;
+    const thumb       = roomThumb(r.id);
+
+    // Capacity dots
+    const dots = Array.from({ length: r.capacity }, (_, i) =>
+      `<span class="cap-dot${i < r.memberCount ? ' filled' : ''}"></span>`
+    ).join('');
+    const wdots = r.waitlistCount > 0
+      ? Array.from({length:Math.min(r.waitlistCount,5)}, () => '<span class="cap-dot waiting-dot"></span>').join('')
+        + (r.waitlistCount > 5 ? `<span class="cap-dot-extra">+${r.waitlistCount-5}</span>` : '')
+      : '';
+
+    // Access badge
+    const accessBadge = r.access_type === 'paid'      ? `<span class="rc-badge rc-badge-paid">$${(r.price_cents/100).toFixed(2)}</span>`
+                      : r.access_type === 'allowlist'  ? `<span class="rc-badge rc-badge-list">Allowlist</span>`
+                      : r.access_type === 'invite_only'? `<span class="rc-badge rc-badge-invite">Invite only</span>`
+                      : '';
+
+    // Status pill — single dot via CSS ::before only, no extra character
+    const statusDot = isActive ? '#5cb85c' : isScheduled ? '#3850b0' : '#8a8a8a';
+    const statusLabel = isActive ? 'Active' : isScheduled ? 'Scheduled' : 'Open';
+    const statusBadge = `<span class="rc-status-badge" style="--dot:${statusDot}">${statusLabel.toUpperCase()}</span>`;
+
+    // Meta row items
+    const metaItems = [];
+    if (!isScheduled) metaItems.push(`<span class="rc-meta-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>${r.memberCount}/${r.capacity}</span>`);
+    if (r.waitlistCount > 0) {
+      metaItems.push(`<span class="rc-meta-waiting"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 8 12 12 15 14"/></svg>${r.waitlistCount} waiting</span>`);
+    }
+    if (isActive && r.expires_at) metaItems.push(`<span class="rc-meta-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>${timeRemaining(r.expires_at)}</span>`);
+    if (isScheduled && r.scheduled_at) metaItems.push(`<span class="rc-meta-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>${new Date(r.scheduled_at).toLocaleString(undefined,{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})}</span>`);
+    else metaItems.push(`<span class="rc-meta-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>${fmtTime(r.created_at)}</span>`);
+
+    const metaHtml = metaItems.map((m,i) => i===0?m:`<span class="rc-meta-sep">|</span>${m}`).join('');
+
+    // Tags
+    const tagsHtml = (r.tags||[]).length
+      ? `<div class="rc-tags">${(r.tags||[]).map(t=>`<span class="rc-tag">${escHtml(t)}</span>`).join('')}</div>` : '';
+
+    // Action button label
+    let btnLabel = 'Join room →';
+    let btnClass = 'rc-action-btn';
+    if (!currentUser)   { btnLabel = 'Sign in →'; }
+    else if (isScheduled){ btnLabel = isHost ? 'Manage →' : 'View →'; btnClass += ' rc-action-ghost'; }
+    else if (isHost)    { btnLabel = 'Open room →'; }
+    else if (isFull)    { btnLabel = 'Join waitlist →'; btnClass += ' rc-action-ghost'; }
+
+    const btnHref = !currentUser ? '#' : `room.html?id=${r.id}`;
+    const btnClick = !currentUser ? `onclick="openModal('signInModal');return false"` : '';
+
+    // Admin Visit — icon-only, dropdown on click, admin only
+    const adminVisitHtml = isAdmin()
+      ? `<button class="rc-admin-visit-btn" title="Admin Visit" onclick="showAdminMenu(this,'${r.id}')">🛡</button>`
+      : '';
+
+    // Link back to the original article on the talk homepage
+    const postLinkHtml = r.blog_id
+      ? `<a class="rc-post-link-icon" href="https://talk.sukeeteatime.com/#${encodeURIComponent(r.blog_id)}" target="_blank" rel="noopener" title="Read the original post">
+           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+         </a>`
+      : '';
+
+    // Past recaps — excerpt is public, full content gated behind topic follow
+    const titleKey = r.title.trim().toLowerCase();
+    const safeKey  = titleKey.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+    const pastSessions = closedRooms[titleKey] || [];
+    const isFollowing = followedTopics().has(titleKey);
+    const recapPanelHtml = pastSessions.length ? (() => {
+      const cards = pastSessions.map(pr => {
+        const date    = pr.expires_at ? fmtTime(pr.expires_at) : '';
+        const rtitle  = pr.recap_title  ? escHtml(pr.recap_title)  : escHtml(pr.title);
+        const excerpt = pr.recap_excerpt ? `<p class="recap-excerpt">${escHtml(pr.recap_excerpt)}</p>` : '';
+
+        let fullHtml = '';
+        if (pr.admin_summary) {
+          if (!currentUser) {
+            fullHtml = `<div class="recap-gate">
+              <button class="recap-gate-btn" onclick="openModal('signInModal')">Sign in to follow &amp; read full recap →</button>
+            </div>`;
+          } else if (!isFollowing) {
+            fullHtml = `<div class="recap-gate">
+              <button class="recap-gate-btn" onclick="followTopic('${safeKey}')">Follow this topic to read full recap →</button>
+            </div>`;
+          } else {
+            fullHtml = `<div class="recap-full-content">${escHtml(pr.admin_summary)}</div>`;
+          }
+        }
+
+        const deleteBtn = isAdmin()
+          ? `<button class="recap-delete-btn" onclick="deleteRecap('${pr.id}')" title="Delete recap">
+               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+             </button>`
+          : '';
+
+        return `
+          <div class="recap-card" id="recap-${pr.id}">
+            <div class="recap-card-header">
+              <div class="recap-card-title">${rtitle}</div>
+              <div style="display:flex;align-items:center;gap:8px">
+                <span class="recap-card-date">${date}</span>
+                ${deleteBtn}
+              </div>
+            </div>
+            ${excerpt}
+            ${fullHtml}
+          </div>`;
+      }).join('');
+
+      const followBtn = currentUser && !isFollowing
+        ? `<button class="recap-follow-pill" onclick="followTopic('${safeKey}')">+ Follow topic</button>`
+        : isFollowing
+          ? `<button class="recap-unfollow-pill" onclick="unfollowTopic('${safeKey}')">✓ Following</button>`
+          : '';
+
+      return `
+        <div class="recap-panel-wrap">
+          <div class="recap-panel-header">
+            <span class="recap-panel-label">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+              ${pastSessions.length} recap${pastSessions.length > 1 ? 's' : ''}
+            </span>
+            ${followBtn}
+          </div>
+          ${cards}
+        </div>`;
+    })() : '';
+
+    return `
+      <div class="room-card">
+        <div class="rc-content">
+          <div class="rc-header-row">
+            <span class="rc-card-label">Tea Table</span>
+            ${isHost ? '<span class="rc-badge rc-badge-host">Your Tea Table</span>' : ''}
+            ${statusBadge}
+            ${accessBadge}
+            <span class="rc-header-spacer"></span>
+            <a href="${btnHref}" class="${btnClass}" ${btnClick}>${btnLabel}</a>
+            ${adminVisitHtml}
+          </div>
+          <div class="rc-title-row">
+            <span class="rc-title">${escHtml(r.title)}</span>
+            ${postLinkHtml}
+          </div>
+          ${r.topic ? `<div class="rc-topic">${escHtml(r.topic)}</div>` : ''}
+          <div class="rc-meta">${metaHtml}<span class="rc-meta-sep" style="margin-left:4px">|</span><span class="rc-dots-inline">${dots}${wdots}</span></div>
+        </div>
+        ${recapPanelHtml}
+      </div>`;
+  }).join('');
+
+  // Refresh time-remaining every 30s while active rooms are visible
+  clearTimeout(renderRooms._timer);
+  if (filtered.some(r => r.status === 'active' && r.expires_at))
+    renderRooms._timer = setTimeout(renderRooms, 30000);
+}
+
+function updateStats() {
+  const activeRooms = rooms.filter(r => r.status === 'active').length;
+  const totalWaiting = rooms.reduce((s, r) => s + (r.waitlistCount || 0), 0);
+  $('statActive').textContent = activeRooms;
+  $('statWaiting').textContent = totalWaiting;
+}
+
+/* ============================================================
+   Realtime
+   ============================================================ */
+function subscribeRealtime() {
+  if (realtimeSub) sb.removeChannel(realtimeSub);
+
+  realtimeSub = sb.channel('lobby')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'rooms' }, () => {
+      loadRooms();
+      loadRecaps();
+    })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'room_members' }, () => {
+      loadRooms();
+    })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'waitlist' }, () => {
+      loadRooms();
+    })
+    .subscribe();
+}
+
+/* ============================================================
+   Init
+   ============================================================ */
+async function init() {
+  // Auth state
+  const { data: { session } } = await sb.auth.getSession();
+  if (session?.user) {
+    currentUser = session.user;
+    await loadProfile(currentUser.id);
+  }
+  updateHeaderUI();
+
+  initFilterTabs();
+
+  // Waiting stat click → filter to waitlist rooms
+  $('statWaitingBtn').addEventListener('click', () => {
+    const isActive = currentFilter === 'waitlist';
+    currentFilter = isActive ? 'all' : 'waitlist';
+    // Clear the tab highlight since this isn't a tab
+    document.querySelectorAll('.filter-tab').forEach(b => b.classList.toggle('active', currentFilter === b.dataset.filter));
+    $('statWaitingBtn').classList.toggle('stat-filter-active', !isActive);
+    renderRooms();
+  });
+
+  // Search
+  $('roomSearch').addEventListener('input', () => {
+    const hasVal = $('roomSearch').value.length > 0;
+    $('roomSearchClear').style.display = hasVal ? '' : 'none';
+    renderRooms();
+  });
+  $('roomSearchClear').addEventListener('click', () => {
+    $('roomSearch').value = '';
+    $('roomSearchClear').style.display = 'none';
+    renderRooms();
+  });
+
+  await Promise.all([loadRooms(), loadRecaps(), loadKnownTags()]);
+  subscribeRealtime();
+
+  // Auto-open create-room modal when arriving from a blog post "Start Chat" button
+  const params = new URLSearchParams(location.search);
+  if (params.get('start') === '1') {
+    _pendingBlogId = params.get('blog_id') || null;
+    const preTitle = params.get('title') ? decodeURIComponent(params.get('title')) : '';
+    if (preTitle) $('crTitle').value = preTitle;
+    if (currentUser) {
+      openModal('createRoomModal');
+    } else {
+      // Show sign-in first; after auth the modal will open
+      openModal('signInModal');
+      sb.auth.onAuthStateChange((event) => {
+        if (event === 'SIGNED_IN') {
+          closeModal('signInModal');
+          openModal('createRoomModal');
+        }
+      });
+    }
+  }
+
+  sb.auth.onAuthStateChange(async (event, session) => {
+    if (session?.user) {
+      currentUser = session.user;
+      await loadProfile(currentUser.id);
+    } else {
+      currentUser = null;
+      currentProfile = null;
+    }
+    updateHeaderUI();
+    renderRooms();
+  });
+}
+
+init();
+</script>
+</body>
+</html>

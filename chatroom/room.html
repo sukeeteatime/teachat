@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tea Chat Room</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;1,400&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="room-page" id="roomPage">
+
+  <!-- ── Top bar ── -->
+  <div class="room-topbar">
+    <a href="index.html" class="btn btn-ghost btn-sm" style="font-family:var(--sans)">← Lobby</a>
+    <div class="room-topbar-info">
+      <div class="room-topbar-title" id="tbTitle">Loading…</div>
+      <div class="room-topbar-topic" id="tbTopic"></div>
+    </div>
+    <div class="room-topbar-actions">
+      <div class="timer" id="timerDisplay" style="display:none">
+        <span id="timerIcon">⏱</span> <span id="timerText">15:00</span>
+      </div>
+      <button class="btn btn-outline btn-sm" id="followBtn" style="display:none">☆ Follow</button>
+      <button class="btn btn-danger btn-sm"  id="leaveBtn"  style="display:none">Leave</button>
+      <button class="btn btn-primary btn-sm" id="startBtn"  style="display:none">Start session</button>
+    </div>
+  </div>
+
+  <!-- ── Body (filled by JS) ── -->
+  <div id="roomBody" style="flex:1;display:flex;overflow:hidden;">
+    <div style="flex:1;display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:14px;">
+      Loading room…
+    </div>
+  </div>
+
+</div>
+
+<!-- ── Admin Recap Modal ── -->
+<div class="modal-overlay" id="summaryModal">
+  <div class="modal" role="dialog" aria-modal="true">
+    <button class="modal-close" id="closeSummary">✕</button>
+    <div class="modal-title">Edit recap</div>
+    <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px">
+      The title and excerpt are shown publicly. Full content is only visible to followers.
+    </p>
+    <div class="form-group">
+      <label class="form-label" for="recapTitleInput">Recap title</label>
+      <input class="form-input" type="text" id="recapTitleInput" maxlength="120"
+             placeholder="e.g. What we talked about — stillness in chaos">
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="recapExcerptInput">Excerpt <span style="font-weight:400;color:var(--text-muted)">(public teaser)</span></label>
+      <textarea class="form-textarea" id="recapExcerptInput" rows="2" maxlength="280"
+                placeholder="A short public preview — one or two sentences…"></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="summaryText">Full recap <span style="font-weight:400;color:var(--text-muted)">(followers only)</span></label>
+      <textarea class="form-textarea" id="summaryText" rows="5" maxlength="2000"
+                placeholder="The full discussion notes, insights, and takeaways…"></textarea>
+    </div>
+    <div class="form-error" id="summaryError" style="margin-bottom:8px;display:none"></div>
+    <div class="form-actions">
+      <button class="btn btn-ghost" id="cancelSummary">Cancel</button>
+      <button class="btn btn-primary" id="doSummary">Save recap</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Extend Capacity Modal ── -->
+<div class="modal-overlay" id="extendModal">
+  <div class="modal" role="dialog" aria-modal="true">
+    <button class="modal-close" id="closeExtend">✕</button>
+    <div class="modal-title">Extend capacity</div>
+    <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px">
+      Admit more people from the waiting list.
+    </p>
+    <div class="form-group">
+      <label class="form-label" for="newCapacity">New maximum members</label>
+      <input class="form-input" type="number" id="newCapacity" min="6" max="50" value="10">
+      <div class="form-helper">Current capacity: <span id="currentCap">6</span></div>
+    </div>
+    <div class="form-error" id="extendError" style="margin-bottom:8px;display:none"></div>
+    <div class="form-actions">
+      <button class="btn btn-ghost" id="cancelExtend">Cancel</button>
+      <button class="btn btn-primary" id="doExtend">Update capacity</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Toast ── -->
+<div class="toast" id="appToast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* ============================================================
+   Config
+   ============================================================ */
+const SB_URL = 'https://gsqjhxvjfnwugsivgzah.supabase.co';
+const SB_KEY = 'sb_publishable_6AMzgqb7WpsEDWPnhcKBRw_zTObt1O1';
+const sb = supabase.createClient(SB_URL, SB_KEY);
+
+const SESSION_MINS = 15;
+
+/* ============================================================
+   State
+   ============================================================ */
+let currentUser    = null;
+let currentProfile = null;
+let room           = null;
+let members        = [];   // { user_id, is_anonymous, profile: { display_name, avatar_color } }
+let waitlistUsers  = [];   // { user_id, joined_at }
+let isMember       = false;
+let isOnWaitlist   = false;
+let isAnonymous    = false;
+let isFollowing    = false;
+let accessGranted  = null;  // null=unchecked, true=allowed, false=denied
+let hasPaid        = false;
+let timerInterval  = null;
+let channels       = {};
+
+const ADMIN_EMAILS = ['sukee.parker@gmail.com'];
+const params      = new URLSearchParams(location.search);
+const roomId      = params.get('id');
+const inviteToken = params.get('invite');
+const isAdminVisit  = params.get('admin') === '1';
+const isSilentVisit = params.get('silent') === '1';
+const isRoomAdmin   = () => isAdminVisit && currentUser && ADMIN_EMAILS.includes(currentUser.email);
+
+/* ============================================================
+   Utils
+   ============================================================ */
+const $ = id => document.getElementById(id);
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function showToast(msg) {
+  const t = $('appToast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 2200);
+}
+function initials(name) {
+  return (name || '?').split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase();
+}
+function fmtTime(ts) {
+  const d = new Date(ts);
+  return d.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
+}
+function displayName(m) {
+  if (m.is_anonymous) return 'Anonymous';
+  return m.profile?.display_name || 'Guest';
+}
+function avatarColor(m) {
+  if (m.is_anonymous) return '#888';
+  return m.profile?.avatar_color || '#8b7355';
+}
+function openModal(id)  { $(id).classList.add('open'); }
+function closeModal(id) { $(id).classList.remove('open'); }
+
+/* ============================================================
+   Timer
+   ============================================================ */
+function startTimer() {
+  clearInterval(timerInterval);
+  const timerEl = $('timerDisplay');
+  const timerText = $('timerText');
+  timerEl.style.display = 'flex';
+
+  timerInterval = setInterval(async () => {
+    if (!room?.expires_at) return;
+    const remaining = Math.max(0, new Date(room.expires_at) - Date.now());
+    const mins = Math.floor(remaining / 60000);
+    const secs = Math.floor((remaining % 60000) / 1000);
+    timerText.textContent = `${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')}`;
+
+    timerEl.className = 'timer';
+    if (remaining < 60000)      timerEl.classList.add('danger');
+    else if (remaining < 300000) timerEl.classList.add('warn');
+    else                         timerEl.classList.add('ok');
+
+    if (remaining === 0) {
+      clearInterval(timerInterval);
+      await closeRoomIfExpired();
+    }
+  }, 500);
+}
+
+async function closeRoomIfExpired() {
+  if (!room || room.status !== 'active') return;
+  const { error } = await sb.from('rooms').update({ status: 'closed' }).eq('id', roomId).eq('status','active');
+  if (!error && room.delete_on_close) {
+    await sb.from('messages').delete().eq('room_id', roomId);
+  }
+}
+
+/* ============================================================
+   Render functions
+   ============================================================ */
+function renderSidebar() {
+  const isHost  = currentUser && room?.created_by === currentUser.id;
+  const canAdmin = isHost || isRoomAdmin();
+
+  let html = `<div class="room-sidebar">`;
+
+  // Members section
+  html += `<div class="sidebar-section">
+    <div class="sidebar-label">Members (${members.length}/${room?.capacity || 6})</div>
+    <div class="members-list">`;
+
+  members.forEach(m => {
+    const isMe      = currentUser && m.user_id === currentUser.id;
+    const isHostRow = m.user_id === room?.created_by;
+    // Anonymous viewers see their own name but others as "Member"
+    const hideName  = isAnonymous && !isMe && !canAdmin;
+    const name  = hideName ? 'Member' : displayName(m);
+    const color = hideName ? 'var(--text-light)' : avatarColor(m);
+    html += `
+      <div class="member-row">
+        <div class="avatar avatar-sm" style="background:${color}">${(m.is_anonymous || hideName) ? '?' : initials(name)}</div>
+        <span class="member-name">${escHtml(name)}${isMe ? ' (you)' : ''}</span>
+        ${isHostRow ? '<span class="member-badge host">host</span>' : ''}
+      </div>`;
+  });
+
+  html += `</div></div>`;
+
+  // Waitlist — admins see names + approve; others see count only
+  if (waitlistUsers.length > 0) {
+    if (canAdmin) {
+      html += `<div class="sidebar-section">
+        <div class="sidebar-label">Waiting (${waitlistUsers.length})</div>
+        <div class="waitlist-admin-list">`;
+      waitlistUsers.forEach((w, i) => {
+        const wname = escHtml(w.profile?.display_name || 'Guest');
+        const wcolor = w.profile?.avatar_color || '#8b7355';
+        html += `
+          <div class="waitlist-admin-row">
+            <span class="waitlist-pos">#${i + 1}</span>
+            <div class="avatar avatar-sm" style="background:${wcolor}">${initials(w.profile?.display_name || 'G')}</div>
+            <span class="waitlist-admin-name">${wname}</span>
+            <button class="waitlist-approve-btn" onclick="adminApprove('${w.user_id}')">Admit</button>
+          </div>`;
+      });
+      html += `</div></div>`;
+    } else {
+      html += `<div class="waitlist-info">⌛ ${waitlistUsers.length} waiting</div>`;
+    }
+  }
+
+  // Follow
+  if (currentUser && isMember) {
+    html += `<div class="sidebar-section">
+      <button class="btn btn-ghost btn-sm" style="width:100%;justify-content:center" id="sbFollowBtn">
+        ${isFollowing ? '★ Following' : '☆ Follow room'}
+      </button>
+    </div>`;
+  }
+
+  // Admin panel
+  if (canAdmin && room?.status !== 'closed') {
+    html += `<div class="admin-panel">
+      <div class="admin-label">🔑 Host controls</div>
+      ${room?.status === 'open' ? `
+        <button class="btn btn-success btn-sm" style="width:100%;margin-bottom:8px" id="adminStartBtn">
+          ▶ Start session
+        </button>` : ''}
+      ${room?.access_type === 'invite_only' && room?.status !== 'closed' ? `
+        <button class="btn btn-outline btn-sm" style="width:100%;margin-bottom:8px" id="adminInviteBtn">
+          🔗 Copy invite link
+        </button>` : ''}
+      ${room?.status === 'active' ? `
+        <button class="btn btn-outline btn-sm" style="width:100%;margin-bottom:8px" id="adminExtendBtn">
+          ↑ Extend capacity
+        </button>
+        <button class="btn btn-primary btn-sm" style="width:100%;margin-bottom:8px" id="adminSummaryBtn">
+          📝 Post summary
+        </button>
+        <button class="btn btn-danger btn-sm" style="width:100%" id="adminCloseBtn">
+          ■ Close room
+        </button>` : ''}
+      ${room?.status === 'closed' ? `
+        <button class="btn btn-outline btn-sm" style="width:100%" id="adminSummaryBtn">
+          📝 Edit summary
+        </button>` : ''}
+    </div>`;
+  }
+
+  html += `</div>`;
+  return html;
+}
+
+function renderChatArea() {
+  return `
+    <div class="chat-area">
+      <div class="messages-scroll" id="messagesScroll"></div>
+      <div class="chat-input-bar">
+        <textarea class="chat-input" id="chatInput" rows="1"
+          placeholder="Say something… (Enter to send)"
+          maxlength="1000"></textarea>
+        <button class="chat-send-btn" id="sendBtn" title="Send">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+          </svg>
+        </button>
+      </div>
+    </div>`;
+}
+
+function renderJoinPanel() {
+  if (isRoomAdmin()) {
+    // Admin bypasses all gates — show direct join
+    return `
+      <div class="join-panel">
+        <div class="join-card">
+          <div class="join-card-title">${escHtml(room.title)}</div>
+          ${room.topic ? `<div class="join-card-topic">${escHtml(room.topic)}</div>` : ''}
+          <div class="join-meta">
+            <span>👤 ${members.length}/${room?.capacity || 6} members</span>
+            <span class="room-status-badge badge-${room.status}">${room.status}</span>
+          </div>
+          <div style="background:#fff8e1;border:1px solid #f0c040;border-radius:8px;padding:10px 14px;margin-bottom:16px;font-family:var(--sans);font-size:12px;color:#8a6a00;">
+            ${isSilentVisit
+              ? '👁 Silent mode — your presence will <strong>not</strong> be shown to members'
+              : '🟢 Visible mode — members will see you in the room'}
+          </div>
+          <button class="btn btn-primary btn-lg" style="width:100%;justify-content:center" id="joinRoomBtn">
+            ${isSilentVisit ? 'Observe silently' : 'Enter visibly'}
+          </button>
+        </div>
+      </div>`;
+  }
+
+  const isFull    = members.length >= (room?.capacity || 6);
+  const accessType = room?.access_type || 'open';
+  const isHost    = currentUser && room?.created_by === currentUser.id;
+
+  // Access gate: logged-in non-host denied access
+  if (currentUser && !isHost && accessGranted === false) {
+    let gateHtml = '';
+    if (accessType === 'paid') {
+      gateHtml = `
+        <div class="access-gate">
+          <div class="access-gate-amount">💳 $${(room.price_cents / 100).toFixed(2)}</div>
+          <div class="access-gate-desc">One-time entry fee to join this session</div>
+          <button class="btn btn-primary btn-lg" style="width:100%;justify-content:center;margin-top:16px"
+                  onclick="startStripeCheckout()">Pay &amp; Join</button>
+        </div>`;
+    } else if (accessType === 'allowlist') {
+      gateHtml = `
+        <div class="access-gate access-denied">
+          <div class="access-gate-icon">📋</div>
+          <div class="access-gate-title">Not on the guest list</div>
+          <div class="access-gate-desc">Your email (${escHtml(currentUser.email || '')}) hasn't been approved for this room. Contact the host to be added.</div>
+        </div>`;
+    } else {
+      gateHtml = `
+        <div class="access-gate access-denied">
+          <div class="access-gate-icon">🔗</div>
+          <div class="access-gate-title">Invite required</div>
+          <div class="access-gate-desc">This room is invite-only. Ask the host to send you a join link.</div>
+        </div>`;
+    }
+    return `
+      <div class="join-panel">
+        <div class="join-card">
+          <div class="join-card-title">${escHtml(room.title)}</div>
+          ${room.topic ? `<div class="join-card-topic">${escHtml(room.topic)}</div>` : ''}
+          ${gateHtml}
+        </div>
+      </div>`;
+  }
+
+  return `
+    <div class="join-panel">
+      <div class="join-card">
+        <div class="join-card-title">${escHtml(room.title)}</div>
+        ${room.topic ? `<div class="join-card-topic">${escHtml(room.topic)}</div>` : ''}
+        <div class="join-meta">
+          <span>👤 ${members.length}/${room.capacity} members</span>
+          ${waitlistUsers.length ? `<span>⌛ ${waitlistUsers.length} waiting</span>` : ''}
+          <span class="room-status-badge badge-${room.status}">${room.status}</span>
+        </div>
+
+        ${!currentUser ? `
+          <a href="index.html" class="btn btn-primary" style="width:100%;justify-content:center">
+            Sign in to join
+          </a>` :
+          isFull ? `
+          <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px">
+            This room is full. Join the waitlist and you'll be admitted when space opens up.
+          </p>
+          <button class="btn btn-primary" style="width:100%;justify-content:center" id="joinWaitlistBtn">
+            Join waitlist (position ${waitlistUsers.length + 1})
+          </button>` : `
+          <div class="join-options">
+            <div class="join-options-title">Privacy options</div>
+            <div class="check-row">
+              <input type="checkbox" id="anonCheck">
+              <label class="check-label" for="anonCheck">
+                Join anonymously
+                <small>Your display name won't be shown to other members</small>
+              </label>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-lg" style="width:100%;justify-content:center" id="joinRoomBtn">
+            Join Room
+          </button>`
+        }
+      </div>
+    </div>`;
+}
+
+function renderWaitlistPanel() {
+  const pos = waitlistUsers.findIndex(w => w.user_id === currentUser?.id) + 1;
+  return `
+    <div class="waitlist-panel">
+      <div class="waitlist-card">
+        <div class="waitlist-card-position">#${pos}</div>
+        <div class="waitlist-card-label">Your position in the waiting list</div>
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:20px">
+          You'll be notified and automatically admitted when space opens up. Keep this page open.
+        </p>
+        <button class="btn btn-ghost btn-sm" id="leaveWaitlistBtn">Leave waitlist</button>
+      </div>
+    </div>`;
+}
+
+function renderClosedPanel() {
+  return `
+    <div class="closed-panel">
+      <div class="closed-card">
+        <div class="closed-card-header">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+            <span class="room-status-badge badge-closed">Closed</span>
+          </div>
+          <div class="closed-card-title">${escHtml(room.title)}</div>
+          ${room.topic ? `<div class="closed-card-meta">${escHtml(room.topic)}</div>` : ''}
+        </div>
+        ${(room.recap_title || room.admin_summary) ? `
+          <div class="summary-section">
+            ${room.recap_title ? `<div class="summary-recap-title">${escHtml(room.recap_title)}</div>` : ''}
+            <div class="summary-label">Recap</div>
+            ${room.recap_excerpt ? `<div class="summary-excerpt">${escHtml(room.recap_excerpt)}</div>` : ''}
+            ${room.admin_summary ? `<div class="summary-text">${escHtml(room.admin_summary)}</div>` : ''}
+          </div>` : `
+          <p style="font-size:13px;color:var(--text-muted)">This session has ended. No recap was posted.</p>`
+        }
+        ${!room.delete_on_close ? `
+          <div style="margin-top:20px">
+            <div class="summary-label">Chat transcript</div>
+            <div id="closedMessages" style="max-height:300px;overflow-y:auto;margin-top:8px"></div>
+          </div>` : ''}
+        <div style="margin-top:20px">
+          <a href="index.html" class="btn btn-outline">← Back to lobby</a>
+        </div>
+      </div>
+    </div>`;
+}
+
+/* ============================================================
+   Bind events after render
+   ============================================================ */
+function bindRoomEvents() {
+  // Follow button (sidebar)
+  const sbFollow = $('sbFollowBtn');
+  if (sbFollow) sbFollow.addEventListener('click', toggleFollow);
+
+  // Topbar follow
+  const topFollow = $('followBtn');
+  if (topFollow) topFollow.addEventListener('click', toggleFollow);
+
+  // Admin controls
+  const adminStart   = $('adminStartBtn');
+  const adminExtend  = $('adminExtendBtn');
+  const adminSummary = $('adminSummaryBtn');
+  const adminClose   = $('adminCloseBtn');
+  const adminInvite  = $('adminInviteBtn');
+
+  if (adminStart)  adminStart.addEventListener('click', startSession);
+  if (adminInvite) adminInvite.addEventListener('click', generateInvite);
+  if (adminExtend)  adminExtend.addEventListener('click', () => {
+    $('currentCap').textContent = room.capacity;
+    $('newCapacity').value = room.capacity + 4;
+    openModal('extendModal');
+  });
+  if (adminSummary) adminSummary.addEventListener('click', () => {
+    $('recapTitleInput').value   = room.recap_title   || '';
+    $('recapExcerptInput').value = room.recap_excerpt || '';
+    $('summaryText').value       = room.admin_summary  || '';
+    openModal('summaryModal');
+  });
+  if (adminClose) adminClose.addEventListener('click', adminCloseRoom);
+
+  // Join buttons
+  const joinRoomBtn     = $('joinRoomBtn');
+  const joinWaitlistBtn = $('joinWaitlistBtn');
+  const leaveWaitlistBtn = $('leaveWaitlistBtn');
+
+  if (joinRoomBtn)      joinRoomBtn.addEventListener('click', joinRoom);
+  if (joinWaitlistBtn)  joinWaitlistBtn.addEventListener('click', joinWaitlist);
+  if (leaveWaitlistBtn) leaveWaitlistBtn.addEventListener('click', leaveWaitlist);
+
+  // Chat input
+  const chatInput = $('chatInput');
+  const sendBtn   = $('sendBtn');
+  if (chatInput) {
+    chatInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+    });
+    chatInput.addEventListener('input', () => {
+      chatInput.style.height = 'auto';
+      chatInput.style.height = Math.min(chatInput.scrollHeight, 120) + 'px';
+    });
+  }
+  if (sendBtn) sendBtn.addEventListener('click', sendMessage);
+
+  // Topbar leave
+  const leaveBtn = $('leaveBtn');
+  if (leaveBtn) leaveBtn.addEventListener('click', leaveRoom);
+
+  // Topbar start
+  const startBtn = $('startBtn');
+  if (startBtn) startBtn.addEventListener('click', startSession);
+}
+
+/* ============================================================
+   Main render dispatcher
+   ============================================================ */
+function renderRoomBody() {
+  const body = $('roomBody');
+  $('tbTitle').textContent = room?.title || 'Room';
+  $('tbTopic').textContent = room?.topic || '';
+
+  const isHost  = currentUser && room?.created_by === currentUser.id;
+  const canAdmin = isHost || currentProfile?.is_admin;
+
+  // Topbar buttons
+  $('startBtn').style.display  = (canAdmin && room?.status === 'open') ? '' : 'none';
+  $('leaveBtn').style.display  = (isMember && room?.status === 'active') ? '' : 'none';
+  $('followBtn').style.display = (currentUser && isMember) ? '' : 'none';
+  $('followBtn').textContent   = isFollowing ? '★ Following' : '☆ Follow';
+
+  if (room?.status === 'closed') {
+    clearInterval(timerInterval);
+    $('timerDisplay').style.display = 'none';
+    body.innerHTML = renderClosedPanel();
+    if (!room.delete_on_close) loadClosedMessages();
+    bindRoomEvents();
+    return;
+  }
+
+  if (room?.status === 'active') {
+    $('timerDisplay').style.display = 'flex';
+    startTimer();
+  }
+
+  if (isOnWaitlist) {
+    body.innerHTML = renderWaitlistPanel();
+    bindRoomEvents();
+    return;
+  }
+
+  if (!isMember) {
+    body.innerHTML = renderJoinPanel();
+    bindRoomEvents();
+    return;
+  }
+
+  // In-room view
+  body.innerHTML = renderSidebar() + renderChatArea();
+  bindRoomEvents();
+  loadMessages();
+}
+
+/* ============================================================
+   Messages
+   ============================================================ */
+let messagesSub = null;
+const loadedMsgIds = new Set();
+
+async function loadMessages() {
+  const { data } = await sb.from('messages')
+    .select('*, profile:profiles!user_id(display_name, avatar_color)')
+    .eq('room_id', roomId)
+    .order('created_at', { ascending: true });
+
+  const scroll = $('messagesScroll');
+  if (!scroll) return;
+  scroll.innerHTML = '';
+  loadedMsgIds.clear();
+  (data || []).forEach(msg => appendMessage(msg, false));
+  scrollToBottom();
+  subscribeMessages();
+}
+
+async function loadClosedMessages() {
+  const { data } = await sb.from('messages')
+    .select('*, profile:profiles!user_id(display_name, avatar_color)')
+    .eq('room_id', roomId)
+    .order('created_at', { ascending: true });
+
+  const el = $('closedMessages');
+  if (!el) return;
+  if (!data || !data.length) {
+    el.innerHTML = '<p style="font-size:13px;color:var(--text-muted)">No messages saved.</p>';
+    return;
+  }
+  el.innerHTML = data.map(m => {
+    const name = m.is_anonymous ? 'Anonymous' : (m.profile?.display_name || 'Guest');
+    return `<div style="padding:6px 0;border-bottom:1px solid var(--border)">
+      <span style="font-size:12px;font-weight:600;color:var(--text)">${escHtml(name)}</span>
+      <span style="font-size:11px;color:var(--text-muted);margin-left:6px">${fmtTime(m.created_at)}</span>
+      <div style="font-size:13px;margin-top:2px">${escHtml(m.content)}</div>
+    </div>`;
+  }).join('');
+}
+
+function appendMessage(msg, scroll = true) {
+  const el = $('messagesScroll');
+  if (!el || loadedMsgIds.has(msg.id)) return;
+  loadedMsgIds.add(msg.id);
+
+  const isMe   = currentUser && msg.user_id === currentUser.id;
+  const name   = msg.is_anonymous ? 'Anonymous' : (msg.profile?.display_name || 'Guest');
+  const color  = msg.is_anonymous ? '#888' : (msg.profile?.avatar_color || '#8b7355');
+
+  const div = document.createElement('div');
+  div.className = `message${isMe ? ' me' : ''}`;
+  div.innerHTML = `
+    <div class="avatar avatar-sm" style="background:${color}">${msg.is_anonymous ? '?' : initials(name)}</div>
+    <div class="message-body">
+      <div class="message-name">${isMe ? 'You' : escHtml(name)}</div>
+      <div class="message-bubble">${escHtml(msg.content)}</div>
+      <div class="message-time">${fmtTime(msg.created_at)}</div>
+    </div>`;
+  el.appendChild(div);
+  if (scroll) scrollToBottom();
+}
+
+function scrollToBottom() {
+  const el = $('messagesScroll');
+  if (el) el.scrollTop = el.scrollHeight;
+}
+
+function subscribeMessages() {
+  if (channels.messages) sb.removeChannel(channels.messages);
+  channels.messages = sb.channel('messages:' + roomId)
+    .on('postgres_changes', {
+      event: 'INSERT', schema: 'public', table: 'messages',
+      filter: `room_id=eq.${roomId}`
+    }, payload => {
+      const msg = payload.new;
+      // Attach profile if available from members list
+      const member = members.find(m => m.user_id === msg.user_id);
+      if (member) msg.profile = member.profile;
+      appendMessage(msg);
+    })
+    .subscribe();
+}
+
+async function sendMessage() {
+  if (!isMember || !currentUser) return;
+  const input = $('chatInput');
+  if (!input) return;
+  const content = input.value.trim();
+  if (!content) return;
+
+  input.value = '';
+  input.style.height = 'auto';
+
+  const { error } = await sb.from('messages').insert({
+    room_id: roomId,
+    user_id: currentUser.id,
+    content,
+    is_anonymous: isAnonymous,
+  });
+  if (error) showToast('Could not send message.');
+}
+
+/* ============================================================
+   Join / Leave
+   ============================================================ */
+async function joinRoom() {
+  if (!currentUser || !room) return;
+
+  // Silent admin visit — skip room_members insert entirely, just render the chat view
+  if (isRoomAdmin() && isSilentVisit) {
+    isMember = true;
+    isOnWaitlist = false;
+    renderRoomBody();
+    return;
+  }
+
+  // Admin visible visit — bypass capacity check
+  if (!isRoomAdmin() && members.length >= room.capacity) { await joinWaitlist(); return; }
+
+  const anonCheck = $('anonCheck');
+  isAnonymous = anonCheck ? anonCheck.checked : false;
+
+  const { error } = await sb.from('room_members').insert({
+    room_id: roomId,
+    user_id: currentUser.id,
+    is_anonymous: isAnonymous,
+  });
+
+  if (error && error.code !== '23505') {
+    showToast('Could not join room.'); return;
+  }
+
+  isMember = true;
+  isOnWaitlist = false;
+  await refreshMembers();
+  renderRoomBody();
+}
+
+async function joinWaitlist() {
+  if (!currentUser) return;
+  const { error } = await sb.from('waitlist').insert({
+    room_id: roomId,
+    user_id: currentUser.id,
+  });
+  if (error && error.code !== '23505') {
+    showToast('Could not join waitlist.'); return;
+  }
+  isOnWaitlist = true;
+  await refreshWaitlist();
+  renderRoomBody();
+  showToast('You\'re on the waiting list!');
+}
+
+async function leaveWaitlist() {
+  if (!currentUser) return;
+  await sb.from('waitlist').delete().eq('room_id', roomId).eq('user_id', currentUser.id);
+  isOnWaitlist = false;
+  await refreshWaitlist();
+  renderRoomBody();
+}
+
+async function leaveRoom() {
+  if (!currentUser || !isMember) return;
+  await sb.from('room_members').delete().eq('room_id', roomId).eq('user_id', currentUser.id);
+  isMember = false;
+  await refreshMembers();
+  // Auto-admit first waitlisted person if room now has space
+  await promoteFromWaitlist();
+  renderRoomBody();
+  showToast('You left the room.');
+}
+
+async function promoteFromWaitlist() {
+  if (!waitlistUsers.length) return;
+  const next = waitlistUsers[0];
+  if (!next) return;
+  const { error } = await sb.from('room_members').insert({
+    room_id: roomId,
+    user_id: next.user_id,
+    is_anonymous: false,
+  });
+  if (!error) {
+    await sb.from('waitlist').delete().eq('room_id', roomId).eq('user_id', next.user_id);
+  }
+}
+
+async function adminApprove(userId) {
+  const w = waitlistUsers.find(u => u.user_id === userId);
+  if (!w) return;
+  const { error } = await sb.from('room_members').insert({
+    room_id: roomId,
+    user_id: userId,
+    is_anonymous: false,
+  });
+  if (error) { showToast('Could not admit — room may be full.'); return; }
+  await sb.from('waitlist').delete().eq('room_id', roomId).eq('user_id', userId);
+  await Promise.all([refreshMembers(), refreshWaitlist()]);
+  renderRoomBody();
+  const name = w.profile?.display_name || 'Guest';
+  showToast(`${name} admitted to the room.`);
+}
+window.adminApprove = adminApprove;
+
+/* ============================================================
+   Follow
+   ============================================================ */
+async function toggleFollow() {
+  if (!currentUser) return;
+  if (isFollowing) {
+    await sb.from('followers').delete().eq('room_id', roomId).eq('user_id', currentUser.id);
+    isFollowing = false;
+    showToast('Unfollowed.');
+  } else {
+    await sb.from('followers').insert({ room_id: roomId, user_id: currentUser.id });
+    isFollowing = true;
+    showToast('Following! Summaries will appear on the lobby.');
+  }
+  renderRoomBody();
+}
+
+async function checkFollowing() {
+  if (!currentUser) return;
+  const { data } = await sb.from('followers').select('id')
+    .eq('room_id', roomId).eq('user_id', currentUser.id).maybeSingle();
+  isFollowing = !!data;
+}
+
+/* ============================================================
+   Admin actions
+   ============================================================ */
+async function startSession() {
+  const now     = new Date();
+  const expires = new Date(now.getTime() + (room?.duration_mins || SESSION_MINS) * 60 * 1000);
+  const { error } = await sb.from('rooms').update({
+    status: 'active',
+    started_at: now.toISOString(),
+    expires_at: expires.toISOString(),
+  }).eq('id', roomId);
+  if (error) { showToast('Could not start session.'); return; }
+  room.status     = 'active';
+  room.started_at = now.toISOString();
+  room.expires_at = expires.toISOString();
+  renderRoomBody();
+}
+
+async function adminCloseRoom() {
+  if (!confirm('Close this room now?')) return;
+  const { error } = await sb.from('rooms').update({ status: 'closed' }).eq('id', roomId);
+  if (error) { showToast('Error closing room.'); return; }
+  if (room.delete_on_close) {
+    await sb.from('messages').delete().eq('room_id', roomId);
+  }
+  room.status = 'closed';
+  clearInterval(timerInterval);
+  renderRoomBody();
+}
+
+/* ============================================================
+   Summary modal
+   ============================================================ */
+$('closeSummary').addEventListener('click', () => closeModal('summaryModal'));
+$('cancelSummary').addEventListener('click', () => closeModal('summaryModal'));
+$('summaryModal').addEventListener('click', e => { if (e.target === $('summaryModal')) closeModal('summaryModal'); });
+
+$('doSummary').addEventListener('click', async () => {
+  const recap_title   = $('recapTitleInput').value.trim();
+  const recap_excerpt = $('recapExcerptInput').value.trim();
+  const text          = $('summaryText').value.trim();
+  $('summaryError').style.display = 'none';
+  if (!recap_title) { $('summaryError').textContent = 'Please add a recap title.'; $('summaryError').style.display = 'block'; return; }
+  if (!recap_excerpt) { $('summaryError').textContent = 'Please add a short excerpt.'; $('summaryError').style.display = 'block'; return; }
+  const payload = { recap_title, recap_excerpt, admin_summary: text };
+  const { error } = await sb.from('rooms').update(payload).eq('id', roomId);
+  if (error) { $('summaryError').textContent = error.message; $('summaryError').style.display = 'block'; return; }
+  room.recap_title   = recap_title;
+  room.recap_excerpt = recap_excerpt;
+  room.admin_summary = text;
+  closeModal('summaryModal');
+  showToast('Summary posted!');
+  renderRoomBody();
+});
+
+/* ============================================================
+   Extend capacity modal
+   ============================================================ */
+$('closeExtend').addEventListener('click', () => closeModal('extendModal'));
+$('cancelExtend').addEventListener('click', () => closeModal('extendModal'));
+$('extendModal').addEventListener('click', e => { if (e.target === $('extendModal')) closeModal('extendModal'); });
+
+$('doExtend').addEventListener('click', async () => {
+  const newCap = parseInt($('newCapacity').value);
+  $('extendError').style.display = 'none';
+  if (!newCap || newCap <= room.capacity) {
+    $('extendError').textContent = 'New capacity must be greater than current.';
+    $('extendError').style.display = 'block'; return;
+  }
+  const { error } = await sb.from('rooms').update({ capacity: newCap }).eq('id', roomId);
+  if (error) { $('extendError').textContent = error.message; $('extendError').style.display = 'block'; return; }
+  room.capacity = newCap;
+  closeModal('extendModal');
+  showToast(`Capacity extended to ${newCap}.`);
+  // Admit as many waitlisted people as possible
+  const toAdmit = newCap - members.length;
+  for (let i = 0; i < toAdmit && i < waitlistUsers.length; i++) {
+    await promoteFromWaitlist();
+    await refreshWaitlist();
+  }
+  await refreshMembers();
+  renderRoomBody();
+});
+
+/* ============================================================
+   Data fetchers
+   ============================================================ */
+async function fetchRoom() {
+  const { data, error } = await sb.from('rooms').select('*').eq('id', roomId).single();
+  if (error || !data) return false;
+  room = data;
+  return true;
+}
+
+async function refreshMembers() {
+  const { data } = await sb.from('room_members')
+    .select('*, profile:profiles!user_id(display_name, avatar_color)')
+    .eq('room_id', roomId)
+    .order('joined_at', { ascending: true });
+  members   = data || [];
+  isMember  = currentUser ? members.some(m => m.user_id === currentUser.id) : false;
+  isAnonymous = isMember
+    ? (members.find(m => m.user_id === currentUser?.id)?.is_anonymous || false)
+    : false;
+}
+
+async function refreshWaitlist() {
+  const { data } = await sb.from('waitlist')
+    .select('*, profile:profiles!user_id(display_name, avatar_color)')
+    .eq('room_id', roomId)
+    .order('joined_at', { ascending: true });
+  waitlistUsers = data || [];
+  isOnWaitlist  = currentUser ? waitlistUsers.some(w => w.user_id === currentUser.id) : false;
+}
+
+/* ============================================================
+   Realtime subscriptions
+   ============================================================ */
+function subscribeRoom() {
+  if (channels.room) sb.removeChannel(channels.room);
+
+  channels.room = sb.channel('room:' + roomId)
+    .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'rooms', filter: `id=eq.${roomId}` }, async payload => {
+      room = { ...room, ...payload.new };
+      renderRoomBody();
+    })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'room_members', filter: `room_id=eq.${roomId}` }, async () => {
+      await refreshMembers();
+      // Re-check if we were just promoted from waitlist
+      if (!isMember && isOnWaitlist) {
+        const me = members.find(m => m.user_id === currentUser?.id);
+        if (me) { isMember = true; isOnWaitlist = false; }
+      }
+      renderRoomBody();
+    })
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'waitlist', filter: `room_id=eq.${roomId}` }, async () => {
+      await refreshWaitlist();
+      renderRoomBody();
+    })
+    .subscribe();
+}
+
+/* ============================================================
+   Access Control
+   ============================================================ */
+async function checkAccess() {
+  if (!room) { accessGranted = false; return; }
+  if (!currentUser) { accessGranted = null; return; }
+  const at = room.access_type || 'open';
+  if (at === 'open' || room.created_by === currentUser.id) { accessGranted = true; return; }
+
+  if (at === 'paid') {
+    const { data } = await sb.from('room_payments')
+      .select('id').eq('room_id', roomId).eq('user_id', currentUser.id)
+      .eq('status', 'paid').maybeSingle();
+    hasPaid = !!data;
+    accessGranted = hasPaid;
+    return;
+  }
+  if (at === 'allowlist') {
+    const email = (currentUser.email || '').toLowerCase();
+    const list  = (room.allowed_emails || []).map(e => e.toLowerCase());
+    accessGranted = list.includes(email);
+    return;
+  }
+  if (at === 'invite_only') {
+    if (!inviteToken) { accessGranted = false; return; }
+    const { data: inv } = await sb.from('invitations')
+      .select('id, used_by').eq('room_id', roomId).eq('token', inviteToken).maybeSingle();
+    if (!inv) { accessGranted = false; return; }
+    if (!inv.used_by) {
+      await sb.from('invitations')
+        .update({ used_by: currentUser.id, used_at: new Date().toISOString() })
+        .eq('id', inv.id);
+      accessGranted = true;
+    } else {
+      accessGranted = inv.used_by === currentUser.id;
+    }
+    return;
+  }
+  accessGranted = false;
+}
+
+async function startStripeCheckout() {
+  const { data: { session } } = await sb.auth.getSession();
+  const token = session?.access_token;
+  try {
+    const base = `${location.origin}${location.pathname}?id=${roomId}`;
+    const resp = await fetch(`${SB_URL}/functions/v1/create-checkout`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify({ room_id: roomId, success_url: base, cancel_url: base }),
+    });
+    const json = await resp.json();
+    if (json.already_paid) { accessGranted = true; hasPaid = true; renderRoomBody(); return; }
+    if (json.url) { window.location.href = json.url; return; }
+    showToast(json.error || 'Payment setup failed. Stripe may not be configured yet.');
+  } catch {
+    showToast('Payment setup failed. Stripe may not be configured yet.');
+  }
+}
+
+async function generateInvite() {
+  const { data, error } = await sb.from('invitations')
+    .insert({ room_id: roomId, created_by: currentUser.id })
+    .select('token').single();
+  if (error) { showToast('Could not create invite link.'); return; }
+  const url = `${location.origin}${location.pathname}?id=${roomId}&invite=${data.token}`;
+  try {
+    await navigator.clipboard.writeText(url);
+    showToast('Invite link copied to clipboard!');
+  } catch {
+    showToast('Invite link: ' + url);
+  }
+}
+
+/* ============================================================
+   Init
+   ============================================================ */
+async function init() {
+  if (!roomId) { window.location.href = 'index.html'; return; }
+
+  // Auth
+  const { data: { session } } = await sb.auth.getSession();
+  if (session?.user) {
+    currentUser = session.user;
+    const { data } = await sb.from('profiles').select('*').eq('id', currentUser.id).single();
+    currentProfile = data;
+  }
+
+  // Load room
+  const ok = await fetchRoom();
+  if (!ok) {
+    $('tbTitle').textContent = 'Room not found';
+    $('roomBody').innerHTML = `<div style="flex:1;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px">
+      <div style="font-size:40px">🫖</div>
+      <p style="color:var(--text-muted)">This room doesn't exist.</p>
+      <a href="index.html" class="btn btn-outline">← Back to lobby</a>
+    </div>`;
+    return;
+  }
+
+  // Load state in parallel
+  await Promise.all([refreshMembers(), refreshWaitlist(), checkFollowing()]);
+
+  // If room is active but just loaded, check if already expired
+  if (room.status === 'active' && room.expires_at && new Date(room.expires_at) < new Date()) {
+    await closeRoomIfExpired();
+    await fetchRoom();
+  }
+
+  // Check access — with brief polling when returning from Stripe payment
+  if (params.get('payment_success') === '1') {
+    showToast('Processing payment…');
+    for (let i = 0; i < 10; i++) {
+      await checkAccess();
+      if (accessGranted) break;
+      await new Promise(r => setTimeout(r, 1500));
+    }
+    const u = new URL(location.href);
+    u.searchParams.delete('payment_success');
+    history.replaceState({}, '', u);
+  } else {
+    await checkAccess();
+  }
+
+  renderRoomBody();
+  subscribeRoom();
+}
+
+init();
+</script>
+</body>
+</html>

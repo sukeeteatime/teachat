@@ -379,6 +379,7 @@ body.player-active main { padding-bottom: 5.5rem; }
 .post-footer {
   display: flex;
   align-items: center;
+  gap: 8px;
   padding-top: 0.75rem;
   border-top: 1px solid var(--border);
 }
@@ -1346,3 +1347,52 @@ footer a:hover { color: var(--gold-dark); }
 
   footer { margin-bottom: 4rem; }
 }
+
+/* ============================================================
+   Chat button on blog cards
+   ============================================================ */
+.post-chat-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.15s, opacity 0.15s;
+  white-space: nowrap;
+}
+
+.post-chat-start {
+  background: none;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  padding: 0.35rem 0.85rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+.post-chat-start:hover { border-color: var(--gold); color: var(--gold); background: rgba(196,154,40,0.06); text-decoration: none; }
+
+.post-chat-join {
+  background: var(--gold, #C49A28);
+  color: #fff;
+}
+.post-chat-join:hover { background: var(--gold-dark, #a8831e); text-decoration: none; }
+
+.post-chat-waiting {
+  background: #fff8e1;
+  color: #c87320;
+  border: 1.5px solid #fddba0;
+}
+.post-chat-waiting:hover { background: #fddba0; text-decoration: none; }
+
+.post-chat-follow {
+  background: transparent;
+  color: var(--text-muted, #6b6860);
+  border: 1.5px solid var(--border, #e5e1d8);
+}
+.post-chat-follow:hover { border-color: var(--gold, #C49A28); color: var(--gold-dark, #a8831e); text-decoration: none; }

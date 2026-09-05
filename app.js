@@ -1025,9 +1025,84 @@ function blogCardHtml(blog) {
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 0 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z"/><line x1="6" y1="2" x2="6" y2="5"/><line x1="10" y1="2" x2="10" y2="5"/><line x1="14" y1="2" x2="14" y2="5"/></svg>
           Gift a Cup
         </a>
+        ${chatBtnHtml(blog.id)}
       </div>
     </article>
   `;
+}
+
+/* === Chat room button per blog card === */
+const _SB_URL = 'https://gsqjhxvjfnwugsivgzah.supabase.co';
+const _SB_KEY = 'sb_publishable_6AMzgqb7WpsEDWPnhcKBRw_zTObt1O1';
+let _sb = null;
+let _chatRooms = {}; // blog_id → { id, status, capacity, memberCount, waitlistCount }
+
+function chatBtnHtml(blogId) {
+  const r = _chatRooms[blogId];
+
+  if (!r) {
+    // No room yet for this post
+    const blog = (window.BLOG_REGISTRY || []).find(b => b.id === blogId)
+              || (window.BLOG_REGISTRY_ZH || []).find(b => b.id === blogId);
+    const title = encodeURIComponent(blog ? blog.title : blogId);
+    const href  = `chatroom/index.html?start=1&blog_id=${encodeURIComponent(blogId)}&title=${title}`;
+    return `<a class="post-chat-btn post-chat-start" href="${href}" target="_blank"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-right:4px"><path d="M17 8h1a4 4 0 0 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z"/><path d="M6 2c0 1 1 1 1 2s-1 1-1 2"/><path d="M10 2c0 1 1 1 1 2s-1 1-1 2"/><path d="M14 2c0 1 1 1 1 2s-1 1-1 2"/></svg>Start Chat</a>`;
+  }
+
+  const isFull = r.memberCount >= r.capacity;
+
+  if (isFull) {
+    const waitPos = r.waitlistCount + 1;
+    return `<a class="post-chat-btn post-chat-waiting" href="chatroom/room.html?id=${r.id}" target="_blank">⏳ Join Waitlist · #${waitPos}</a>`;
+  }
+
+  return `<a class="post-chat-btn post-chat-join" href="chatroom/room.html?id=${r.id}" target="_blank">💬 Chat · ${r.memberCount}/${r.capacity}</a>`;
+}
+
+async function _loadChatRooms() {
+  if (!_sb) return;
+  const [roomsRes, membersRes, waitRes] = await Promise.all([
+    _sb.from('rooms').select('id, blog_id, status, capacity').not('blog_id', 'is', null).in('status', ['open','active']),
+    _sb.from('room_members').select('room_id'),
+    _sb.from('waitlist').select('room_id'),
+  ]);
+
+  const mc = {}, wc = {};
+  (membersRes.data || []).forEach(m => { mc[m.room_id] = (mc[m.room_id] || 0) + 1; });
+  (waitRes.data    || []).forEach(w => { wc[w.room_id] = (wc[w.room_id] || 0) + 1; });
+
+  const next = {};
+  (roomsRes.data || []).forEach(r => {
+    if (r.blog_id) {
+      next[r.blog_id] = { id: r.id, status: r.status, capacity: r.capacity, memberCount: mc[r.id] || 0, waitlistCount: wc[r.id] || 0 };
+    }
+  });
+
+  if (JSON.stringify(next) !== JSON.stringify(_chatRooms)) {
+    _chatRooms = next;
+    renderFeed();
+  }
+}
+
+function initChatRooms() {
+  // Supabase CDN loads async — wire up callback so it works either way
+  window._chatRoomsReady = _startChatRooms;
+  if (typeof window.supabase !== 'undefined') _startChatRooms();
+  // If supabase isn't loaded yet, onload in the script tag will call _chatRoomsReady()
+  // Blog cards still show "☕ Start Chat" immediately via chatBtnHtml with empty _chatRooms
+}
+
+function _startChatRooms() {
+  if (_sb) return; // already started
+  try { _sb = window.supabase.createClient(_SB_URL, _SB_KEY); } catch(e) { return; }
+
+  _loadChatRooms();
+
+  _sb.channel('blog-chat-rooms')
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'rooms' }, _loadChatRooms)
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'room_members' }, _loadChatRooms)
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'waitlist' }, _loadChatRooms)
+    .subscribe();
 }
 
 function appendFeedPage() {
@@ -1484,6 +1559,9 @@ function init() {
     const blog = deduped().find(function(b) { return b.id === hash; });
     if (blog) openBlog(hash);
   }
+
+  // Load live chat room state for blog card buttons
+  initChatRooms();
 }
 
 init();

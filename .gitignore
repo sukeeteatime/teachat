@@ -1,2 +1,5 @@
 .github/
 admin/
+.DS_Store
+.claude/
+chatroom/seed.sql
