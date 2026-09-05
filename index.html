@@ -22,7 +22,7 @@
   <link rel="icon" href="images/favicon-32.png" type="image/png" sizes="32x32">
   <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=75">
+  <link rel="stylesheet" href="style.css?v=76">
 </head>
 <body>
 
@@ -150,10 +150,14 @@
   <!-- YouTube IFrame API pre-loaded so it's ready before any session starts -->
   <script async src="https://www.youtube.com/iframe_api"></script>
 
+  <!-- Supabase (for live chat room state on blog cards) — async so a slow CDN never blocks rendering -->
+  <script async src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+          onload="if(window._chatRoomsReady)window._chatRoomsReady()"></script>
+
   <!-- All posts bundled into one file by the pre-commit hook (was 365 separate requests) -->
-  <script src="blogs/registry.js?v=118" defer></script>
-  <script src="blogs-ch/registry.js?v=118" defer></script>
-  <script src="app.js?v=118" defer></script>
+  <script src="blogs/registry.js?v=119" defer></script>
+  <script src="blogs-ch/registry.js?v=119" defer></script>
+  <script src="app.js?v=121" defer></script>
 
 </body>
 </html>
