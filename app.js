@@ -986,6 +986,17 @@ window.filterByTag = function(tag) {
   document.documentElement.scrollTop = 0;
 };
 
+window.switchCardPage = function(btn, blogId) {
+  const card = btn.closest('article.post-card');
+  if (!card) { openBlog(blogId); return; }
+  const blog = activeRegistry().find(b => b.id === blogId);
+  if (!blog) return;
+  const wrapper = document.createElement('div');
+  wrapper.innerHTML = blogCardHtml(blog);
+  const newCard = wrapper.querySelector('article');
+  if (newCard) { card.replaceWith(newCard); initFaqToggles(newCard); }
+};
+
 function blogCardHtml(blog) {
   const date = fmtDate(blog.date);
   const q = state.searchQuery;
@@ -1014,7 +1025,7 @@ function blogCardHtml(blog) {
   const cardPagerHtml = allPages.length > 1
     ? '<div class="subpage-pager">' +
         allPages.map((p, i) =>
-          `<button class="subpage-pager-btn${p.id === blog.id ? ' active' : ''}" onclick="event.stopPropagation();openBlog('${p.id}')">${i + 1}</button>`
+          `<button class="subpage-pager-btn${p.id === blog.id ? ' active' : ''}" onclick="event.stopPropagation();switchCardPage(this,'${p.id}')">${i}</button>`
         ).join('') +
       '</div>'
     : '';
@@ -1328,16 +1339,12 @@ window.openBlog = function(id) {
     .filter(b => b.id === rootId || b.parentId === rootId)
     .sort((a, b) => (a.subpageSeq ?? -1) - (b.subpageSeq ?? -1));
 
-  console.log('[pager] blog.id=', blog.id, 'rootId=', rootId, 'allPages=', allPages.map(p => p.id), 'registry size=', activeRegistry().length);
-
   if (allPages.length > 1) {
-    const currentSeq = blog.subpageSeq ?? -1;
     const pager = document.createElement('div');
     pager.className = 'subpage-pager';
     pager.innerHTML = allPages.map((p, i) => {
-      const label = i + 1;
       const isCurrent = p.id === blog.id;
-      return `<button class="subpage-pager-btn${isCurrent ? ' active' : ''}" onclick="openBlog('${p.id}')">${label}</button>`;
+      return `<button class="subpage-pager-btn${isCurrent ? ' active' : ''}" onclick="openBlog('${p.id}')">${i}</button>`;
     }).join('');
     $('modalContent').prepend(pager);
   }
@@ -1453,7 +1460,7 @@ function renderCalendar() {
 
     // Year carousel
     const yearMap = new Map();
-    deduped().forEach(b => {
+    deduped().filter(b => b.showHome !== false).forEach(b => {
       const y = b.date.slice(0, 4);
       yearMap.set(y, (yearMap.get(y) || 0) + 1);
     });
