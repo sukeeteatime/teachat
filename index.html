@@ -22,7 +22,7 @@
   <link rel="icon" href="images/favicon-32.png" type="image/png" sizes="32x32">
   <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=85">
+  <link rel="stylesheet" href="style.css?v=86">
 </head>
 <body>
 
@@ -32,15 +32,61 @@
     <div class="site-title-group">
       <span class="site-name">Sukee Tea Time</span>
     </div>
-    <button class="speaker-btn" id="speakerBtn" aria-label="Read article aloud">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
-        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
-        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
-      </svg>
-    </button>
-    <button class="lang-toggle" id="langToggle" aria-label="Switch language">中文</button>
+    <div class="header-right">
+      <button class="speaker-btn" id="speakerBtn" aria-label="Read article aloud">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+          <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+        </svg>
+      </button>
+      <button class="lang-toggle" id="langToggle" aria-label="Switch language">中文</button>
+      <div id="authChip" style="display:none;align-items:center;gap:6px">
+        <span id="authName" style="font-size:12px;font-weight:600;color:var(--text-muted);max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
+        <button class="auth-btn auth-btn-ghost" id="signOutBtn">Sign out</button>
+      </div>
+      <button class="auth-btn" id="signInHeaderBtn">Sign in</button>
+    </div>
   </header>
+
+  <!-- Sign-in modal -->
+  <div class="auth-overlay" id="authOverlay" style="display:none">
+    <div class="auth-modal" role="dialog" aria-modal="true">
+      <button class="auth-modal-close" id="authModalClose">✕</button>
+      <div id="authSignInPane">
+        <div class="auth-modal-title">Sign in</div>
+        <div class="auth-field">
+          <label class="auth-label" for="authEmail">Email</label>
+          <input class="auth-input" type="email" id="authEmail" autocomplete="email" placeholder="you@example.com">
+        </div>
+        <div class="auth-field">
+          <label class="auth-label" for="authPassword">Password</label>
+          <input class="auth-input" type="password" id="authPassword" autocomplete="current-password" placeholder="••••••••">
+        </div>
+        <div class="auth-error" id="authError" style="display:none"></div>
+        <button class="auth-submit" id="authDoSignIn">Sign in</button>
+        <p class="auth-switch">New here? <button class="auth-link" id="authGoSignUp">Create account</button></p>
+      </div>
+      <div id="authSignUpPane" style="display:none">
+        <div class="auth-modal-title">Create account</div>
+        <div class="auth-field">
+          <label class="auth-label" for="authSuName">Display name</label>
+          <input class="auth-input" type="text" id="authSuName" maxlength="40" placeholder="How others see you">
+        </div>
+        <div class="auth-field">
+          <label class="auth-label" for="authSuEmail">Email</label>
+          <input class="auth-input" type="email" id="authSuEmail" autocomplete="email" placeholder="you@example.com">
+        </div>
+        <div class="auth-field">
+          <label class="auth-label" for="authSuPassword">Password</label>
+          <input class="auth-input" type="password" id="authSuPassword" autocomplete="new-password" placeholder="At least 6 characters">
+        </div>
+        <div class="auth-error" id="authSuError" style="display:none"></div>
+        <button class="auth-submit" id="authDoSignUp">Create account</button>
+        <p class="auth-switch">Already have an account? <button class="auth-link" id="authGoSignIn">Sign in</button></p>
+      </div>
+    </div>
+  </div>
 
   <!-- Sidebar -->
   <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
@@ -150,14 +196,14 @@
   <!-- YouTube IFrame API pre-loaded so it's ready before any session starts -->
   <script async src="https://www.youtube.com/iframe_api"></script>
 
-  <!-- Supabase (for live chat room state on blog cards) — async so a slow CDN never blocks rendering -->
+  <!-- Supabase (for live chat room state + auth) — async so a slow CDN never blocks rendering -->
   <script async src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
-          onload="if(window._chatRoomsReady)window._chatRoomsReady()"></script>
+          onload="if(window._chatRoomsReady)window._chatRoomsReady();if(window._authReady)window._authReady()"></script>
 
   <!-- All posts bundled into one file by the pre-commit hook (was 365 separate requests) -->
-  <script src="blogs/registry.js?v=127" defer></script>
-  <script src="blogs-ch/registry.js?v=127" defer></script>
-  <script src="app.js?v=130" defer></script>
+  <script src="blogs/registry.js?v=128" defer></script>
+  <script src="blogs-ch/registry.js?v=128" defer></script>
+  <script src="app.js?v=131" defer></script>
 
 </body>
 </html>

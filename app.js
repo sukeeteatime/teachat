@@ -990,8 +990,16 @@ function blogCardHtml(blog) {
   const date = fmtDate(blog.date);
   const q = state.searchQuery;
   const titleHtml = q ? highlightStr(blog.title, q) : escHtml(blog.title);
+  const locked = _isOldArticle(blog) && !_authUser;
   let bodyHtml;
-  if (q) {
+  if (locked) {
+    const excerptText = blog.excerpt || stripHtml(blog.content || '').slice(0, 200);
+    bodyHtml = `<p class="post-excerpt-locked">${escHtml(excerptText)}</p>
+      <div class="post-locked-gate">
+        <span class="post-locked-icon">🔒</span>
+        <span class="post-locked-msg">This article is over 6 months old. <button class="post-locked-signin" onclick="window._openSignIn&&window._openSignIn()">Sign in</button> to read the full content.</span>
+      </div>`;
+  } else if (q) {
     const snippet = searchSnippet(blog, q);
     bodyHtml = snippet
       ? '<p class="search-snippet">' + snippet + '</p>'
@@ -1000,7 +1008,7 @@ function blogCardHtml(blog) {
     bodyHtml = contentToHtml(blog);
   }
   return `
-    <article class="post-card${blog.pinned ? ' post-card--pinned' : ''}">
+    <article class="post-card${blog.pinned ? ' post-card--pinned' : ''}${locked ? ' post-card--locked' : ''}">
       <div class="post-cat-row">
         <span class="post-cat">${escHtml(blog.category)}</span>
         ${blog.pinned ? '<span class="post-pin-badge">📌 Pinned</span>' : ''}
@@ -1099,7 +1107,107 @@ function _startChatRooms() {
     .on('postgres_changes', { event: '*', schema: 'public', table: 'room_members' }, _loadChatRooms)
     .on('postgres_changes', { event: '*', schema: 'public', table: 'waitlist' }, _loadChatRooms)
     .subscribe();
+
+  // Auth shares the same client — initialize now that Supabase is loaded
+  _initAuth();
 }
+
+/* ============================================================
+   Auth — shared with chatroom (same Supabase project = same session)
+   ============================================================ */
+let _authUser = null;
+
+function _isOldArticle(blog) {
+  const cutoff = new Date();
+  cutoff.setMonth(cutoff.getMonth() - 6);
+  return new Date(blog.date + 'T00:00:00') < cutoff;
+}
+
+function _initAuth() {
+  if (!_sb) return;
+
+  // Restore session silently — Supabase shares localStorage with chatroom
+  _sb.auth.getSession().then(({ data }) => {
+    _authUser = data?.session?.user || null;
+    _updateAuthUI();
+    if (!_authUser) renderFeed(); // re-render so locked cards appear
+  });
+
+  _sb.auth.onAuthStateChange((_event, session) => {
+    _authUser = session?.user || null;
+    _updateAuthUI();
+    renderFeed();
+  });
+
+  // Modal wiring
+  const overlay  = $('authOverlay');
+  const signInP  = $('authSignInPane');
+  const signUpP  = $('authSignUpPane');
+
+  function openSignIn()  { signInP.style.display=''; signUpP.style.display='none'; $('authError').style.display='none'; overlay.style.display='flex'; }
+  function openSignUp()  { signInP.style.display='none'; signUpP.style.display=''; $('authSuError').style.display='none'; overlay.style.display='flex'; }
+  function closeModal()  { overlay.style.display='none'; }
+
+  window._openSignIn = openSignIn;
+
+  $('signInHeaderBtn').addEventListener('click', openSignIn);
+  $('authModalClose').addEventListener('click', closeModal);
+  overlay.addEventListener('click', e => { if (e.target === overlay) closeModal(); });
+  $('authGoSignUp').addEventListener('click', openSignUp);
+  $('authGoSignIn').addEventListener('click', openSignIn);
+
+  $('authDoSignIn').addEventListener('click', async () => {
+    const email = $('authEmail').value.trim();
+    const pass  = $('authPassword').value;
+    const errEl = $('authError');
+    errEl.style.display = 'none';
+    const { error } = await _sb.auth.signInWithPassword({ email, password: pass });
+    if (error) { errEl.textContent = error.message; errEl.style.display = ''; return; }
+    closeModal();
+  });
+
+  $('authDoSignUp').addEventListener('click', async () => {
+    const name  = $('authSuName').value.trim();
+    const email = $('authSuEmail').value.trim();
+    const pass  = $('authSuPassword').value;
+    const errEl = $('authSuError');
+    errEl.style.display = 'none';
+    if (!name) { errEl.textContent = 'Display name is required.'; errEl.style.display = ''; return; }
+    const { data, error } = await _sb.auth.signUp({ email, password: pass, options: { data: { display_name: name } } });
+    if (error) { errEl.textContent = error.message; errEl.style.display = ''; return; }
+    if (data?.user && name) {
+      await _sb.from('profiles').upsert({ id: data.user.id, display_name: name }, { onConflict: 'id', ignoreDuplicates: false });
+    }
+    errEl.style.display = 'none';
+    closeModal();
+    alert('Account created! Check your email to confirm, then sign in.');
+  });
+
+  $('signOutBtn').addEventListener('click', async () => {
+    await _sb.auth.signOut();
+  });
+}
+
+function _updateAuthUI() {
+  const chip = $('authChip');
+  const signInBtn = $('signInHeaderBtn');
+  if (!chip || !signInBtn) return;
+  if (_authUser) {
+    chip.style.display = 'flex';
+    signInBtn.style.display = 'none';
+    const name = _authUser.user_metadata?.display_name || _authUser.email?.split('@')[0] || '';
+    $('authName').textContent = name;
+  } else {
+    chip.style.display = 'none';
+    signInBtn.style.display = '';
+  }
+}
+
+// Called from index.html onload when Supabase loads before app.js init
+window._authReady = function() {
+  if (_sb) _initAuth();
+  // else _startChatRooms will call _initAuth() when it runs
+};
 
 function appendFeedPage() {
   const batch = feedBlogs.slice(feedRendered, feedRendered + PAGE_SIZE);
