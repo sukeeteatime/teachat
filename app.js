@@ -204,6 +204,10 @@ function contentToHtml(blog) {
     // so the responsive CSS and JS selector work regardless of how the content was saved
     html = html.replace(/<div[^>]*class="[^"]*\byt-embed\b[^"]*"[^>]*>\s*(<iframe[^>]*youtube\.com\/embed[^>]*>(?:<\/iframe>)?)\s*<\/div>/gi, '$1');
     html = html.replace(/(<iframe[^>]*youtube\.com\/embed[^>]*>(?:<\/iframe>)?)/gi, '<div class="yt-embed">$1</div>');
+    // Strip leading/trailing <br> from .paragraph wrappers — authoring artifacts that
+    // stack a blank line on top of the CSS margin-bottom, causing double-spacing
+    html = html.replace(/(<div\b[^>]*\bparagraph\b[^>]*>)(\s*<br\s*\/?>\s*)+/gi, '$1');
+    html = html.replace(/(\s*<br\s*\/?>\s*)+(<\/div>)/gi, '$2');
     return html;
   }
   return blog.content.split(/\n+/).filter(p => p.trim()).map(p => `<p>${p.trim()}</p>`).join('');
