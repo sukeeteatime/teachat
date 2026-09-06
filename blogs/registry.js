@@ -8192,7 +8192,7 @@ window.BLOG_REGISTRY.push({
 });
 window.BLOG_REGISTRY.push({
   "id": "2026-09-07-2026-new-graduate-how-to-find-your-first-job-2",
-  "title": "2026 New Graduate | How to Find Your First Job (2)",
+  "title": "2026 New Graduate | How to Find Your First Job (1)",
   "author": "Sukee Parker",
   "date": "2026-09-07",
   "category": "Career",
