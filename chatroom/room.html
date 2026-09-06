@@ -263,7 +263,7 @@ function renderSidebar() {
   // Admin panel
   if (canAdmin && room?.status !== 'closed') {
     html += `<div class="admin-panel">
-      <div class="admin-label">🔑 Host controls</div>
+      <div class="admin-label">🔑 ${isHost ? 'Host' : 'Admin'} controls</div>
       ${room?.status === 'open' ? `
         <button class="btn btn-success btn-sm" style="width:100%;margin-bottom:8px" id="adminStartBtn">
           ▶ Start session
@@ -565,6 +565,13 @@ function renderRoomBody() {
   }
 
   if (!isMember) {
+    if (canAdmin) {
+      // Admin can observe and control any room without joining
+      body.innerHTML = renderSidebar() + renderChatArea();
+      bindRoomEvents();
+      loadMessages();
+      return;
+    }
     body.innerHTML = renderJoinPanel();
     bindRoomEvents();
     return;

@@ -40,25 +40,31 @@ ALTER TABLE invitations  ENABLE ROW LEVEL SECURITY;
 ALTER TABLE room_payments ENABLE ROW LEVEL SECURITY;
 
 -- Invitations: host full control; anyone can read (for token lookup); anyone can claim unclaimed token
+DROP POLICY IF EXISTS "Host manages own invitations" ON invitations;
 CREATE POLICY "Host manages own invitations" ON invitations
   FOR ALL USING (created_by = auth.uid());
 
+DROP POLICY IF EXISTS "Anyone can read invite tokens" ON invitations;
 CREATE POLICY "Anyone can read invite tokens" ON invitations
   FOR SELECT USING (true);
 
+DROP POLICY IF EXISTS "Claim unclaimed invite" ON invitations;
 CREATE POLICY "Claim unclaimed invite" ON invitations
   FOR UPDATE USING (used_by IS NULL)
   WITH CHECK (used_by = auth.uid());
 
 -- Payments: user sees/creates their own rows; service role (webhook) updates via SUPABASE_SERVICE_ROLE_KEY
+DROP POLICY IF EXISTS "User sees own payments" ON room_payments;
 CREATE POLICY "User sees own payments" ON room_payments
   FOR SELECT USING (user_id = auth.uid());
 
+DROP POLICY IF EXISTS "User creates pending payment" ON room_payments;
 CREATE POLICY "User creates pending payment" ON room_payments
   FOR INSERT WITH CHECK (user_id = auth.uid() AND status = 'pending');
 
 -- 5. Replace room_members INSERT policy to enforce access types
 DROP POLICY IF EXISTS "Members can join open or active rooms" ON room_members;
+DROP POLICY IF EXISTS "Members can join with access check" ON room_members;
 
 CREATE POLICY "Members can join with access check" ON room_members
   FOR INSERT WITH CHECK (
@@ -92,6 +98,10 @@ CREATE POLICY "Members can join with access check" ON room_members
     )
   );
 
--- 6. Add new tables to realtime
-ALTER PUBLICATION supabase_realtime ADD TABLE invitations;
-ALTER PUBLICATION supabase_realtime ADD TABLE room_payments;
+-- 6. Add new tables to realtime (safe to re-run — ignored if already added)
+DO $$ BEGIN
+  ALTER PUBLICATION supabase_realtime ADD TABLE invitations;
+EXCEPTION WHEN duplicate_object THEN NULL; END $$;
+DO $$ BEGIN
+  ALTER PUBLICATION supabase_realtime ADD TABLE room_payments;
+EXCEPTION WHEN duplicate_object THEN NULL; END $$;

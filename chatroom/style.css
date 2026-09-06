@@ -16,7 +16,7 @@
   --danger:      #b94040;
   --success:     #3a7d52;
   --online:      #5cb85c;
-  --waiting:     #c87320;
+  --waiting:     #5a5a5a;
   --serif:       'Lora', Georgia, serif;
   --display:     'Playfair Display', Georgia, serif;
   --sans:        'Inter', system-ui, sans-serif;
@@ -164,8 +164,11 @@ button { cursor: pointer; font-family: var(--sans); }
 
 .stat-item { display: flex; align-items: center; gap: 6px; }
 .stat-dot  { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-.stat-dot.active  { background: var(--online); }
-.stat-dot.waiting { background: var(--waiting); }
+.stat-dot.active    { background: var(--online); }
+.stat-dot.waiting   { background: var(--waiting); }
+.stat-dot.scheduled { background: #3850b0; }
+.stat-dot.open      { background: var(--gold); }
+.stat-dot.closed    { background: #8a8a8a; }
 .stat-item strong { color: var(--text); font-weight: 600; }
 .stats-bar .stats-spacer { flex: 1; }
 
@@ -1307,6 +1310,14 @@ button { cursor: pointer; font-family: var(--sans); }
 
 /* Link back to the original blog post */
 /* Title row — title + optional post link icon */
+.rc-active-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--online, #5cb85c);
+  flex-shrink: 0;
+  margin-top: 3px;
+}
 .rc-title-row {
   display: flex;
   align-items: center;
@@ -1515,6 +1526,68 @@ button { cursor: pointer; font-family: var(--sans); }
 /* ============================================================
    Room Search Bar
    ============================================================ */
+.lobby-stats-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.lobby-stat-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  padding: 0.3rem 0.85rem;
+  font-size: 12px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+.lobby-stat-chip strong { color: var(--text); font-weight: 600; }
+.lobby-stat-chip:hover { border-color: var(--gold); color: var(--text); }
+.lobby-stat-chip.stat-filter-active {
+  border-color: var(--gold);
+  background: rgba(196,154,40,0.08);
+  color: var(--text);
+}
+.rc-approve-btn {
+  background: #2e7d32;
+  color: #fff;
+  border: none;
+  border-radius: 14px;
+  padding: 0.3rem 0.85rem;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.rc-approve-btn:hover { opacity: 0.85; }
+.room-card:has(.rc-approve-btn) { border-left: 3px solid #e67e22; }
+.rc-trash-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  opacity: 0;
+  transition: opacity 0.15s, color 0.15s;
+}
+.room-card:hover .rc-trash-btn { opacity: 1; }
+.rc-trash-btn:hover { color: #c0392b; }
+.new-room-tab {
+  margin-left: auto;
+  background: var(--gold) !important;
+  color: #fff !important;
+  border-color: var(--gold) !important;
+  border-radius: 20px !important;
+  font-weight: 600 !important;
+}
+.new-room-tab:hover { opacity: 0.88; }
 .room-search-wrap {
   display: flex;
   align-items: center;
