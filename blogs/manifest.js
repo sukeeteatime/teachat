@@ -394,5 +394,6 @@ window.BLOG_MANIFEST = [
   "2026-08-31-2026-mental-models-.js",
   "2026-09-03-when-life-throws-you-lemon.js",
   "2026-09-04-knowing-your-limits.js",
-  "2026-09-05-when-you-dont-know-what-to-do.js"
+  "2026-09-05-when-you-dont-know-what-to-do.js",
+  "2026-09-06-2026-new-graduate-career-guide-how-to-find-your-first-job.js"
 ];
