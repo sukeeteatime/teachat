@@ -982,6 +982,8 @@ code {
 .faq-item.open .faq-a { display: block; }
 .faq-a p { margin-bottom: 0.6rem; }
 .faq-a p:last-child { margin-bottom: 0; }
+.faq-a a { color: var(--gold-dark); text-decoration: underline; }
+.faq-a a:hover { color: var(--gold); }
 
 /* === Feed sentinel (infinite scroll trigger) === */
 #feedSentinel { height: 1px; }
