@@ -1277,10 +1277,11 @@ function updateSentinel() {
 
 function renderFeed() {
   const today = new Date().toISOString().slice(0, 10);
+  const q = state.searchQuery;
   let blogs = (state.filterCategory === 'All'
     ? deduped()
     : deduped().filter(b => b.category === state.filterCategory)
-  ).filter(b => b.date <= today && b.showHome !== false);
+  ).filter(b => b.date <= today && (q || b.showHome !== false));
   if (state.calYearFilter) {
     blogs = blogs.filter(b => b.date.startsWith(state.calYearFilter));
   }
