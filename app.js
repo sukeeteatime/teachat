@@ -1141,7 +1141,7 @@ function renderFeed() {
   let blogs = (state.filterCategory === 'All'
     ? deduped()
     : deduped().filter(b => b.category === state.filterCategory)
-  ).filter(b => b.date <= today);
+  ).filter(b => b.date <= today && b.showHome !== false);
   if (state.calYearFilter) {
     blogs = blogs.filter(b => b.date.startsWith(state.calYearFilter));
   }
