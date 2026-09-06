@@ -1074,8 +1074,13 @@ function blogCardHtml(blog) {
 /* === Chat room button per blog card === */
 const _SB_URL = 'https://gsqjhxvjfnwugsivgzah.supabase.co';
 const _SB_KEY = 'sb_publishable_6AMzgqb7WpsEDWPnhcKBRw_zTObt1O1';
+const _AVATAR_COLORS = [
+  '#8B7355','#c4956a','#6b8e6b','#7a8eb0','#a06b8e',
+  '#c47a6a','#6aacab','#b0a06b','#8e6b9a','#c46a7a',
+];
 let _sb = null;
 let _chatRooms = {}; // blog_id → { id, status, capacity, memberCount, waitlistCount }
+let _userAvatarColor = _AVATAR_COLORS[0];
 
 function chatBtnHtml(blogId) {
   const r = _chatRooms[blogId];
@@ -1162,16 +1167,25 @@ function _isOldArticle(blog) {
 function _initAuth() {
   if (!_sb) return;
 
+  async function _loadProfile(uid) {
+    if (!uid || !_sb) return;
+    const { data } = await _sb.from('profiles').select('avatar_color').eq('id', uid).single();
+    if (data?.avatar_color) { _userAvatarColor = data.avatar_color; _updateAuthUI(); }
+  }
+
   // Restore session silently — Supabase shares localStorage with chatroom
   _sb.auth.getSession().then(({ data }) => {
     _authUser = data?.session?.user || null;
     _updateAuthUI();
-    if (!_authUser) renderFeed(); // re-render so locked cards appear
+    if (_authUser) _loadProfile(_authUser.id);
+    else renderFeed(); // re-render so locked cards appear
   });
 
   _sb.auth.onAuthStateChange((_event, session) => {
     _authUser = session?.user || null;
+    _userAvatarColor = _AVATAR_COLORS[0];
     _updateAuthUI();
+    if (_authUser) _loadProfile(_authUser.id);
     renderFeed();
   });
 
@@ -1222,62 +1236,87 @@ function _initAuth() {
   const _doSignOut = async () => { await _sb.auth.signOut(); };
   $('signOutBtn').addEventListener('click', _doSignOut);
   if ($('signOutBtnMobile')) $('signOutBtnMobile').addEventListener('click', _doSignOut);
+
+  // Profile modal wiring
+  const profileOv = $('profileOverlay');
+  if (profileOv) {
+    const closeProfile = () => { profileOv.style.display = 'none'; };
+    $('profileModalClose').addEventListener('click', closeProfile);
+    profileOv.addEventListener('click', e => { if (e.target === profileOv) closeProfile(); });
+    $('profileSaveBtn').addEventListener('click', async () => {
+      const name = $('profileName').value.trim();
+      const errEl = $('profileError');
+      errEl.style.display = 'none';
+      if (!name) { errEl.textContent = 'Display name is required.'; errEl.style.display = ''; return; }
+      const { error } = await _sb.from('profiles').upsert(
+        { id: _authUser.id, display_name: name, avatar_color: _userAvatarColor },
+        { onConflict: 'id' }
+      );
+      if (error) { errEl.textContent = error.message; errEl.style.display = ''; return; }
+      await _sb.auth.updateUser({ data: { display_name: name } });
+      _authUser = (await _sb.auth.getUser()).data.user;
+      _updateAuthUI();
+      closeProfile();
+    });
+  }
 }
 
-function _openProfilePopover() {
-  const existing = document.getElementById('profilePopover');
-  if (existing) { existing.remove(); return; }
-  const user = _authUser;
-  if (!user) return;
-  const name = user.user_metadata?.display_name || user.email?.split('@')[0] || '';
-  const email = user.email || '';
-  const since = user.created_at
-    ? new Date(user.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
-    : '';
+function _updateAvatarEl() {
+  const av = $('authAvatar');
+  if (!av || !_authUser) return;
+  const name = _authUser.user_metadata?.display_name || _authUser.email?.split('@')[0] || '?';
+  av.textContent = name[0].toUpperCase();
+  av.style.background = _userAvatarColor;
+}
+
+function _openProfileModal() {
+  if (!_authUser) return;
+  const name = _authUser.user_metadata?.display_name || _authUser.email?.split('@')[0] || '';
   const initial = (name[0] || '?').toUpperCase();
-  const pop = document.createElement('div');
-  pop.id = 'profilePopover';
-  pop.className = 'profile-popover';
-  pop.innerHTML =
-    `<div class="profile-popover-avatar">${escHtml(initial)}</div>` +
-    `<div class="profile-popover-name">${escHtml(name)}</div>` +
-    `<div class="profile-popover-email">${escHtml(email)}</div>` +
-    (since ? `<div class="profile-popover-since">Member since ${since}</div>` : '');
-  const anchor = $('authName');
-  const rect = anchor.getBoundingClientRect();
-  pop.style.top = (rect.bottom + 8) + 'px';
-  pop.style.right = (window.innerWidth - rect.right) + 'px';
-  document.body.appendChild(pop);
-  setTimeout(() => {
-    document.addEventListener('click', function _dismiss(e) {
-      if (!pop.contains(e.target) && e.target !== anchor) {
-        pop.remove();
-        document.removeEventListener('click', _dismiss);
-      }
+  const nameInput = $('profileName');
+  const preview = $('profileAvatarPreview');
+  const picker = $('profileColorPicker');
+  const errEl = $('profileError');
+  if (nameInput) nameInput.value = name;
+  if (preview) { preview.textContent = initial; preview.style.background = _userAvatarColor; }
+  if (errEl) errEl.style.display = 'none';
+  if (picker) {
+    picker.innerHTML = _AVATAR_COLORS.map(c =>
+      `<span class="profile-color-swatch${c === _userAvatarColor ? ' active' : ''}" data-color="${c}" style="background:${c}"></span>`
+    ).join('');
+    picker.querySelectorAll('.profile-color-swatch').forEach(sw => {
+      sw.addEventListener('click', () => {
+        _userAvatarColor = sw.dataset.color;
+        picker.querySelectorAll('.profile-color-swatch').forEach(s => s.classList.toggle('active', s.dataset.color === _userAvatarColor));
+        if (preview) preview.style.background = _userAvatarColor;
+      });
     });
-  }, 0);
+  }
+  const ov = $('profileOverlay');
+  if (ov) ov.style.display = 'flex';
 }
 
 function _updateAuthUI() {
   const chip = $('authChip');
   const signInBtn = $('signInHeaderBtn');
-  const nameEl = $('authName');
+  const avBtn = $('authAvatar');
   const mobileRow = $('headerAuthRow');
   const mobileNameEl = $('authNameMobile');
   if (!chip || !signInBtn) return;
   if (_authUser) {
     const name = _authUser.user_metadata?.display_name || _authUser.email?.split('@')[0] || '';
-    if (nameEl) {
-      nameEl.textContent = name;
-      nameEl.style.display = 'block';
-      nameEl.onclick = _openProfilePopover;
+    if (avBtn) {
+      avBtn.textContent = name[0]?.toUpperCase() || '?';
+      avBtn.style.background = _userAvatarColor;
+      avBtn.style.display = 'flex';
+      avBtn.onclick = _openProfileModal;
     }
     if (mobileNameEl) mobileNameEl.textContent = name;
     if (mobileRow) mobileRow.classList.add('auth-visible');
     chip.style.display = 'flex';
     signInBtn.style.display = 'none';
   } else {
-    if (nameEl) { nameEl.textContent = ''; nameEl.style.display = 'none'; nameEl.onclick = null; }
+    if (avBtn) { avBtn.style.display = 'none'; avBtn.onclick = null; }
     if (mobileNameEl) mobileNameEl.textContent = '';
     if (mobileRow) mobileRow.classList.remove('auth-visible');
     chip.style.display = 'none';
