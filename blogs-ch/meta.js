@@ -9,7 +9,7 @@ window.BLOG_META_ZH = {
     },
     {
       "id": "2026-08-03-ten-reason-to-move-to-austin",
-      "title": "奥斯汀生活｜定居奥斯汀的十个理由",
+      "title": "奥斯汀生活｜2026 定居奥斯汀的十个理由",
       "date": "2026-08-03"
     },
     {
