@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sukee Tea Time — Admin</title>
+  <link rel="icon" href="../images/favicon-32.png" type="image/png" sizes="32x32">
+  <link rel="icon" href="../images/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="../images/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Lora:ital,wght@0,400;0,500;1,400&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #c49a28;
+      --gold-dark: #a07d1c;
+      --surface: #fff;
+      --surface2: #f8f7f4;
+      --border: #e8e4db;
+      --text: #1a1a18;
+      --text-muted: #6b6659;
+      --text-light: #9b9486;
+      --sans: 'Inter', sans-serif;
+      --display: 'Playfair Display', serif;
+      --radius: 10px;
+    }
+
+    body {
+      font-family: var(--sans);
+      background: var(--surface2);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* Header */
+    header {
+      background: var(--gold);
+      height: 58px;
+      display: flex;
+      align-items: center;
+      padding: 0 1.25rem;
+      gap: 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .site-name {
+      font-family: var(--sans);
+      font-weight: 800;
+      font-size: 0.78rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: white;
+      flex: 1;
+    }
+    .admin-badge {
+      background: rgba(0,0,0,0.25);
+      color: white;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.55rem;
+      border-radius: 20px;
+    }
+    .btn-write {
+      background: white;
+      color: var(--gold-dark);
+      border: none;
+      border-radius: 20px;
+      padding: 0.45rem 1rem;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: opacity 0.15s;
+      white-space: nowrap;
+    }
+    .btn-write:hover { opacity: 0.88; }
+    .btn-home {
+      background: rgba(255,255,255,0.18);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: 20px;
+      padding: 0.45rem 1rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: background 0.15s;
+      white-space: nowrap;
+    }
+    .btn-home:hover { background: rgba(255,255,255,0.28); }
+    .btn-gear {
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: background 0.15s;
+      flex-shrink: 0;
+    }
+    .btn-gear:hover { background: rgba(255,255,255,0.18); }
+
+    /* Main */
+    main {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 1.75rem 1rem 4rem;
+    }
+
+    .page-title {
+      font-family: var(--display);
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+    }
+    .page-sub {
+      font-size: 0.82rem;
+      color: var(--text-light);
+      margin-bottom: 1.5rem;
+    }
+    .article-count {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 0.2rem 0.65rem;
+      margin-left: 0.5rem;
+    }
+
+    /* Article row */
+    .article-row {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.1rem 1.25rem;
+      margin-bottom: 0.65rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    .article-row:hover { border-color: var(--gold); }
+
+    .row-info { flex: 1; min-width: 0; }
+    .row-cat {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--gold-dark);
+      margin-bottom: 0.3rem;
+    }
+    .row-title {
+      font-family: var(--display);
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.35;
+      margin-bottom: 0.3rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .row-meta {
+      font-size: 0.75rem;
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .row-meta .dot { color: var(--border); }
+    .row-badge {
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 0.15rem 0.45rem;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+    .badge-pin { background: rgba(196,154,40,0.12); color: var(--gold-dark); }
+    .badge-noread { background: rgba(198,40,40,0.08); color: #c62828; }
+    .badge-zh { background: rgba(59,130,246,0.1); color: #1d4ed8; }
+    .badge-sub { background: rgba(100,100,100,0.1); color: var(--text-muted); }
+
+    .article-sub-row {
+      margin-left: 2rem;
+      border-left: 3px solid var(--gold);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      margin-bottom: 0.4rem;
+      opacity: 0.9;
+    }
+    .article-sub-row .row-title { font-size: 0.9rem; }
+
+    .row-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-shrink: 0;
+    }
+
+    .btn-edit {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.45rem 0.85rem;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .btn-edit:hover {
+      border-color: var(--gold);
+      color: var(--gold-dark);
+      background: rgba(196,154,40,0.07);
+    }
+
+    /* Search */
+    .search-wrap {
+      position: relative;
+      margin-bottom: 1rem;
+    }
+    .search-icon {
+      position: absolute;
+      left: 0.85rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-light);
+      pointer-events: none;
+    }
+    .search-input {
+      width: 100%;
+      padding: 0.65rem 2.5rem 0.65rem 2.5rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      font-family: var(--sans);
+      font-size: 0.88rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .search-input:focus { border-color: var(--gold); }
+    .search-clear {
+      position: absolute;
+      right: 0.85rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-light);
+      font-size: 0.9rem;
+      padding: 0;
+      line-height: 1;
+    }
+    .search-clear:hover { color: var(--text); }
+    .no-results {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: var(--text-light);
+      font-size: 0.88rem;
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--text-light);
+    }
+    .empty-state .ei { font-size: 2.5rem; display: block; margin-bottom: 0.75rem; opacity: 0.4; }
+    .empty-state p { font-size: 0.88rem; }
+
+    @media (max-width: 600px) {
+      .article-row { flex-direction: column; gap: 0.75rem; }
+      .row-actions { width: 100%; }
+      .btn-edit, .autoread-toggle { flex: 1; justify-content: center; }
+      .row-title { white-space: normal; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <span class="site-name">Sukee Tea Time</span>
+    <span class="admin-badge">Admin</span>
+    <a class="btn-home" href="../index.html" target="_blank" rel="noopener">⌂ Home</a>
+    <a class="btn-write" href="create.html" onclick="sessionStorage.removeItem('ADMIN_EDIT_BLOG')">＋ Write Article</a>
+    <button class="btn-gear" aria-label="Settings">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      </svg>
+    </button>
+  </header>
+
+  <main>
+    <div style="display:flex;align-items:baseline;gap:0.5rem;margin-bottom:0.35rem">
+      <h1 class="page-title">All Articles</h1>
+      <span class="article-count" id="articleCount">—</span>
+    </div>
+    <p class="page-sub">Click Edit to open an article in the editor, download the updated file, and replace it in blogs/.</p>
+
+    <div class="search-wrap">
+      <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="search" id="adminSearch" class="search-input" placeholder="Search articles by title, content, or category…" autocomplete="off" autocorrect="off" spellcheck="false">
+      <button class="search-clear" id="adminSearchClear" style="display:none">✕</button>
+    </div>
+
+    <div id="articleList">
+      <div class="empty-state">
+        <span class="ei">📂</span>
+        <p>Loading articles…</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Load blog registries — bundled by pre-commit hook -->
+  <script src="../blogs/registry.js?v=54"></script>
+  <script src="../blogs-ch/registry.js?v=54"></script>
+
+  <script>
+    const WPM = 150;
+    let allBlogs = [];
+    let searchQuery = '';
+
+    function stripHtml(html) {
+      const d = document.createElement('div');
+      d.innerHTML = html;
+      return (d.textContent || d.innerText || '').trim();
+    }
+
+    function wordCount(html) {
+      const plain = stripHtml(html);
+      if (!plain) return 0;
+      const cjk = (plain.match(/[一-鿿㐀-䶿]/g) || []).length;
+      if (cjk > 0) {
+        const nonCjk = plain.replace(/[一-鿿㐀-䶿]/g, '').trim();
+        const western = nonCjk ? nonCjk.split(/\s+/).filter(Boolean).length : 0;
+        return cjk + western;
+      }
+      return plain.split(/\s+/).length;
+    }
+
+    function fmtDate(iso) {
+      const d = new Date(iso + 'T00:00:00');
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+
+    function editArticle(id) {
+      const blog = allBlogs.find(b => b.id === id);
+      if (!blog) return;
+      sessionStorage.setItem('ADMIN_EDIT_BLOG', JSON.stringify(blog));
+      window.location.href = 'create.html';
+    }
+
+    function matchesSearch(blog, q) {
+      if (!q) return true;
+      const lower = q.toLowerCase();
+      return (blog.title || '').toLowerCase().includes(lower)
+        || (blog.category || '').toLowerCase().includes(lower)
+        || (blog.author || '').toLowerCase().includes(lower)
+        || stripHtml(blog.content || '').toLowerCase().includes(lower);
+    }
+
+    function renderList() {
+      const byId = new Map();
+      (window.BLOG_REGISTRY || []).forEach(b => byId.set(b.id, { ...b, _lang: 'en' }));
+      (window.BLOG_REGISTRY_ZH || []).forEach(b => byId.set(b.id, { ...b, _lang: 'zh' }));
+      allBlogs = [...byId.values()].sort((a, b) => {
+        if (b.pinned !== a.pinned) return b.pinned ? 1 : -1;
+        return b.date.localeCompare(a.date);
+      });
+
+      renderFiltered();
+    }
+
+    function articleRowHtml(blog, isChild) {
+      const wc = wordCount(blog.content || '');
+      const mins = Math.ceil(wc / WPM);
+      const subBadge = isChild
+        ? `<span class="row-badge badge-sub">Page ${blog.subpageSeq ?? '?'}</span>` : '';
+      return `
+        <div class="article-row${isChild ? ' article-sub-row' : ''}">
+          <div class="row-info">
+            <div class="row-cat">${escHtml(blog.category || '')}</div>
+            <div class="row-title">${escHtml(blog.title)}</div>
+            <div class="row-meta">
+              <span>${fmtDate(blog.date)}</span>
+              <span class="dot">·</span>
+              <span>${escHtml(blog.author || '')}</span>
+              <span class="dot">·</span>
+              <span>~${mins} min listen</span>
+              ${subBadge}
+              ${blog._lang === 'zh' ? '<span class="row-badge badge-zh">中文</span>' : ''}
+              ${blog.pinned ? '<span class="row-badge badge-pin">📌 Pinned</span>' : ''}
+              ${blog.autoRead === false ? '<span class="row-badge badge-noread">🔇 No auto-read</span>' : ''}
+            </div>
+          </div>
+          <div class="row-actions">
+            <button class="btn-edit" onclick="editArticle('${blog.id}')">
+              ✏️ Edit
+            </button>
+          </div>
+        </div>`;
+    }
+
+    function renderFiltered() {
+      const total = allBlogs.length;
+
+      document.getElementById('articleCount').textContent =
+        searchQuery
+          ? `${allBlogs.filter(b => matchesSearch(b, searchQuery)).length} of ${total} article${total !== 1 ? 's' : ''}`
+          : `${total} article${total !== 1 ? 's' : ''}`;
+
+      if (!total) {
+        document.getElementById('articleList').innerHTML = `
+          <div class="empty-state">
+            <span class="ei">📭</span>
+            <p>No articles found. Make sure blogs/manifest.js is loading correctly.</p>
+          </div>`;
+        return;
+      }
+
+      // Build parent→children map
+      const childrenOf = {};
+      allBlogs.filter(b => b.parentId).forEach(b => {
+        (childrenOf[b.parentId] = childrenOf[b.parentId] || []).push(b);
+      });
+      Object.values(childrenOf).forEach(arr =>
+        arr.sort((a, b) => (a.subpageSeq ?? 0) - (b.subpageSeq ?? 0))
+      );
+
+      // Build ordered list: each parent followed by its sorted children
+      const parents = allBlogs.filter(b => !b.parentId);
+      const ordered = [];
+      const addedChildIds = new Set();
+      parents.forEach(p => {
+        ordered.push({ blog: p, isChild: false });
+        (childrenOf[p.id] || []).forEach(c => {
+          ordered.push({ blog: c, isChild: true });
+          addedChildIds.add(c.id);
+        });
+      });
+      // Orphan children (parentId points to unknown parent)
+      allBlogs.filter(b => b.parentId && !addedChildIds.has(b.id))
+        .forEach(b => ordered.push({ blog: b, isChild: true }));
+
+      // Filter by search query
+      const display = searchQuery
+        ? ordered.filter(({ blog }) => matchesSearch(blog, searchQuery))
+        : ordered;
+
+      if (!display.length) {
+        document.getElementById('articleList').innerHTML =
+          `<div class="no-results">No articles match "<strong>${escHtml(searchQuery)}</strong>"</div>`;
+        return;
+      }
+
+      document.getElementById('articleList').innerHTML =
+        display.map(({ blog, isChild }) => articleRowHtml(blog, isChild)).join('');
+    }
+
+    function escHtml(str) {
+      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    // Search wiring
+    document.getElementById('adminSearch').addEventListener('input', function() {
+      searchQuery = this.value.trim();
+      document.getElementById('adminSearchClear').style.display = searchQuery ? '' : 'none';
+      renderFiltered();
+    });
+    document.getElementById('adminSearchClear').addEventListener('click', function() {
+      document.getElementById('adminSearch').value = '';
+      searchQuery = '';
+      this.style.display = 'none';
+      renderFiltered();
+    });
+
+    // Wait for all blog scripts to load, then render
+    window.addEventListener('load', renderList);
+  </script>
+
+</body>
+</html>
