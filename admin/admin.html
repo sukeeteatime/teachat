@@ -197,6 +197,27 @@
     .badge-zh { background: rgba(59,130,246,0.1); color: #1d4ed8; }
     .badge-sub { background: rgba(100,100,100,0.1); color: var(--text-muted); }
 
+    .group-toggle {
+      flex-shrink: 0;
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      width: 26px;
+      height: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      transition: border-color 0.15s, color 0.15s;
+      margin-top: 2px;
+    }
+    .group-toggle:hover { border-color: var(--gold); color: var(--gold-dark); }
+
+    .sub-group { margin-bottom: 0.25rem; }
+    .sub-group.collapsed { display: none; }
+
     .article-sub-row {
       margin-left: 2rem;
       border-left: 3px solid var(--gold);
@@ -335,8 +356,8 @@
   </main>
 
   <!-- Load blog registries — bundled by pre-commit hook -->
-  <script src="../blogs/registry.js?v=54"></script>
-  <script src="../blogs-ch/registry.js?v=54"></script>
+  <script src="../blogs/registry.js?v=55"></script>
+  <script src="../blogs-ch/registry.js?v=55"></script>
 
   <script>
     const WPM = 150;
@@ -394,13 +415,24 @@
       renderFiltered();
     }
 
-    function articleRowHtml(blog, isChild) {
+    window.toggleGroup = function(parentId, btn) {
+      const group = document.getElementById('subgroup-' + parentId);
+      if (!group) return;
+      const isNowCollapsed = group.classList.toggle('collapsed');
+      btn.textContent = isNowCollapsed ? '▸' : '▾';
+      btn.title = isNowCollapsed ? 'Expand sub-articles' : 'Collapse sub-articles';
+    };
+
+    function articleRowHtml(blog, isChild, hasChildren) {
       const wc = wordCount(blog.content || '');
       const mins = Math.ceil(wc / WPM);
       const subBadge = isChild
         ? `<span class="row-badge badge-sub">Page ${blog.subpageSeq ?? '?'}</span>` : '';
+      const toggleBtn = hasChildren
+        ? `<button class="group-toggle" onclick="toggleGroup('${blog.id}', this)" title="Collapse sub-articles">▾</button>` : '';
       return `
         <div class="article-row${isChild ? ' article-sub-row' : ''}">
+          ${toggleBtn}
           <div class="row-info">
             <div class="row-cat">${escHtml(blog.category || '')}</div>
             <div class="row-title">${escHtml(blog.title)}</div>
@@ -450,34 +482,44 @@
         arr.sort((a, b) => (a.subpageSeq ?? 0) - (b.subpageSeq ?? 0))
       );
 
-      // Build ordered list: each parent followed by its sorted children
       const parents = allBlogs.filter(b => !b.parentId);
-      const ordered = [];
       const addedChildIds = new Set();
-      parents.forEach(p => {
-        ordered.push({ blog: p, isChild: false });
-        (childrenOf[p.id] || []).forEach(c => {
-          ordered.push({ blog: c, isChild: true });
-          addedChildIds.add(c.id);
+
+      if (searchQuery) {
+        // Flat search results — no grouping
+        const allOrdered = [];
+        parents.forEach(p => {
+          allOrdered.push({ blog: p, isChild: false });
+          (childrenOf[p.id] || []).forEach(c => { allOrdered.push({ blog: c, isChild: true }); addedChildIds.add(c.id); });
         });
-      });
-      // Orphan children (parentId points to unknown parent)
-      allBlogs.filter(b => b.parentId && !addedChildIds.has(b.id))
-        .forEach(b => ordered.push({ blog: b, isChild: true }));
-
-      // Filter by search query
-      const display = searchQuery
-        ? ordered.filter(({ blog }) => matchesSearch(blog, searchQuery))
-        : ordered;
-
-      if (!display.length) {
+        allBlogs.filter(b => b.parentId && !addedChildIds.has(b.id)).forEach(b => allOrdered.push({ blog: b, isChild: true }));
+        const display = allOrdered.filter(({ blog }) => matchesSearch(blog, searchQuery));
+        if (!display.length) {
+          document.getElementById('articleList').innerHTML =
+            `<div class="no-results">No articles match "<strong>${escHtml(searchQuery)}</strong>"</div>`;
+          return;
+        }
         document.getElementById('articleList').innerHTML =
-          `<div class="no-results">No articles match "<strong>${escHtml(searchQuery)}</strong>"</div>`;
+          display.map(({ blog, isChild }) => articleRowHtml(blog, isChild, false)).join('');
         return;
       }
 
-      document.getElementById('articleList').innerHTML =
-        display.map(({ blog, isChild }) => articleRowHtml(blog, isChild)).join('');
+      // Normal view: grouped with collapsible children
+      let html = '';
+      parents.forEach(p => {
+        const children = childrenOf[p.id] || [];
+        html += articleRowHtml(p, false, children.length > 0);
+        if (children.length > 0) {
+          html += `<div class="sub-group" id="subgroup-${p.id}">`;
+          children.forEach(c => { html += articleRowHtml(c, true, false); addedChildIds.add(c.id); });
+          html += `</div>`;
+        }
+      });
+      // Orphan children
+      allBlogs.filter(b => b.parentId && !addedChildIds.has(b.id))
+        .forEach(b => { html += articleRowHtml(b, true, false); });
+
+      document.getElementById('articleList').innerHTML = html;
     }
 
     function escHtml(str) {
