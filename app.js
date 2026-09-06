@@ -1224,6 +1224,40 @@ function _initAuth() {
   if ($('signOutBtnMobile')) $('signOutBtnMobile').addEventListener('click', _doSignOut);
 }
 
+function _openProfilePopover() {
+  const existing = document.getElementById('profilePopover');
+  if (existing) { existing.remove(); return; }
+  const user = _authUser;
+  if (!user) return;
+  const name = user.user_metadata?.display_name || user.email?.split('@')[0] || '';
+  const email = user.email || '';
+  const since = user.created_at
+    ? new Date(user.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })
+    : '';
+  const initial = (name[0] || '?').toUpperCase();
+  const pop = document.createElement('div');
+  pop.id = 'profilePopover';
+  pop.className = 'profile-popover';
+  pop.innerHTML =
+    `<div class="profile-popover-avatar">${escHtml(initial)}</div>` +
+    `<div class="profile-popover-name">${escHtml(name)}</div>` +
+    `<div class="profile-popover-email">${escHtml(email)}</div>` +
+    (since ? `<div class="profile-popover-since">Member since ${since}</div>` : '');
+  const anchor = $('authName');
+  const rect = anchor.getBoundingClientRect();
+  pop.style.top = (rect.bottom + 8) + 'px';
+  pop.style.right = (window.innerWidth - rect.right) + 'px';
+  document.body.appendChild(pop);
+  setTimeout(() => {
+    document.addEventListener('click', function _dismiss(e) {
+      if (!pop.contains(e.target) && e.target !== anchor) {
+        pop.remove();
+        document.removeEventListener('click', _dismiss);
+      }
+    });
+  }, 0);
+}
+
 function _updateAuthUI() {
   const chip = $('authChip');
   const signInBtn = $('signInHeaderBtn');
@@ -1233,13 +1267,17 @@ function _updateAuthUI() {
   if (!chip || !signInBtn) return;
   if (_authUser) {
     const name = _authUser.user_metadata?.display_name || _authUser.email?.split('@')[0] || '';
-    if (nameEl) { nameEl.textContent = name; nameEl.style.display = 'block'; }
+    if (nameEl) {
+      nameEl.textContent = name;
+      nameEl.style.display = 'block';
+      nameEl.onclick = _openProfilePopover;
+    }
     if (mobileNameEl) mobileNameEl.textContent = name;
     if (mobileRow) mobileRow.classList.add('auth-visible');
     chip.style.display = 'flex';
     signInBtn.style.display = 'none';
   } else {
-    if (nameEl) { nameEl.textContent = ''; nameEl.style.display = 'none'; }
+    if (nameEl) { nameEl.textContent = ''; nameEl.style.display = 'none'; nameEl.onclick = null; }
     if (mobileNameEl) mobileNameEl.textContent = '';
     if (mobileRow) mobileRow.classList.remove('auth-visible');
     chip.style.display = 'none';

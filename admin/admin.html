@@ -353,11 +353,23 @@
         <p>Loading articles…</p>
       </div>
     </div>
+
+    <!-- Users report -->
+    <div style="margin-top:2.5rem">
+      <div style="display:flex;align-items:baseline;gap:0.5rem;margin-bottom:0.35rem">
+        <h1 class="page-title">Sign-Up Report</h1>
+        <span class="article-count" id="userCount">—</span>
+      </div>
+      <p class="page-sub">Users who have created an account.</p>
+      <div id="userList">
+        <div class="empty-state"><span class="ei" style="font-size:1.5rem">👤</span><p>Loading users…</p></div>
+      </div>
+    </div>
   </main>
 
   <!-- Load blog registries — bundled by pre-commit hook -->
-  <script src="../blogs/registry.js?v=55"></script>
-  <script src="../blogs-ch/registry.js?v=55"></script>
+  <script src="../blogs/registry.js?v=67"></script>
+  <script src="../blogs-ch/registry.js?v=67"></script>
 
   <script>
     const WPM = 150;
@@ -541,6 +553,50 @@
 
     // Wait for all blog scripts to load, then render
     window.addEventListener('load', renderList);
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    const _SB_URL = 'https://gsqjhxvjfnwugsivgzah.supabase.co';
+    const _SB_KEY = 'sb_publishable_6AMzgqb7WpsEDWPnhcKBRw_zTObt1O1';
+
+    async function loadUsers() {
+      const el = document.getElementById('userList');
+      const countEl = document.getElementById('userCount');
+      try {
+        const sb = supabase.createClient(_SB_URL, _SB_KEY);
+        const { data, error } = await sb
+          .from('profiles')
+          .select('id, display_name, avatar_color, created_at')
+          .order('created_at', { ascending: false });
+        if (error || !data) { el.innerHTML = '<div class="empty-state"><p>Could not load users.</p></div>'; return; }
+        countEl.textContent = data.length + ' user' + (data.length !== 1 ? 's' : '');
+        if (!data.length) { el.innerHTML = '<div class="empty-state"><span class="ei" style="font-size:1.5rem">👤</span><p>No users yet.</p></div>'; return; }
+        el.innerHTML = data.map((u, i) => {
+          const name = u.display_name || '(no name)';
+          const initial = name[0].toUpperCase();
+          const since = u.created_at
+            ? new Date(u.created_at).toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' })
+            : '—';
+          const color = u.avatar_color || '#c49a28';
+          const shortId = u.id ? u.id.slice(0, 8) + '…' : '—';
+          return `<div class="article-row" style="padding:0.65rem 1rem;align-items:center">
+            <div style="display:flex;align-items:center;gap:0.75rem;flex:1;min-width:0">
+              <div style="width:32px;height:32px;border-radius:50%;background:${escHtml(color)};flex-shrink:0;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:0.85rem;color:#fff">${escHtml(initial)}</div>
+              <div style="min-width:0">
+                <div class="row-title">${escHtml(name)}</div>
+                <div style="font-size:0.72rem;color:var(--text-light);margin-top:1px">ID: ${shortId}</div>
+              </div>
+            </div>
+            <div style="font-size:0.75rem;color:var(--text-muted);white-space:nowrap;flex-shrink:0">${since}</div>
+          </div>`;
+        }).join('');
+      } catch(e) {
+        el.innerHTML = '<div class="empty-state"><p>Error loading users.</p></div>';
+      }
+    }
+
+    window.addEventListener('load', loadUsers);
   </script>
 
 </body>

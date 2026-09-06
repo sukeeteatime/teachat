@@ -1481,6 +1481,40 @@ footer a:hover { color: var(--gold-dark); }
   text-overflow: ellipsis;
   white-space: nowrap;
   display: none;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-color: rgba(255,255,255,0.45);
+}
+.header-username:hover { text-decoration-color: rgba(255,255,255,0.9); }
+
+/* Profile popover */
+.profile-popover {
+  position: fixed;
+  background: var(--surface, #fff);
+  border: 1px solid var(--border, #e8e4db);
+  border-radius: 12px;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.13);
+  padding: 1.1rem 1.25rem 1rem;
+  min-width: 210px;
+  z-index: 500;
+  font-family: var(--sans);
+  animation: popFadeIn 0.12s ease;
+}
+@keyframes popFadeIn { from { opacity:0; transform:translateY(-4px) } to { opacity:1; transform:none } }
+.profile-popover-avatar {
+  width: 38px; height: 38px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 1rem; color: #fff;
+  margin-bottom: 0.7rem;
+  background: var(--gold, #c49a28);
+}
+.profile-popover-name { font-weight: 700; font-size: 0.92rem; color: var(--text, #1a1a18); margin-bottom: 0.15rem; }
+.profile-popover-email { font-size: 0.75rem; color: var(--text-muted, #6b6659); margin-bottom: 0.7rem; }
+.profile-popover-since {
+  font-size: 0.7rem; color: var(--text-light, #9b9486);
+  border-top: 1px solid var(--border, #e8e4db);
+  padding-top: 0.55rem; margin-top: 0.1rem;
 }
 .auth-btn {
   background: rgba(255,255,255,0.92);
