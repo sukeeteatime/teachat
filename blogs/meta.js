@@ -71,6 +71,16 @@ window.BLOG_META = {
   ],
   "posts": [
     {
+      "id": "2026-09-07-2026-new-graduate-how-to-find-your-first-job-2-",
+      "title": "2026 New Graduate | How to Find Your First Job (2)",
+      "date": "2026-09-07"
+    },
+    {
+      "id": "2026-09-06-2026-new-graduate-how-to-find-your-first-job-1",
+      "title": "2026 New Graduate | How to Find Your First Job (1)",
+      "date": "2026-09-06"
+    },
+    {
       "id": "2026-09-05-when-you-dont-know-what-to-do",
       "title": "When You Don't Know What to Do",
       "date": "2026-09-05"
