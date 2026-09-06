@@ -26,6 +26,9 @@
       <button class="btn btn-outline btn-sm" id="followBtn" style="display:none">☆ Follow</button>
       <button class="btn btn-danger btn-sm"  id="leaveBtn"  style="display:none">Leave</button>
       <button class="btn btn-primary btn-sm" id="startBtn"  style="display:none">Start session</button>
+      <button class="sidebar-toggle-btn" id="sidebarToggleBtn" aria-label="Members &amp; controls" title="Members &amp; controls">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </button>
     </div>
   </div>
 
@@ -35,6 +38,9 @@
       Loading room…
     </div>
   </div>
+
+  <!-- Mobile sidebar overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
 </div>
 
@@ -70,6 +76,25 @@
 </div>
 
 <!-- ── Extend Capacity Modal ── -->
+<div class="modal-overlay" id="scheduleNextModal">
+  <div class="modal" role="dialog" aria-modal="true">
+    <button class="modal-close" id="closeScheduleNext">✕</button>
+    <div class="modal-title">Schedule next session</div>
+    <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px">
+      Set a date and time for the follow-up discussion.
+    </p>
+    <div class="form-group">
+      <label class="form-label" for="nextSessionAt">Date &amp; Time</label>
+      <input class="form-input" type="datetime-local" id="nextSessionAt">
+    </div>
+    <div class="form-error" id="scheduleNextError" style="margin-bottom:8px;display:none"></div>
+    <div class="form-actions">
+      <button class="btn btn-ghost" id="cancelScheduleNext">Cancel</button>
+      <button class="btn btn-primary" id="doScheduleNext">Save</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal-overlay" id="extendModal">
   <div class="modal" role="dialog" aria-modal="true">
     <button class="modal-close" id="closeExtend">✕</button>
@@ -86,6 +111,26 @@
     <div class="form-actions">
       <button class="btn btn-ghost" id="cancelExtend">Cancel</button>
       <button class="btn btn-primary" id="doExtend">Update capacity</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Extend Session Modal ── -->
+<div class="modal-overlay" id="extendSessionModal">
+  <div class="modal" role="dialog" aria-modal="true">
+    <button class="modal-close" id="closeExtendSession">✕</button>
+    <div class="modal-title">Extend session</div>
+    <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px">
+      Add more time to the current session.
+    </p>
+    <div class="form-group">
+      <label class="form-label" for="extendMins">Minutes to add</label>
+      <input class="form-input" type="number" id="extendMins" min="1" max="120" value="15">
+    </div>
+    <div class="form-error" id="extendSessionError" style="margin-bottom:8px;display:none"></div>
+    <div class="form-actions">
+      <button class="btn btn-ghost" id="cancelExtendSession">Cancel</button>
+      <button class="btn btn-primary" id="doExtendSession">Extend session</button>
     </div>
   </div>
 </div>
@@ -190,10 +235,17 @@ function startTimer() {
 }
 
 async function closeRoomIfExpired() {
+  // Timer expiry ends the session but does NOT close the room — room goes back to open
   if (!room || room.status !== 'active') return;
-  const { error } = await sb.from('rooms').update({ status: 'closed' }).eq('id', roomId).eq('status','active');
-  if (!error && room.delete_on_close) {
-    await sb.from('messages').delete().eq('room_id', roomId);
+  const { error } = await sb.from('rooms').update({ status: 'open', expires_at: null, started_at: null }).eq('id', roomId).eq('status', 'active');
+  if (!error) {
+    room.status = 'open';
+    room.expires_at = null;
+    room.started_at = null;
+    clearInterval(timerInterval);
+    $('timerDisplay').style.display = 'none';
+    showToast('Session ended. Room is open for a new session.');
+    renderRoomBody();
   }
 }
 
@@ -212,17 +264,20 @@ function renderSidebar() {
     <div class="members-list">`;
 
   members.forEach(m => {
-    const isMe      = currentUser && m.user_id === currentUser.id;
-    const isHostRow = m.user_id === room?.created_by;
-    // Anonymous viewers see their own name but others as "Member"
-    const hideName  = isAnonymous && !isMe && !canAdmin;
-    const name  = hideName ? 'Member' : displayName(m);
-    const color = hideName ? 'var(--text-light)' : avatarColor(m);
+    const isMe        = currentUser && m.user_id === currentUser.id;
+    const isHostRow   = m.user_id === room?.created_by;
+    const memberIsAnon = m.is_anonymous && !isMe;
+    // Hide name if: member joined anonymously, OR viewer is anonymous (mutual privacy)
+    const hideName    = !isMe && !canAdmin && (memberIsAnon || isAnonymous);
+    const name  = hideName ? 'Anonymous' : displayName(m);
+    const color = hideName ? '#888' : avatarColor(m);
+    const canExpel = canAdmin && !isMe && !isHostRow;
     html += `
       <div class="member-row">
-        <div class="avatar avatar-sm" style="background:${color}">${(m.is_anonymous || hideName) ? '?' : initials(name)}</div>
+        <div class="avatar avatar-sm" style="background:${color}">${hideName ? '?' : initials(name)}</div>
         <span class="member-name">${escHtml(name)}${isMe ? ' (you)' : ''}</span>
         ${isHostRow ? '<span class="member-badge host">host</span>' : ''}
+        ${canExpel ? `<button class="member-expel-btn" onclick="expelMember('${m.user_id}')" title="Remove member">✕</button>` : ''}
       </div>`;
   });
 
@@ -262,29 +317,56 @@ function renderSidebar() {
 
   // Admin panel
   if (canAdmin && room?.status !== 'closed') {
+    const isAdminNotHost = !isHost && currentProfile?.is_admin;
     html += `<div class="admin-panel">
       <div class="admin-label">🔑 ${isHost ? 'Host' : 'Admin'} controls</div>
+      ${isAdminNotHost ? `
+        <button class="btn btn-outline btn-sm" style="width:100%;margin-bottom:8px" id="adminTakeOverBtn">
+          👑 Take over ownership
+        </button>` : ''}
       ${room?.status === 'open' ? `
         <button class="btn btn-success btn-sm" style="width:100%;margin-bottom:8px" id="adminStartBtn">
           ▶ Start session
         </button>` : ''}
       ${room?.access_type === 'invite_only' && room?.status !== 'closed' ? `
         <button class="btn btn-outline btn-sm" style="width:100%;margin-bottom:8px" id="adminInviteBtn">
-          🔗 Copy invite link
+          Copy invite link
         </button>` : ''}
       ${room?.status === 'active' ? `
-        <button class="btn btn-outline btn-sm" style="width:100%;margin-bottom:8px" id="adminExtendBtn">
-          ↑ Extend capacity
+        <div style="display:flex;gap:6px;margin-bottom:8px">
+          <button class="btn btn-outline btn-sm" style="flex:1" id="adminExtendBtn">
+            Extend capacity
+          </button>
+          <button class="btn btn-outline btn-sm" style="flex:1" id="adminExtendSessionBtn">
+            + Time
+          </button>
+        </div>
+        <div style="display:flex;gap:6px;margin-bottom:8px">
+          <button class="btn btn-outline btn-sm" style="flex:1" id="adminSaveScriptBtn">
+            Save script
+          </button>
+          <button class="btn btn-outline btn-sm" style="flex:1" id="adminCopyScriptBtn">
+            Copy script
+          </button>
+        </div>
+        <button class="btn btn-outline btn-sm" style="width:100%;margin-bottom:8px" id="adminScheduleNextBtn">
+          Schedule next session
         </button>
         <button class="btn btn-primary btn-sm" style="width:100%;margin-bottom:8px" id="adminSummaryBtn">
-          📝 Post summary
+          Post summary
+        </button>
+        <button class="btn btn-outline btn-sm" style="width:100%;margin-bottom:8px" id="adminClearChatBtn">
+          Clear chat history
+        </button>
+        <button class="btn btn-outline btn-sm" style="width:100%;margin-bottom:8px" id="adminStopSessionBtn">
+          Stop session
         </button>
         <button class="btn btn-danger btn-sm" style="width:100%" id="adminCloseBtn">
-          ■ Close room
+          Close room
         </button>` : ''}
       ${room?.status === 'closed' ? `
         <button class="btn btn-outline btn-sm" style="width:100%" id="adminSummaryBtn">
-          📝 Edit summary
+          Edit summary
         </button>` : ''}
     </div>`;
   }
@@ -430,6 +512,8 @@ function renderWaitlistPanel() {
 }
 
 function renderClosedPanel() {
+  const isHost   = currentUser && room?.created_by === currentUser.id;
+  const canAdmin = isHost || currentProfile?.is_admin;
   return `
     <div class="closed-panel">
       <div class="closed-card">
@@ -449,12 +533,29 @@ function renderClosedPanel() {
           </div>` : `
           <p style="font-size:13px;color:var(--text-muted)">This session has ended. No recap was posted.</p>`
         }
-        ${!room.delete_on_close ? `
+        ${room.next_session_at ? `
+          <div class="summary-section" style="margin-top:16px;background:rgba(56,80,176,0.07);border-radius:10px;padding:12px 16px">
+            <div class="summary-label">📅 Next session</div>
+            <div style="font-size:14px;margin-top:4px;color:var(--text)">${new Date(room.next_session_at).toLocaleString(undefined,{weekday:'short',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})}</div>
+          </div>` : ''}
+        ${canAdmin && room.session_script ? `
+          <div style="margin-top:20px">
+            <div class="summary-label">💾 Session script
+              <span style="font-size:11px;color:var(--text-muted);font-weight:400;margin-left:6px">saved ${new Date(room.session_script_saved_at).toLocaleDateString()}</span>
+            </div>
+            <pre class="session-script-pre">${escHtml(room.session_script)}</pre>
+          </div>` : ''}
+        ${canAdmin && !room.delete_on_close ? `
           <div style="margin-top:20px">
             <div class="summary-label">Chat transcript</div>
             <div id="closedMessages" style="max-height:300px;overflow-y:auto;margin-top:8px"></div>
           </div>` : ''}
-        <div style="margin-top:20px">
+        ${canAdmin ? `
+          <div style="margin-top:24px;padding-top:16px;border-top:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn btn-success btn-sm" id="reopenRoomBtn">🔓 Reopen room</button>
+            <button class="btn btn-outline btn-sm" id="adminSummaryBtn">📝 Edit summary</button>
+          </div>` : ''}
+        <div style="margin-top:16px">
           <a href="index.html" class="btn btn-outline">← Back to lobby</a>
         </div>
       </div>
@@ -474,14 +575,32 @@ function bindRoomEvents() {
   if (topFollow) topFollow.addEventListener('click', toggleFollow);
 
   // Admin controls
-  const adminStart   = $('adminStartBtn');
-  const adminExtend  = $('adminExtendBtn');
-  const adminSummary = $('adminSummaryBtn');
-  const adminClose   = $('adminCloseBtn');
-  const adminInvite  = $('adminInviteBtn');
+  const adminStart        = $('adminStartBtn');
+  const adminExtend       = $('adminExtendBtn');
+  const adminSummary      = $('adminSummaryBtn');
+  const adminClose        = $('adminCloseBtn');
+  const adminInvite       = $('adminInviteBtn');
+  const adminSaveScript   = $('adminSaveScriptBtn');
+  const adminCopyScript   = $('adminCopyScriptBtn');
+  const adminScheduleNext = $('adminScheduleNextBtn');
+  const adminTakeOver        = $('adminTakeOverBtn');
+  const adminExtendSession   = $('adminExtendSessionBtn');
 
-  if (adminStart)  adminStart.addEventListener('click', startSession);
-  if (adminInvite) adminInvite.addEventListener('click', generateInvite);
+  if (adminStart)          adminStart.addEventListener('click', startSession);
+  if (adminTakeOver)       adminTakeOver.addEventListener('click', takeOverRoom);
+  if (adminExtendSession)  adminExtendSession.addEventListener('click', () => {
+    $('extendMins').value = 15;
+    $('extendSessionError').style.display = 'none';
+    openModal('extendSessionModal');
+  });
+  if (adminInvite)       adminInvite.addEventListener('click', generateInvite);
+  if (adminSaveScript)   adminSaveScript.addEventListener('click', saveSessionScript);
+  if (adminCopyScript)   adminCopyScript.addEventListener('click', copySessionScript);
+  if (adminScheduleNext) adminScheduleNext.addEventListener('click', () => {
+    const next = room.next_session_at ? new Date(room.next_session_at).toISOString().slice(0,16) : '';
+    $('nextSessionAt').value = next;
+    openModal('scheduleNextModal');
+  });
   if (adminExtend)  adminExtend.addEventListener('click', () => {
     $('currentCap').textContent = room.capacity;
     $('newCapacity').value = room.capacity + 4;
@@ -494,6 +613,15 @@ function bindRoomEvents() {
     openModal('summaryModal');
   });
   if (adminClose) adminClose.addEventListener('click', adminCloseRoom);
+
+  const adminStopSession = $('adminStopSessionBtn');
+  if (adminStopSession) adminStopSession.addEventListener('click', stopSession);
+
+  const adminClearChat = $('adminClearChatBtn');
+  if (adminClearChat) adminClearChat.addEventListener('click', clearChatHistory);
+
+  const reopenRoomBtn = $('reopenRoomBtn');
+  if (reopenRoomBtn) reopenRoomBtn.addEventListener('click', reopenRoom);
 
   // Join buttons
   const joinRoomBtn     = $('joinRoomBtn');
@@ -525,12 +653,32 @@ function bindRoomEvents() {
   // Topbar start
   const startBtn = $('startBtn');
   if (startBtn) startBtn.addEventListener('click', startSession);
+
+  // Mobile sidebar drawer toggle
+  const sidebarToggleBtn = $('sidebarToggleBtn');
+  const sidebarOverlay   = $('sidebarOverlay');
+  function openSidebar() {
+    const sidebar = document.querySelector('.room-sidebar');
+    if (sidebar) sidebar.classList.add('sidebar-open');
+    if (sidebarOverlay) sidebarOverlay.classList.add('active');
+  }
+  function closeSidebar() {
+    const sidebar = document.querySelector('.room-sidebar');
+    if (sidebar) sidebar.classList.remove('sidebar-open');
+    if (sidebarOverlay) sidebarOverlay.classList.remove('active');
+  }
+  if (sidebarToggleBtn) sidebarToggleBtn.addEventListener('click', () => {
+    const sidebar = document.querySelector('.room-sidebar');
+    if (sidebar?.classList.contains('sidebar-open')) closeSidebar();
+    else openSidebar();
+  });
+  if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeSidebar);
 }
 
 /* ============================================================
    Main render dispatcher
    ============================================================ */
-function renderRoomBody() {
+async function renderRoomBody() {
   const body = $('roomBody');
   $('tbTitle').textContent = room?.title || 'Room';
   $('tbTopic').textContent = room?.topic || '';
@@ -566,7 +714,16 @@ function renderRoomBody() {
 
   if (!isMember) {
     if (canAdmin) {
-      // Admin can observe and control any room without joining
+      // Host auto-joins room_members so they show in the member list
+      // Admin observer enters without joining (silent visit)
+      if (isHost) {
+        await sb.from('room_members').upsert({
+          room_id: roomId, user_id: currentUser.id, is_anonymous: false
+        }, { onConflict: 'room_id,user_id', ignoreDuplicates: true });
+        await refreshMembers();
+      } else {
+        isMember = true;
+      }
       body.innerHTML = renderSidebar() + renderChatArea();
       bindRoomEvents();
       loadMessages();
@@ -632,16 +789,24 @@ function appendMessage(msg, scroll = true) {
   loadedMsgIds.add(msg.id);
 
   const isMe   = currentUser && msg.user_id === currentUser.id;
-  const name   = msg.is_anonymous ? 'Anonymous' : (msg.profile?.display_name || 'Guest');
-  const color  = msg.is_anonymous ? '#888' : (msg.profile?.avatar_color || '#8b7355');
+  // Hide sender identity if: they sent anonymously, OR the viewer is anonymous (mutual privacy)
+  const hideIdentity = !isMe && (msg.is_anonymous || isAnonymous);
+  const name   = hideIdentity ? 'Anonymous' : (msg.profile?.display_name || 'Guest');
+  const color  = hideIdentity ? '#888' : (msg.profile?.avatar_color || '#8b7355');
+  const canMod = currentUser && (isMe || room?.created_by === currentUser.id || currentProfile?.is_admin);
 
   const div = document.createElement('div');
   div.className = `message${isMe ? ' me' : ''}`;
   div.innerHTML = `
-    <div class="avatar avatar-sm" style="background:${color}">${msg.is_anonymous ? '?' : initials(name)}</div>
+    <div class="avatar avatar-sm" style="background:${color}">${hideIdentity ? '?' : initials(name)}</div>
     <div class="message-body">
       <div class="message-name">${isMe ? 'You' : escHtml(name)}</div>
-      <div class="message-bubble">${escHtml(msg.content)}</div>
+      <div class="msg-bubble-wrap">
+        <div class="message-bubble">${escHtml(msg.content)}</div>
+        ${canMod ? `<button class="msg-delete-btn" title="Delete message" onclick="deleteMessage('${msg.id}',this)">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+        </button>` : ''}
+      </div>
       <div class="message-time">${fmtTime(msg.created_at)}</div>
     </div>`;
   el.appendChild(div);
@@ -661,9 +826,11 @@ function subscribeMessages() {
       filter: `room_id=eq.${roomId}`
     }, payload => {
       const msg = payload.new;
-      // Attach profile if available from members list
-      const member = members.find(m => m.user_id === msg.user_id);
-      if (member) msg.profile = member.profile;
+      // Only attach profile for non-anonymous messages (anonymous must not leak real name)
+      if (!msg.is_anonymous) {
+        const member = members.find(m => m.user_id === msg.user_id);
+        if (member) msg.profile = member.profile;
+      }
       appendMessage(msg);
     })
     .subscribe();
@@ -679,13 +846,15 @@ async function sendMessage() {
   input.value = '';
   input.style.height = 'auto';
 
-  const { error } = await sb.from('messages').insert({
+  const { data: newMsg, error } = await sb.from('messages').insert({
     room_id: roomId,
     user_id: currentUser.id,
     content,
     is_anonymous: isAnonymous,
-  });
-  if (error) showToast('Could not send message.');
+  }).select('*, profile:profiles!user_id(display_name, avatar_color)').single();
+  if (error) { console.error('sendMessage error:', error); showToast('Could not send message: ' + error.message); return; }
+  // Optimistically show immediately; realtime may deliver a duplicate which loadedMsgIds deduplicates
+  appendMessage(newMsg);
 }
 
 /* ============================================================
@@ -789,6 +958,33 @@ async function adminApprove(userId) {
 }
 window.adminApprove = adminApprove;
 
+async function takeOverRoom() {
+  if (!currentUser || !currentProfile?.is_admin) return;
+  if (!confirm('Take over as owner of this room? The current host will lose host controls.')) return;
+  const { error } = await sb.from('rooms').update({ created_by: currentUser.id }).eq('id', roomId);
+  if (error) { showToast('Could not take over: ' + error.message); return; }
+  room.created_by = currentUser.id;
+  showToast('You are now the room owner.');
+  renderRoomBody();
+}
+
+async function deleteMessage(msgId, btn) {
+  const msgEl = btn.closest('.message');
+  const { error } = await sb.from('messages').delete().eq('id', msgId);
+  if (error) { showToast('Could not delete message.'); return; }
+  if (msgEl) { loadedMsgIds.delete(msgId); msgEl.remove(); }
+}
+window.deleteMessage = deleteMessage;
+
+async function expelMember(userId) {
+  if (!confirm('Remove this member from the room?')) return;
+  const { error } = await sb.from('room_members').delete()
+    .eq('room_id', roomId).eq('user_id', userId);
+  if (error) { showToast('Could not remove member: ' + error.message); return; }
+  showToast('Member removed.');
+}
+window.expelMember = expelMember;
+
 /* ============================================================
    Follow
    ============================================================ */
@@ -869,6 +1065,107 @@ $('doSummary').addEventListener('click', async () => {
 });
 
 /* ============================================================
+   Reopen room
+   ============================================================ */
+async function stopSession() {
+  if (!confirm('Stop the current session? The room will go back to Open so a new session can be started later.')) return;
+  await closeRoomIfExpired(); // reuses same logic: active → open, clears timer
+}
+
+async function reopenRoom() {
+  const canAdmin = currentUser && (room?.created_by === currentUser.id || currentProfile?.is_admin);
+  if (!canAdmin) return;
+  if (!confirm('Reopen this room? It will go back to Open status so a new session can be started.')) return;
+  const { error } = await sb.from('rooms')
+    .update({ status: 'open', expires_at: null, started_at: null })
+    .eq('id', roomId);
+  if (error) { showToast('Could not reopen room: ' + error.message); return; }
+  room.status = 'open';
+  room.expires_at = null;
+  room.started_at = null;
+  showToast('Room reopened. You can now start a new session.');
+  await refreshMembers();
+  renderRoomBody();
+}
+
+/* ============================================================
+   Save session script
+   ============================================================ */
+async function saveSessionScript() {
+  const canAdmin = currentUser && (room?.created_by === currentUser.id || currentProfile?.is_admin);
+  if (!canAdmin) return;
+  const { data: msgs } = await sb.from('messages')
+    .select('content, is_anonymous, guest_name, created_at, profile:profiles!user_id(display_name)')
+    .eq('room_id', roomId).order('created_at', { ascending: true });
+  if (!msgs?.length) { showToast('No messages to save.'); return; }
+  const script = msgs.map(m => {
+    const who = m.is_anonymous ? 'Anonymous' : (m.profile?.display_name || m.guest_name || 'Member');
+    const time = new Date(m.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    return `[${time}] ${who}: ${m.content}`;
+  }).join('\n');
+  const { error } = await sb.from('rooms').update({
+    session_script: script,
+    session_script_saved_at: new Date().toISOString(),
+  }).eq('id', roomId);
+  if (error) { showToast('Could not save script.'); return; }
+  room.session_script = script;
+  room.session_script_saved_at = new Date().toISOString();
+  showToast('Session script saved!');
+}
+
+async function copySessionScript() {
+  const canAdmin = currentUser && (room?.created_by === currentUser.id || currentProfile?.is_admin);
+  if (!canAdmin) return;
+  const { data: msgs } = await sb.from('messages')
+    .select('content, is_anonymous, guest_name, created_at, profile:profiles!user_id(display_name)')
+    .eq('room_id', roomId).order('created_at', { ascending: true });
+  if (!msgs?.length) { showToast('No messages to copy.'); return; }
+  const script = msgs.map(m => {
+    const who = m.is_anonymous ? 'Anonymous' : (m.profile?.display_name || m.guest_name || 'Member');
+    const time = new Date(m.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    return `[${time}] ${who}: ${m.content}`;
+  }).join('\n');
+  try {
+    await navigator.clipboard.writeText(script);
+    showToast('Script copied to clipboard!');
+  } catch {
+    showToast('Could not copy — try saving instead.');
+  }
+}
+
+async function clearChatHistory() {
+  const canAdmin = currentUser && (room?.created_by === currentUser.id || currentProfile?.is_admin);
+  if (!canAdmin) return;
+  if (!confirm('Delete all messages in this room? This cannot be undone.')) return;
+  const { error } = await sb.from('messages').delete().eq('room_id', roomId);
+  if (error) { showToast('Could not clear chat.'); return; }
+  const el = $('messagesScroll');
+  if (el) el.innerHTML = '';
+  loadedMsgIds.clear();
+  showToast('Chat history cleared.');
+}
+
+/* ============================================================
+   Schedule next session modal
+   ============================================================ */
+$('closeScheduleNext').addEventListener('click', () => closeModal('scheduleNextModal'));
+$('cancelScheduleNext').addEventListener('click', () => closeModal('scheduleNextModal'));
+$('scheduleNextModal').addEventListener('click', e => { if (e.target === $('scheduleNextModal')) closeModal('scheduleNextModal'); });
+
+$('doScheduleNext').addEventListener('click', async () => {
+  const val = $('nextSessionAt').value;
+  $('scheduleNextError').style.display = 'none';
+  if (!val) { $('scheduleNextError').textContent = 'Please pick a date and time.'; $('scheduleNextError').style.display = 'block'; return; }
+  if (new Date(val) <= new Date()) { $('scheduleNextError').textContent = 'Must be in the future.'; $('scheduleNextError').style.display = 'block'; return; }
+  const { error } = await sb.from('rooms').update({ next_session_at: new Date(val).toISOString() }).eq('id', roomId);
+  if (error) { $('scheduleNextError').textContent = error.message; $('scheduleNextError').style.display = 'block'; return; }
+  room.next_session_at = new Date(val).toISOString();
+  closeModal('scheduleNextModal');
+  showToast('Next session scheduled!');
+  renderRoomBody();
+});
+
+/* ============================================================
    Extend capacity modal
    ============================================================ */
 $('closeExtend').addEventListener('click', () => closeModal('extendModal'));
@@ -895,6 +1192,25 @@ $('doExtend').addEventListener('click', async () => {
   }
   await refreshMembers();
   renderRoomBody();
+});
+
+$('closeExtendSession').addEventListener('click', () => closeModal('extendSessionModal'));
+$('cancelExtendSession').addEventListener('click', () => closeModal('extendSessionModal'));
+$('extendSessionModal').addEventListener('click', e => { if (e.target === $('extendSessionModal')) closeModal('extendSessionModal'); });
+
+$('doExtendSession').addEventListener('click', async () => {
+  const mins = parseInt($('extendMins').value);
+  $('extendSessionError').style.display = 'none';
+  if (!mins || mins < 1) {
+    $('extendSessionError').textContent = 'Enter a number of minutes (minimum 1).';
+    $('extendSessionError').style.display = 'block'; return;
+  }
+  const newExpiry = new Date(new Date(room.expires_at).getTime() + mins * 60 * 1000);
+  const { error } = await sb.from('rooms').update({ expires_at: newExpiry.toISOString() }).eq('id', roomId);
+  if (error) { $('extendSessionError').textContent = error.message; $('extendSessionError').style.display = 'block'; return; }
+  room.expires_at = newExpiry.toISOString();
+  closeModal('extendSessionModal');
+  showToast(`Session extended by ${mins} minute${mins !== 1 ? 's' : ''}.`);
 });
 
 /* ============================================================
@@ -931,6 +1247,17 @@ async function refreshWaitlist() {
 /* ============================================================
    Realtime subscriptions
    ============================================================ */
+function refreshSidebar() {
+  const existing = document.querySelector('.room-sidebar');
+  if (!existing) return; // not in chat view yet
+  const tmp = document.createElement('div');
+  tmp.innerHTML = renderSidebar();
+  existing.replaceWith(tmp.firstElementChild);
+  // Re-bind sidebar follow button
+  const sbFollow = $('sbFollowBtn');
+  if (sbFollow) sbFollow.addEventListener('click', toggleFollow);
+}
+
 function subscribeRoom() {
   if (channels.room) sb.removeChannel(channels.room);
 
@@ -941,16 +1268,17 @@ function subscribeRoom() {
     })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'room_members', filter: `room_id=eq.${roomId}` }, async () => {
       await refreshMembers();
-      // Re-check if we were just promoted from waitlist
+      // If user was just promoted from waitlist, do a full re-render to show chat area
       if (!isMember && isOnWaitlist) {
         const me = members.find(m => m.user_id === currentUser?.id);
-        if (me) { isMember = true; isOnWaitlist = false; }
+        if (me) { isMember = true; isOnWaitlist = false; renderRoomBody(); return; }
       }
-      renderRoomBody();
+      // Otherwise just refresh sidebar in-place — avoids clearing+reloading messages
+      refreshSidebar();
     })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'waitlist', filter: `room_id=eq.${roomId}` }, async () => {
       await refreshWaitlist();
-      renderRoomBody();
+      refreshSidebar();
     })
     .subscribe();
 }
@@ -1079,7 +1407,7 @@ async function init() {
     await checkAccess();
   }
 
-  renderRoomBody();
+  await renderRoomBody();
   subscribeRoom();
 }
 

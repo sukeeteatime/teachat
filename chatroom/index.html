@@ -53,6 +53,10 @@
       <span class="stat-dot closed"></span>
       <strong id="statClosed">0</strong> closed
     </button>
+    <button class="lobby-stat-chip" id="statPendingBtn" title="Show rooms awaiting approval" style="display:none">
+      <span class="stat-dot" style="background:#e07b2a"></span>
+      <strong id="statPending">0</strong> pending
+    </button>
     <button class="filter-tab new-room-tab" id="newRoomBtn" style="display:none">+ New Room</button>
   </div>
 
@@ -121,6 +125,9 @@
       <input class="form-input" type="password" id="siPassword" autocomplete="current-password" placeholder="••••••••">
     </div>
     <div class="form-error" id="siError" style="margin-bottom:8px;display:none"></div>
+    <div style="text-align:right;margin-bottom:4px">
+      <button class="btn btn-ghost btn-sm" id="goToForgotPassword" style="font-size:12px;padding:2px 4px">Forgot password?</button>
+    </div>
     <div class="form-actions">
       <button class="btn btn-ghost" id="goToSignUp">Create account</button>
       <button class="btn btn-primary" id="doSignIn">Sign in</button>
@@ -157,13 +164,59 @@
   </div>
 </div>
 
+<!-- ── Forgot Password Modal ── -->
+<div class="modal-overlay" id="forgotPasswordModal">
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Reset password">
+    <button class="modal-close" id="closeForgotPassword">✕</button>
+    <div class="modal-title">Reset your password</div>
+    <p style="font-family:var(--sans);font-size:13px;color:var(--text-muted);margin-bottom:16px">
+      Enter your email and we'll send you a link to set a new password.
+    </p>
+    <div class="form-group">
+      <label class="form-label" for="fpEmail">Email</label>
+      <input class="form-input" type="email" id="fpEmail" autocomplete="email" placeholder="you@example.com">
+    </div>
+    <div class="form-error" id="fpError" style="margin-bottom:8px;display:none"></div>
+    <div class="form-success" id="fpSuccess" style="margin-bottom:8px;display:none;font-family:var(--sans);font-size:13px;color:#2e7d32;background:#f0faf3;border:1px solid #c3e6cb;border-radius:8px;padding:10px 12px"></div>
+    <div class="form-actions">
+      <button class="btn btn-ghost" id="backToSignIn">Back to sign in</button>
+      <button class="btn btn-primary" id="doForgotPassword">Send reset link</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Set New Password Modal ── -->
+<div class="modal-overlay" id="setPasswordModal">
+  <div class="modal" role="dialog" aria-modal="true" aria-label="Set new password">
+    <div class="modal-title">Set new password</div>
+    <p style="font-family:var(--sans);font-size:13px;color:var(--text-muted);margin-bottom:16px">
+      Choose a new password for your account.
+    </p>
+    <div class="form-group">
+      <label class="form-label" for="npPassword">New password</label>
+      <input class="form-input" type="password" id="npPassword" autocomplete="new-password" placeholder="At least 6 characters">
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="npConfirm">Confirm password</label>
+      <input class="form-input" type="password" id="npConfirm" autocomplete="new-password" placeholder="Repeat your new password">
+    </div>
+    <div class="form-error" id="npError" style="margin-bottom:8px;display:none"></div>
+    <div class="form-actions">
+      <button class="btn btn-primary" id="doSetPassword">Update password</button>
+    </div>
+  </div>
+</div>
+
 <!-- ── Profile + Tea Crew Modal ── -->
 <div class="modal-overlay" id="profileModal">
   <div class="modal modal-wide" role="dialog" aria-modal="true" aria-label="My profile">
     <button class="modal-close" id="closeProfileModal">✕</button>
     <div class="modal-tabs">
       <button class="modal-tab active" data-tab="profileTab">Profile</button>
-      <button class="modal-tab" data-tab="crewTab">☕ Tea Crew</button>
+      <button class="modal-tab" data-tab="crewTab">Tea Crew</button>
+      <button class="modal-tab" data-tab="hostedTab">Hosted</button>
+      <button class="modal-tab" data-tab="participatedTab">Joined</button>
+      <button class="modal-tab" data-tab="followedTab">Following</button>
     </div>
 
     <!-- Profile Tab -->
@@ -203,6 +256,30 @@
       <div class="form-error" id="crewError" style="margin-bottom:8px;display:none"></div>
       <div class="crew-list" id="crewList">
         <div class="crew-empty">No contacts yet — add one above.</div>
+      </div>
+    </div>
+
+    <!-- Hosted Tab -->
+    <div id="hostedTab" style="display:none">
+      <div class="modal-title" style="margin-top:12px">Rooms I Hosted</div>
+      <div id="hostedList" class="profile-room-list">
+        <div class="crew-empty">Loading…</div>
+      </div>
+    </div>
+
+    <!-- Participated Tab -->
+    <div id="participatedTab" style="display:none">
+      <div class="modal-title" style="margin-top:12px">Rooms I Joined</div>
+      <div id="participatedList" class="profile-room-list">
+        <div class="crew-empty">Loading…</div>
+      </div>
+    </div>
+
+    <!-- Followed Tab -->
+    <div id="followedTab" style="display:none">
+      <div class="modal-title" style="margin-top:12px">Topics I Follow</div>
+      <div id="followedList" class="profile-room-list">
+        <div class="crew-empty">Loading…</div>
       </div>
     </div>
   </div>
@@ -491,6 +568,7 @@ $('closeSignIn').addEventListener('click', () => closeModal('signInModal'));
 $('closeSignUp').addEventListener('click', () => closeModal('signUpModal'));
 $('closeCreateRoom').addEventListener('click', () => closeModal('createRoomModal'));
 $('cancelCreateRoom').addEventListener('click', () => closeModal('createRoomModal'));
+$('closeForgotPassword').addEventListener('click', () => closeModal('forgotPasswordModal'));
 
 $('signOutBtn').addEventListener('click', signOut);
 $('doSignIn').addEventListener('click', signIn);
@@ -502,9 +580,44 @@ $('goToSignUp').addEventListener('click', () => {
 $('goToSignIn2').addEventListener('click', () => {
   closeModal('signUpModal'); openModal('signInModal');
 });
+$('goToForgotPassword').addEventListener('click', () => {
+  $('fpEmail').value = $('siEmail').value;
+  $('fpError').style.display = 'none';
+  $('fpSuccess').style.display = 'none';
+  closeModal('signInModal');
+  openModal('forgotPasswordModal');
+});
+$('backToSignIn').addEventListener('click', () => {
+  closeModal('forgotPasswordModal'); openModal('signInModal');
+});
+
+$('doForgotPassword').addEventListener('click', async () => {
+  const email = $('fpEmail').value.trim();
+  $('fpError').style.display = 'none';
+  $('fpSuccess').style.display = 'none';
+  if (!email) { showError('fpError', 'Please enter your email address.'); return; }
+  const redirectTo = window.location.origin + window.location.pathname;
+  const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo });
+  if (error) { showError('fpError', error.message); return; }
+  $('fpSuccess').textContent = 'Check your email — we sent a reset link to ' + email;
+  $('fpSuccess').style.display = 'block';
+  $('doForgotPassword').disabled = true;
+});
+
+$('doSetPassword').addEventListener('click', async () => {
+  const pass    = $('npPassword').value;
+  const confirm = $('npConfirm').value;
+  $('npError').style.display = 'none';
+  if (pass.length < 6) { showError('npError', 'Password must be at least 6 characters.'); return; }
+  if (pass !== confirm) { showError('npError', 'Passwords do not match.'); return; }
+  const { error } = await sb.auth.updateUser({ password: pass });
+  if (error) { showError('npError', error.message); return; }
+  closeModal('setPasswordModal');
+  showToast('Password updated! You are now signed in.');
+});
 
 // Close on backdrop click
-['signInModal','signUpModal','createRoomModal','profileModal'].forEach(id => {
+['signInModal','signUpModal','createRoomModal','profileModal','forgotPasswordModal'].forEach(id => {
   $(id).addEventListener('click', e => { if (e.target === $(id)) closeModal(id); });
 });
 
@@ -553,13 +666,17 @@ $('doSaveProfile').addEventListener('click', async () => {
 });
 
 // Modal tabs
+const ALL_PROFILE_TABS = ['profileTab','crewTab','hostedTab','participatedTab','followedTab'];
 $('profileModal').querySelectorAll('.modal-tab').forEach(btn => {
   btn.addEventListener('click', () => {
     $('profileModal').querySelectorAll('.modal-tab').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    ['profileTab','crewTab'].forEach(id => $(id).style.display = 'none');
+    ALL_PROFILE_TABS.forEach(id => $(id).style.display = 'none');
     $(btn.dataset.tab).style.display = '';
-    if (btn.dataset.tab === 'crewTab') loadCrewContacts();
+    if (btn.dataset.tab === 'crewTab')         loadCrewContacts();
+    if (btn.dataset.tab === 'hostedTab')        loadHostedRooms();
+    if (btn.dataset.tab === 'participatedTab')  loadParticipatedRooms();
+    if (btn.dataset.tab === 'followedTab')      loadFollowedRooms();
   });
 });
 
@@ -618,6 +735,65 @@ $('doAddCrew').addEventListener('click', async () => {
 async function removeCrew(id) {
   await sb.from('user_contacts').delete().eq('id', id).eq('user_id', currentUser.id);
   loadCrewContacts();
+}
+
+function profileRoomItem(r) {
+  const status = r.status === 'active' ? '<span style="color:#5cb85c;font-weight:600">● Active</span>'
+               : r.status === 'open'   ? '<span style="color:#8a8a8a">Open</span>'
+               : r.status === 'closed' ? '<span style="color:#aaa">Closed</span>'
+               : r.status === 'scheduled' ? '<span style="color:#3850b0">Scheduled</span>'
+               : r.status;
+  const href = `room.html?id=${r.id}`;
+  return `<a href="${href}" class="profile-room-item">
+    <div class="profile-room-title">${escHtml(r.title)}</div>
+    <div class="profile-room-meta">${status}<span style="color:var(--border)"> · </span>${fmtTime(r.created_at)}</div>
+  </a>`;
+}
+
+async function loadHostedRooms() {
+  if (!currentUser) return;
+  $('hostedList').innerHTML = '<div class="crew-empty">Loading…</div>';
+  const { data } = await sb.from('rooms')
+    .select('id, title, status, created_at')
+    .eq('created_by', currentUser.id)
+    .order('created_at', { ascending: false })
+    .limit(50);
+  $('hostedList').innerHTML = (data && data.length)
+    ? data.map(profileRoomItem).join('')
+    : '<div class="crew-empty">No rooms hosted yet.</div>';
+}
+
+async function loadParticipatedRooms() {
+  if (!currentUser) return;
+  $('participatedList').innerHTML = '<div class="crew-empty">Loading…</div>';
+  const { data } = await sb.from('room_members')
+    .select('room:rooms(id, title, status, created_at, created_by)')
+    .eq('user_id', currentUser.id)
+    .order('joined_at', { ascending: false })
+    .limit(50);
+  const rooms_list = (data || []).map(d => d.room).filter(r => r && r.created_by !== currentUser.id);
+  $('participatedList').innerHTML = rooms_list.length
+    ? rooms_list.map(profileRoomItem).join('')
+    : '<div class="crew-empty">No rooms joined yet.</div>';
+}
+
+function loadFollowedRooms() {
+  if (!currentUser) return;
+  const followed = [...followedTopics()];
+  if (!followed.length) {
+    $('followedList').innerHTML = '<div class="crew-empty">Not following any topics yet.</div>';
+    return;
+  }
+  $('followedList').innerHTML = followed.map(topic => {
+    const display = topic.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+    return `<div class="profile-room-item" style="cursor:default">
+      <div class="profile-room-title">${escHtml(display)}</div>
+      <div class="profile-room-meta" style="display:flex;align-items:center;justify-content:space-between">
+        <span style="color:var(--text-muted)">Following</span>
+        <button class="btn btn-ghost btn-sm" style="font-size:11px;padding:2px 8px" onclick="unfollowTopic('${topic.replace(/'/g,"\\'")}');loadFollowedRooms()">Unfollow</button>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 /* ============================================================
@@ -877,7 +1053,7 @@ async function loadRooms() {
   const [roomsRes, membersRes, waitRes] = await Promise.all([
     sb.from('rooms')
       .select('*, creator:profiles!created_by(display_name, avatar_color)')
-      .in('status', ['open','active','scheduled'])
+      .in('status', ['open','active','scheduled','pending'])
       .order('created_at', { ascending: false }),
     sb.from('room_members').select('room_id'),
     sb.from('waitlist').select('room_id, user_id, profile:profiles!user_id(display_name, avatar_color)').order('joined_at', { ascending: true }),
@@ -891,12 +1067,43 @@ async function loadRooms() {
     waitlistByRoom[w.room_id].push(w.profile || {});
   });
 
-  rooms = (roomsRes.data || []).map(r => ({
-    ...r,
-    memberCount:   memberCounts[r.id]     || 0,
-    waitlistCount: (waitlistByRoom[r.id] || []).length,
-    waitlistUsers: waitlistByRoom[r.id]   || [],
-  }));
+  const now = Date.now();
+  // Session timer expired — reset to open (timer expiry ≠ closed; only host closing = closed)
+  const expired = (roomsRes.data || []).filter(r =>
+    r.status === 'active' && r.expires_at && new Date(r.expires_at).getTime() <= now
+  );
+  if (expired.length) {
+    await Promise.all(expired.map(r =>
+      sb.from('rooms').update({ status: 'open', expires_at: null, started_at: null }).eq('id', r.id).eq('status', 'active')
+    ));
+  }
+  const expiredIds = new Set(expired.map(r => r.id));
+
+  rooms = (roomsRes.data || [])
+    .filter(r => !expiredIds.has(r.id))   // remove just-closed rooms from lobby list
+    .map(r => ({
+      ...r,
+      memberCount:   memberCounts[r.id]     || 0,
+      waitlistCount: (waitlistByRoom[r.id] || []).length,
+      waitlistUsers: waitlistByRoom[r.id]   || [],
+    }));
+
+  // Sort by last message time, falling back to created_at
+  if (rooms.length) {
+    const roomIds = rooms.map(r => r.id);
+    const { data: latestMsgs } = await sb.from('messages')
+      .select('room_id, created_at')
+      .in('room_id', roomIds)
+      .order('created_at', { ascending: false })
+      .limit(200);
+    const lastMsgAt = {};
+    (latestMsgs || []).forEach(m => {
+      if (!lastMsgAt[m.room_id]) lastMsgAt[m.room_id] = m.created_at;
+    });
+    rooms.sort((a, b) =>
+      new Date(lastMsgAt[b.id] || b.created_at) - new Date(lastMsgAt[a.id] || a.created_at)
+    );
+  }
 
   renderFilterTabs();
   renderCalendar();
@@ -1146,9 +1353,10 @@ function renderRooms() {
   else if (currentFilter === 'scheduled') filtered = nonPending.filter(r => r.status === 'scheduled');
   else if (currentFilter === 'closed') filtered = nonPending.filter(r => r.status === 'closed');
   else if (currentFilter === 'waitlist') filtered = nonPending.filter(r => r.waitlistCount > 0);
+  else if (currentFilter === 'pending') { filtered = pendingRooms; }
 
-  // Prepend pending rooms for admin (always at top)
-  filtered = [...pendingRooms, ...filtered];
+  // Prepend pending rooms for admin (always at top, unless already filtering by pending)
+  if (currentFilter !== 'pending') filtered = [...pendingRooms, ...filtered];
 
   // Calendar day filter
   if (calSelectedDay) filtered = filtered.filter(r => {
@@ -1353,11 +1561,16 @@ function updateStats() {
   const scheduledRooms = rooms.filter(r => r.status === 'scheduled').length;
   const openRooms      = rooms.filter(r => r.status === 'open').length;
   const closedRoomsCount = rooms.filter(r => r.status === 'closed').length;
+  const pendingCount = rooms.filter(r => r.status === 'pending').length;
   $('statActive').textContent    = activeRooms;
   $('statWaiting').textContent   = totalWaiting;
   $('statScheduled').textContent = scheduledRooms;
   $('statOpen').textContent      = openRooms;
   $('statClosed').textContent    = closedRoomsCount;
+  $('statPending').textContent   = pendingCount;
+  // Pending chip only visible to admin when there are pending rooms
+  const pendingBtn = $('statPendingBtn');
+  if (pendingBtn) pendingBtn.style.display = (isAdmin() && pendingCount > 0) ? '' : 'none';
 }
 
 /* ============================================================
@@ -1376,6 +1589,10 @@ function subscribeRealtime() {
     })
     .on('postgres_changes', { event: '*', schema: 'public', table: 'waitlist' }, () => {
       loadRooms();
+    })
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, () => {
+      clearTimeout(subscribeRealtime._msgDebounce);
+      subscribeRealtime._msgDebounce = setTimeout(loadRooms, 3000);
     })
     .subscribe();
 }
@@ -1429,7 +1646,7 @@ async function init() {
   });
 
   // Closed chip → filter to closed rooms
-  $('statClosedBtn').addEventListener('click', () => {
+  $('statClosedBtn').addEventListener('click', async () => {
     const on = currentFilter === 'closed';
     currentFilter = on ? 'all' : 'closed';
     document.querySelectorAll('.filter-tab').forEach(b => b.classList.toggle('active', currentFilter === b.dataset.filter));
@@ -1438,7 +1655,11 @@ async function init() {
     $('statWaitingBtn').classList.remove('stat-filter-active');
     $('statScheduledBtn').classList.remove('stat-filter-active');
     $('statOpenBtn').classList.remove('stat-filter-active');
-    renderRooms();
+    if (currentFilter === 'closed') {
+      await loadClosedRooms();
+    } else {
+      await loadRooms();
+    }
   });
 
   // Open chip → filter to open rooms
@@ -1451,8 +1672,25 @@ async function init() {
     $('statWaitingBtn').classList.remove('stat-filter-active');
     $('statScheduledBtn').classList.remove('stat-filter-active');
     $('statClosedBtn').classList.remove('stat-filter-active');
+    if ($('statPendingBtn')) $('statPendingBtn').classList.remove('stat-filter-active');
     renderRooms();
   });
+
+  // Pending chip → filter to pending rooms (admin only)
+  if ($('statPendingBtn')) {
+    $('statPendingBtn').addEventListener('click', () => {
+      const on = currentFilter === 'pending';
+      currentFilter = on ? 'all' : 'pending';
+      document.querySelectorAll('.filter-tab').forEach(b => b.classList.toggle('active', currentFilter === b.dataset.filter));
+      $('statPendingBtn').classList.toggle('stat-filter-active', !on);
+      $('statActiveBtn').classList.remove('stat-filter-active');
+      $('statWaitingBtn').classList.remove('stat-filter-active');
+      $('statScheduledBtn').classList.remove('stat-filter-active');
+      $('statClosedBtn').classList.remove('stat-filter-active');
+      $('statOpenBtn').classList.remove('stat-filter-active');
+      renderRooms();
+    });
+  }
 
   // Search
   $('roomSearch').addEventListener('input', () => {
@@ -1499,6 +1737,11 @@ async function init() {
   }
 
   sb.auth.onAuthStateChange(async (event, session) => {
+    if (event === 'PASSWORD_RECOVERY') {
+      // User clicked the reset link — show the set-new-password modal
+      openModal('setPasswordModal');
+      return;
+    }
     if (session?.user) {
       currentUser = session.user;
       await loadProfile(currentUser.id);
