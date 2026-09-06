@@ -1817,7 +1817,6 @@
 
     function populateParentSelect() {
       _allParents = [...(window.BLOG_REGISTRY || []), ...(window.BLOG_REGISTRY_ZH || [])]
-        .filter(b => b.showHome !== false)
         .sort((a, b) => b.date.localeCompare(a.date));
       renderParentList('');
     }
@@ -1987,6 +1986,17 @@
       if (!validate()) return;
       const post = buildPost();
       downloadFile(post);
+      // Auto-download any inserted images alongside the .js file, staggered so
+      // the browser doesn't block multiple simultaneous programmatic downloads
+      if (articleImages.length > 0) {
+        const d = getFormData();
+        const id = (d.date && d.title) ? `${d.date}-${getSlugBase()}` : 'article';
+        articleImages.forEach(function(item, i) {
+          setTimeout(function() {
+            triggerDownload(item.file, `${id}_img${item.idx + 1}.${item.ext}`);
+          }, (i + 1) * 600);
+        });
+      }
       updateSaveImagesBtn();
     });
 
@@ -2006,8 +2016,10 @@
       btn.addEventListener('click', function() {
         const d = getFormData();
         const id = (d.date && d.title) ? `${d.date}-${getSlugBase()}` : 'article';
-        articleImages.forEach(function(item) {
-          triggerDownload(item.file, `${id}_img${item.idx + 1}.${item.ext}`);
+        articleImages.forEach(function(item, i) {
+          setTimeout(function() {
+            triggerDownload(item.file, `${id}_img${item.idx + 1}.${item.ext}`);
+          }, i * 600);
         });
       });
       $('btnSave').insertAdjacentElement('afterend', btn);
