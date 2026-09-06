@@ -1310,6 +1310,8 @@ window.openBlog = function(id) {
     .filter(b => b.id === rootId || b.parentId === rootId)
     .sort((a, b) => (a.subpageSeq ?? -1) - (b.subpageSeq ?? -1));
 
+  console.log('[pager] blog.id=', blog.id, 'rootId=', rootId, 'allPages=', allPages.map(p => p.id), 'registry size=', activeRegistry().length);
+
   if (allPages.length > 1) {
     const currentSeq = blog.subpageSeq ?? -1;
     const pager = document.createElement('div');

@@ -22,7 +22,7 @@
   <link rel="icon" href="images/favicon-32.png" type="image/png" sizes="32x32">
   <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=91">
+  <link rel="stylesheet" href="style.css?v=92">
 </head>
 <body>
 
@@ -46,6 +46,11 @@
         <button class="auth-btn auth-btn-ghost" id="signOutBtn">Sign out</button>
       </div>
       <button class="auth-btn" id="signInHeaderBtn">Sign in</button>
+    </div>
+    <!-- Mobile second row: name + sign out -->
+    <div class="header-auth-row" id="headerAuthRow" style="display:none">
+      <span id="authNameMobile" class="header-username-mobile"></span>
+      <button class="auth-btn auth-btn-ghost header-signout-mobile" id="signOutBtnMobile">Sign out</button>
     </div>
   </header>
 
@@ -201,9 +206,9 @@
           onload="if(window._chatRoomsReady)window._chatRoomsReady();if(window._authReady)window._authReady()"></script>
 
   <!-- All posts bundled into one file by the pre-commit hook (was 365 separate requests) -->
-  <script src="blogs/registry.js?v=133" defer></script>
-  <script src="blogs-ch/registry.js?v=133" defer></script>
-  <script src="app.js?v=136" defer></script>
+  <script src="blogs/registry.js?v=135" defer></script>
+  <script src="blogs-ch/registry.js?v=135" defer></script>
+  <script src="app.js?v=138" defer></script>
 
 </body>
 </html>
