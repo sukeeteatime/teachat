@@ -71,8 +71,8 @@ window.BLOG_META = {
   ],
   "posts": [
     {
-      "id": "2026-09-08-2026-new-graduate-open-poisitions-2",
-      "title": "2026 New Graduate | Open Poisitions (2)",
+      "id": "2026-09-08-2026-new-graduate-job-openings-2",
+      "title": "2026 New Graduate | Job Openings (2)",
       "date": "2026-09-08"
     },
     {
