@@ -939,7 +939,16 @@ code {
   padding: 0.55rem 1rem;
   background: var(--bg);
   border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
+.faq-block-label::after { content: '▾'; font-size: 0.75rem; opacity: 0.6; transition: transform 0.2s; }
+.faq-block.all-collapsed .faq-block-label::after { transform: rotate(-90deg); }
+.faq-block.all-collapsed .faq-item { display: none; }
+.faq-block.all-collapsed { border-bottom: none; }
 
 .faq-item {
   border-bottom: 1px solid var(--border);

@@ -163,6 +163,15 @@ function initFaqToggles(container) {
       q.closest('.faq-item').classList.toggle('open');
     });
   });
+  container.querySelectorAll('.faq-block-label').forEach(label => {
+    label.addEventListener('click', () => {
+      const block = label.closest('.faq-block');
+      if (!block) return;
+      const collapsing = !block.classList.contains('all-collapsed');
+      block.classList.toggle('all-collapsed');
+      if (collapsing) block.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    });
+  });
 }
 
 function escHtml(str) {
