@@ -38,6 +38,7 @@ body {
   min-height: 100vh;
   font-size: 15px;
   line-height: 1.6;
+  overflow-x: hidden;
 }
 
 a { color: var(--gold-dark); text-decoration: none; }
@@ -1629,9 +1630,18 @@ a.profile-room-item:hover { border-color: var(--gold); background: var(--gold-li
 .crew-remove:hover { color: var(--danger); background: #fef0f0; }
 
 @media (max-width: 520px) {
-  .rc-title { font-size: 15px; }
-  .rc-content { padding-right: 0; }
-  .rc-header-row { flex-wrap: wrap; }
+  .room-card { padding: 10px 12px; }
+  .rc-content { padding-right: 0; min-width: 0; width: 100%; }
+  .rc-header-row { flex-wrap: wrap; gap: 4px; }
+  .rc-header-spacer { display: none; }
+  .rc-card-label { display: none; }
+  .rc-title { font-size: 15px; white-space: normal; word-break: break-word; }
+  .rc-topic { font-size: 12px; white-space: normal; }
+  .rc-meta { flex-wrap: wrap; gap: 4px; font-size: 11px; }
+  .rc-badge, .rc-status-badge { font-size: 10px; padding: 2px 7px; }
+  .rc-action-btn, .rc-action-ghost { font-size: 10px; padding: 3px 10px; }
+  .rc-recap { margin-top: 8px; padding: 8px 10px; }
+  .rc-recap-body { font-size: 12px; -webkit-line-clamp: 3; }
 }
 
 /* ============================================================
@@ -1659,13 +1669,15 @@ a.profile-room-item:hover { border-color: var(--gold); background: var(--gold-li
 }
 @media (max-width: 520px) {
   .lobby-stats-row {
-    flex-direction: column;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
     gap: 6px;
+    padding-bottom: 4px;
+    scrollbar-width: none;
   }
-  .lobby-stat-chip {
-    width: 100%;
-    justify-content: flex-start;
-  }
+  .lobby-stats-row::-webkit-scrollbar { display: none; }
+  .lobby-stat-chip { flex-shrink: 0; }
 }
 .lobby-stat-chip strong { color: var(--text); font-weight: 600; }
 .lobby-stat-chip:hover { border-color: var(--gold); color: var(--text); }
