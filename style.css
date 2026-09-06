@@ -1304,6 +1304,7 @@ footer a:hover { color: var(--gold-dark); }
     min-height: 52px;
     padding: 0.35rem 0.35rem;
     gap: 0;
+    flex-wrap: wrap;
   }
   .hamburger, .speaker-btn, .tea-chat-btn {
     width: 36px;
@@ -1321,6 +1322,7 @@ footer a:hover { color: var(--gold-dark); }
     letter-spacing: 0.12em;
   }
   .header-username { display: none !important; }
+  #authChip { display: none !important; }
   .auth-btn { font-size: 10px; padding: 3px 8px; }
 
   main { padding: 0.75rem 0 6rem; }
@@ -1426,6 +1428,28 @@ footer a:hover { color: var(--gold-dark); }
 /* ============================================================
    Header auth area
    ============================================================ */
+.header-auth-row {
+  display: none; /* hidden on desktop; shown on mobile via JS when logged in */
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 4px 0 5px;
+  background: rgba(0,0,0,0.12);
+  order: 10;
+}
+.header-username-mobile {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.04em;
+}
+.header-signout-mobile {
+  font-size: 11px;
+  padding: 3px 10px;
+}
+
 .header-right {
   display: flex;
   align-items: center;

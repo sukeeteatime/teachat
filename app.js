@@ -1183,23 +1183,29 @@ function _initAuth() {
     alert('Account created! Check your email to confirm, then sign in.');
   });
 
-  $('signOutBtn').addEventListener('click', async () => {
-    await _sb.auth.signOut();
-  });
+  const _doSignOut = async () => { await _sb.auth.signOut(); };
+  $('signOutBtn').addEventListener('click', _doSignOut);
+  if ($('signOutBtnMobile')) $('signOutBtnMobile').addEventListener('click', _doSignOut);
 }
 
 function _updateAuthUI() {
   const chip = $('authChip');
   const signInBtn = $('signInHeaderBtn');
   const nameEl = $('authName');
+  const mobileRow = $('headerAuthRow');
+  const mobileNameEl = $('authNameMobile');
   if (!chip || !signInBtn) return;
   if (_authUser) {
     const name = _authUser.user_metadata?.display_name || _authUser.email?.split('@')[0] || '';
     if (nameEl) { nameEl.textContent = name; nameEl.style.display = 'block'; }
+    if (mobileNameEl) mobileNameEl.textContent = name;
+    if (mobileRow) mobileRow.style.display = 'flex';
     chip.style.display = 'flex';
     signInBtn.style.display = 'none';
   } else {
     if (nameEl) { nameEl.textContent = ''; nameEl.style.display = 'none'; }
+    if (mobileNameEl) mobileNameEl.textContent = '';
+    if (mobileRow) mobileRow.style.display = 'none';
     chip.style.display = 'none';
     signInBtn.style.display = '';
   }
