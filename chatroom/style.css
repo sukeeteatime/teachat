@@ -314,6 +314,9 @@ button { cursor: pointer; font-family: var(--sans); }
   padding: 28px;
   width: 100%;
   max-width: 420px;
+  max-height: calc(100vh - 40px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
   box-shadow: var(--shadow-lg);
   position: relative;
 }
@@ -718,7 +721,7 @@ button { cursor: pointer; font-family: var(--sans); }
   .container   { padding: 18px 14px; }
   .room-sidebar { width: 200px; }
   .message-body { max-width: 85%; }
-  .modal { padding: 20px; }
+  .modal { padding: 16px; max-height: calc(100vh - 32px); }
   /* Topbar — tighten on small screens */
   .room-topbar { padding: 8px 12px; gap: 8px; }
   .room-topbar-title { font-size: 14px; }
@@ -734,6 +737,8 @@ button { cursor: pointer; font-family: var(--sans); }
   .messages-scroll { padding: 12px 10px 8px; gap: 10px; }
 }
 @media (max-width: 480px) {
+  .modal-overlay { align-items: flex-start; padding: 12px 10px; }
+  .modal { padding: 14px; border-radius: 14px; max-height: calc(100vh - 24px); }
   /* Sidebar becomes a slide-in drawer */
   .room-sidebar {
     position: fixed;
