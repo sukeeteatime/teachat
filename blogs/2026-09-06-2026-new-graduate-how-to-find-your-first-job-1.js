@@ -1,7 +1,7 @@
 window.BLOG_REGISTRY = window.BLOG_REGISTRY || [];
 window.BLOG_REGISTRY.push({
-  "id": "2026-09-06-2026-new-graduate-how-to-find-your-first-job-1",
-  "title": "2026 New Graduate | How to Find Your First Job (1)",
+  "id": "2026-09-06-2026-new-graduate-job-openings-1",
+  "title": "2026 New Graduate |  Job Openings (1)",
   "author": "Sukee Parker",
   "date": "2026-09-06",
   "category": "Career",
