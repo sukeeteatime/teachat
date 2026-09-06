@@ -1007,6 +1007,17 @@ function blogCardHtml(blog) {
   } else {
     bodyHtml = contentToHtml(blog);
   }
+  const rootId = blog.parentId || blog.id;
+  const allPages = activeRegistry()
+    .filter(b => b.id === rootId || b.parentId === rootId)
+    .sort((a, b) => (a.subpageSeq ?? -1) - (b.subpageSeq ?? -1));
+  const cardPagerHtml = allPages.length > 1
+    ? '<div class="subpage-pager">' +
+        allPages.map((p, i) =>
+          `<button class="subpage-pager-btn${p.id === blog.id ? ' active' : ''}" onclick="event.stopPropagation();openBlog('${p.id}')">${i + 1}</button>`
+        ).join('') +
+      '</div>'
+    : '';
   return `
     <article class="post-card${blog.pinned ? ' post-card--pinned' : ''}${locked ? ' post-card--locked' : ''}">
       <div class="post-cat-row">
@@ -1022,6 +1033,7 @@ function blogCardHtml(blog) {
         </button>
       </div>
       <hr class="post-hr">
+      ${cardPagerHtml}
       <div class="post-body">${bodyHtml}</div>
       ${tagPillsHtml(blog.tags, q)}
       <div class="post-footer">
