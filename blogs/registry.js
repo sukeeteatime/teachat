@@ -8175,8 +8175,8 @@ window.BLOG_REGISTRY.push({
   "pinned": false
 });
 window.BLOG_REGISTRY.push({
-  "id": "2026-09-06-2026-new-graduate-career-guide-how-to-find-your-first-job",
-  "title": "2026 New Graduate Career Guide | How to Find Your First Job",
+  "id": "2026-09-06-2026-new-graduate-how-to-find-your-first-job",
+  "title": "2026 New Graduate | How to Find Your First Job",
   "author": "Sukee Parker",
   "date": "2026-09-06",
   "category": "Career",
