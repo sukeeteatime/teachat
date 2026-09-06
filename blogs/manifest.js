@@ -397,5 +397,6 @@ window.BLOG_MANIFEST = [
   "2026-09-05-when-you-dont-know-what-to-do.js",
   "2026-09-06-2026-new-graduate-career-guide-how-to-find-your-first-job.js",
   "2026-09-06-2026-new-graduate-guide-how-to-find-your-first-job.js",
+  "2026-09-06-2026-new-graduate-how-to-find-your-first-job-1.js",
   "2026-09-07-2026-new-graduate-how-to-find-your-first-job-2.js"
 ];

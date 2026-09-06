@@ -1,9 +1,9 @@
 window.BLOG_REGISTRY = window.BLOG_REGISTRY || [];
 window.BLOG_REGISTRY.push({
-  "id": "2026-09-08-2026-new-graduate-how-to-find-your-first-job-2",
-  "title": "2026 New Graduate | How to Find Your First Job (2)",
+  "id": "2026-09-06-2026-new-graduate-how-to-find-your-first-job-1",
+  "title": "2026 New Graduate | How to Find Your First Job (1)",
   "author": "Sukee Parker",
-  "date": "2026-09-08",
+  "date": "2026-09-06",
   "category": "Career",
   "tags": [
     "First Job"
@@ -15,5 +15,5 @@ window.BLOG_REGISTRY.push({
   "pinned": false,
   "showHome": false,
   "parentId": "2026-09-06-2026-new-graduate-how-to-find-your-first-job",
-  "subpageSeq": 2
+  "subpageSeq": 1
 });
