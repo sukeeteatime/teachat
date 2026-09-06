@@ -1211,13 +1211,13 @@ function _updateAuthUI() {
     const name = _authUser.user_metadata?.display_name || _authUser.email?.split('@')[0] || '';
     if (nameEl) { nameEl.textContent = name; nameEl.style.display = 'block'; }
     if (mobileNameEl) mobileNameEl.textContent = name;
-    if (mobileRow) mobileRow.style.display = 'flex';
+    if (mobileRow) mobileRow.classList.add('auth-visible');
     chip.style.display = 'flex';
     signInBtn.style.display = 'none';
   } else {
     if (nameEl) { nameEl.textContent = ''; nameEl.style.display = 'none'; }
     if (mobileNameEl) mobileNameEl.textContent = '';
-    if (mobileRow) mobileRow.style.display = 'none';
+    if (mobileRow) mobileRow.classList.remove('auth-visible');
     chip.style.display = 'none';
     signInBtn.style.display = '';
   }
