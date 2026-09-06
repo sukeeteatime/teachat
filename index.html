@@ -22,7 +22,7 @@
   <link rel="icon" href="images/favicon-32.png" type="image/png" sizes="32x32">
   <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=90">
+  <link rel="stylesheet" href="style.css?v=91">
 </head>
 <body>
 
@@ -33,6 +33,7 @@
       <span class="site-name">Sukee Tea Time</span>
     </div>
     <div class="header-right">
+      <span id="authName" class="header-username"></span>
       <button class="speaker-btn" id="speakerBtn" aria-label="Read article aloud">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
           <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
@@ -42,7 +43,6 @@
       </button>
       <button class="lang-toggle" id="langToggle" aria-label="Switch language">中文</button>
       <div id="authChip" style="display:none;align-items:center;gap:6px">
-        <span id="authName" style="font-size:12px;font-weight:600;color:var(--text-muted);max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
         <button class="auth-btn auth-btn-ghost" id="signOutBtn">Sign out</button>
       </div>
       <button class="auth-btn" id="signInHeaderBtn">Sign in</button>
@@ -201,9 +201,9 @@
           onload="if(window._chatRoomsReady)window._chatRoomsReady();if(window._authReady)window._authReady()"></script>
 
   <!-- All posts bundled into one file by the pre-commit hook (was 365 separate requests) -->
-  <script src="blogs/registry.js?v=132" defer></script>
-  <script src="blogs-ch/registry.js?v=132" defer></script>
-  <script src="app.js?v=135" defer></script>
+  <script src="blogs/registry.js?v=133" defer></script>
+  <script src="blogs-ch/registry.js?v=133" defer></script>
+  <script src="app.js?v=136" defer></script>
 
 </body>
 </html>

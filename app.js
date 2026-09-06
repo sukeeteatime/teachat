@@ -1191,13 +1191,15 @@ function _initAuth() {
 function _updateAuthUI() {
   const chip = $('authChip');
   const signInBtn = $('signInHeaderBtn');
+  const nameEl = $('authName');
   if (!chip || !signInBtn) return;
   if (_authUser) {
+    const name = _authUser.user_metadata?.display_name || _authUser.email?.split('@')[0] || '';
+    if (nameEl) { nameEl.textContent = name; nameEl.style.display = 'block'; }
     chip.style.display = 'flex';
     signInBtn.style.display = 'none';
-    const name = _authUser.user_metadata?.display_name || _authUser.email?.split('@')[0] || '';
-    $('authName').textContent = name;
   } else {
+    if (nameEl) { nameEl.textContent = ''; nameEl.style.display = 'none'; }
     chip.style.display = 'none';
     signInBtn.style.display = '';
   }
@@ -1298,6 +1300,27 @@ window.openBlog = function(id) {
 
   $('modalContent').innerHTML = contentToHtml(blog);
   initFaqToggles($('modalContent'));
+
+  // Subpage pagination: build [1][2][3]… for multi-part articles
+  const existingPager = $('modalContent').querySelector('.subpage-pager');
+  if (existingPager) existingPager.remove();
+
+  const rootId    = blog.parentId || blog.id;
+  const allPages  = activeRegistry()
+    .filter(b => b.id === rootId || b.parentId === rootId)
+    .sort((a, b) => (a.subpageSeq ?? -1) - (b.subpageSeq ?? -1));
+
+  if (allPages.length > 1) {
+    const currentSeq = blog.subpageSeq ?? -1;
+    const pager = document.createElement('div');
+    pager.className = 'subpage-pager';
+    pager.innerHTML = allPages.map((p, i) => {
+      const label = i + 1;
+      const isCurrent = p.id === blog.id;
+      return `<button class="subpage-pager-btn${isCurrent ? ' active' : ''}" onclick="openBlog('${p.id}')">${label}</button>`;
+    }).join('');
+    $('modalContent').prepend(pager);
+  }
 
   $('modalOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
