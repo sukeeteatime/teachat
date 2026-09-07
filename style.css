@@ -814,6 +814,7 @@ body.player-active main { padding-bottom: 5.5rem; }
   justify-content: flex-end;
   gap: 4px;
   margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
 }
 .subpage-pager-btn {
   min-width: 28px;
@@ -833,7 +834,7 @@ body.player-active main { padding-bottom: 5.5rem; }
 .subpage-pager-btn.active { border-color: var(--gold); background: var(--gold); color: #fff; cursor: default; }
 .subpage-pager-btn.subpage-pager-nav { color: var(--text-muted); font-size: 1rem; min-width: 24px; }
 
-.modal-divider { border: none; border-top: 1px solid var(--border); margin-bottom: 1.25rem; }
+.modal-body::before { content: ''; display: block; height: 1px; background: var(--border); margin-bottom: 1.25rem; }
 
 .modal-body {
   font-size: 0.9rem;
