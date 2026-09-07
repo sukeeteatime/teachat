@@ -18,10 +18,8 @@
   </a>
   <div class="header-title">Chat Room</div>
   <div class="header-actions">
-    <div id="userChip" style="display:none;align-items:center;gap:8px;font-size:13px;color:#fff;">
+    <div id="userChip" style="display:none;align-items:center;gap:8px">
       <button class="avatar avatar-sm" id="userAvatar" title="My profile &amp; Tea Crew" style="border:none;cursor:pointer"></button>
-      <span id="userName" style="font-family:var(--sans)"></span>
-      <button class="btn btn-header-ghost btn-sm" id="signOutBtn">Sign out</button>
     </div>
     <button class="btn btn-sm" style="background:#fff;color:var(--gold-dark);font-weight:700;" id="signInBtn">Sign in</button>
   </div>
@@ -233,6 +231,7 @@
       <div class="form-actions">
         <button class="btn btn-primary" id="doSaveProfile">Save</button>
       </div>
+      <button id="signOutBtn" style="display:block;width:100%;margin-top:8px;background:none;border:none;color:var(--text-muted);font-family:var(--sans);font-size:13px;cursor:pointer;text-align:center;padding:6px 0">Sign out</button>
     </div>
 
     <!-- Tea Crew Tab -->
@@ -487,7 +486,7 @@ function updateHeaderUI() {
   $('userChip').style.display   = loggedIn ? 'flex' : 'none';
 
   if (loggedIn && currentProfile) {
-    $('userName').textContent = currentProfile.display_name;
+    // userName span removed; display_name stored in currentProfile
     const av = $('userAvatar');
     av.textContent = initials(currentProfile.display_name);
     av.style.background = currentProfile.avatar_color || AVATAR_COLORS[0];
@@ -567,7 +566,7 @@ $('closeCreateRoom').addEventListener('click', () => closeModal('createRoomModal
 $('cancelCreateRoom').addEventListener('click', () => closeModal('createRoomModal'));
 $('closeForgotPassword').addEventListener('click', () => closeModal('forgotPasswordModal'));
 
-$('signOutBtn').addEventListener('click', signOut);
+$('signOutBtn').addEventListener('click', () => { closeModal('profileModal'); signOut(); });
 $('doSignIn').addEventListener('click', signIn);
 $('doSignUp').addEventListener('click', signUp);
 
@@ -627,7 +626,7 @@ let crewContacts = [];
 function openProfileModal() {
   if (!currentUser) return;
   renderPmColorPicker();
-  const name = $('userName').textContent;
+  const name = currentProfile?.display_name || '';
   $('pmName').value = name !== 'Guest' ? name : '';
   hideEl('pmError');
   openModal('profileModal');
@@ -654,7 +653,7 @@ $('doSaveProfile').addEventListener('click', async () => {
   const { error } = await sb.from('profiles').update({ display_name: name, avatar_color: pmSelectedColor }).eq('id', currentUser.id);
   if (error) { showErr('pmError', error.message); return; }
   // Update header UI
-  $('userName').textContent = name;
+  if (currentProfile) currentProfile.display_name = name;
   const av = $('userAvatar');
   av.style.background = pmSelectedColor;
   av.textContent = initials(name);
