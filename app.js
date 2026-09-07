@@ -1457,7 +1457,7 @@ window.openBlog = function(id, opts) {
   $('modalOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
   const shareUrl = location.href.split('#')[0] + '#' + blog.id;
-  const historyMethod = (!opts?.noHistory && prevBlogId && prevBlogId !== blog.id) ? 'pushState' : 'replaceState';
+  const historyMethod = opts?.noHistory ? 'replaceState' : 'pushState';
   history[historyMethod](null, '', location.pathname + location.search + '#' + blog.id);
   updateOgMeta(blog, shareUrl);
 
@@ -1823,7 +1823,7 @@ function init() {
   const hash = window.location.hash.slice(1);
   if (hash) {
     const blog = deduped().find(function(b) { return b.id === hash; });
-    if (blog) openBlog(hash);
+    if (blog) openBlog(hash, { noHistory: true });
   }
 
   // Load live chat room state for blog card buttons
