@@ -1053,7 +1053,7 @@ function blogCardHtml(blog) {
   const cardPagerHtml = allPages.length > 1
     ? '<div class="subpage-pager">' +
         allPages.map((p, i) =>
-          `<button class="subpage-pager-btn${p.id === blog.id ? ' active' : ''}" onclick="event.stopPropagation();switchCardPage(this,'${p.id}')">${i}</button>`
+          `<button class="subpage-pager-btn${p.id === blog.id ? ' active' : ''}" onclick="event.stopPropagation();switchCardPage(this,'${p.id}')">${i === 0 ? 'Home' : i}</button>`
         ).join('') +
       '</div>'
     : '';
@@ -1451,7 +1451,7 @@ window.openBlog = function(id, opts) {
     pager.className = 'subpage-pager';
     pager.innerHTML = allPages.map((p, i) => {
       const isCurrent = p.id === blog.id;
-      return `<button class="subpage-pager-btn${isCurrent ? ' active' : ''}" onclick="openBlog('${p.id}')">${i}</button>`;
+      return `<button class="subpage-pager-btn${isCurrent ? ' active' : ''}" onclick="openBlog('${p.id}')">${i === 0 ? 'Home' : i}</button>`;
     }).join('');
     $('modalContent').prepend(pager);
   }
