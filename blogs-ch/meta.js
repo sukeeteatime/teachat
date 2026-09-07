@@ -24,7 +24,7 @@ window.BLOG_META_ZH = {
     },
     {
       "id": "2025-04-09-zeigarnik-effect",
-      "title": "Zeigarnik Effect",
+      "title": "蔡格尼克效应（Zeigarnik Effect）",
       "date": "2025-04-09"
     },
     {

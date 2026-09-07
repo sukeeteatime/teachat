@@ -13,10 +13,9 @@ window.BLOG_REGISTRY_ZH.push({
   "pinned": false,
   "showHome": true
 });
-window.BLOG_REGISTRY = window.BLOG_REGISTRY || [];
-window.BLOG_REGISTRY.push({
+window.BLOG_REGISTRY_ZH.push({
   "id": "2025-04-09-zeigarnik-effect",
-  "title": "Zeigarnik Effect",
+  "title": "蔡格尼克效应（Zeigarnik Effect）",
   "author": "Sukee Parker",
   "date": "2025-04-09",
   "category": "Psychology",
