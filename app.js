@@ -157,6 +157,19 @@ function _getParagraphTexts(html) {
   return chunks;
 }
 
+function initInternalLinks(container) {
+  const all = [...(window.BLOG_REGISTRY || []), ...(window.BLOG_REGISTRY_ZH || [])];
+  const ids = new Set(all.map(b => b.id));
+  container.querySelectorAll('a[href^="#"]').forEach(a => {
+    const id = a.getAttribute('href').slice(1);
+    if (!ids.has(id)) return;
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      window.openBlog(id);
+    });
+  });
+}
+
 function initFaqToggles(container) {
   container.querySelectorAll('.faq-q').forEach(q => {
     q.addEventListener('click', () => {
@@ -1007,7 +1020,7 @@ window.switchCardPage = function(btn, blogId) {
   const wrapper = document.createElement('div');
   wrapper.innerHTML = blogCardHtml(blog);
   const newCard = wrapper.querySelector('article');
-  if (newCard) { card.replaceWith(newCard); initFaqToggles(newCard); }
+  if (newCard) { card.replaceWith(newCard); initFaqToggles(newCard); initInternalLinks(newCard); }
 };
 
 function blogCardHtml(blog) {
@@ -1333,6 +1346,7 @@ function appendFeedPage() {
   div.innerHTML = batch.map(blogCardHtml).join('');
   $('blogFeed').appendChild(div);
   initFaqToggles(div);
+  initInternalLinks(div);
   feedRendered += batch.length;
   updateSentinel();
 }
@@ -1418,6 +1432,7 @@ window.openBlog = function(id) {
 
   $('modalContent').innerHTML = contentToHtml(blog);
   initFaqToggles($('modalContent'));
+  initInternalLinks($('modalContent'));
 
   // Subpage pagination: build [1][2][3]… for multi-part articles
   const existingPager = $('modalContent').querySelector('.subpage-pager');
