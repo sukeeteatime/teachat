@@ -1029,7 +1029,7 @@ function blogCardHtml(blog) {
   const date = fmtDate(blog.date);
   const q = state.searchQuery;
   const titleHtml = q ? highlightStr(blog.title, q) : escHtml(blog.title);
-  const locked = _isOldArticle(blog) && !_authUser;
+  const locked = _isOldArticle(blog) && !_authUser && !blog.freeAccess;
   let bodyHtml;
   if (locked) {
     const excerptText = blog.excerpt || stripHtml(blog.content || '').slice(0, 200);
