@@ -847,11 +847,12 @@ body.player-active main { padding-bottom: 5.5rem; }
 .modal-body a:hover, .post-body a:hover { opacity: 0.75; }
 .modal-body p, .modal-body .paragraph { margin-bottom: 1.75rem; }
 .modal-body p:last-child, .modal-body .paragraph:last-child { margin-bottom: 0; }
-.modal-body ul, .modal-body ol { list-style: none; padding-left: 0; margin-bottom: 1.25rem; }
-.modal-body li { position: relative; padding-left: 1.25em; margin-bottom: 0.4rem; }
-.modal-body ul > li::before { content: "•"; position: absolute; left: 0; }
-.modal-body ol { counter-reset: item; }
-.modal-body ol > li::before { content: counter(item) "."; counter-increment: item; position: absolute; left: 0; }
+.modal-body ul, .modal-body ol,
+.post-body ul, .post-body ol { padding-left: 1.6em; margin-bottom: 1.25rem; }
+.modal-body ul, .post-body ul { list-style: disc outside; }
+.modal-body ol, .post-body ol { list-style: decimal outside; }
+.modal-body li, .post-body li { padding-left: 0.3em; margin-bottom: 0.5rem; line-height: 1.75; }
+.modal-body li:last-child, .post-body li:last-child { margin-bottom: 0; }
 
 .yt-embed {
   position: relative;
