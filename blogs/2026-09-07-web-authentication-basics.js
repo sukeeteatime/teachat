@@ -1,7 +1,7 @@
 window.BLOG_REGISTRY = window.BLOG_REGISTRY || [];
 window.BLOG_REGISTRY.push({
-  "id": "2026-09-07-web-authentication-basics",
-  "title": "Web Authentication Basics",
+  "id": "2026-09-07-web-authentication-part-1",
+  "title": "Web Authentication Part 1",
   "author": "Sukee Parker",
   "date": "2026-09-07",
   "category": "Technology",

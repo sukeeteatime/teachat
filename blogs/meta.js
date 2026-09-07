@@ -81,8 +81,8 @@ window.BLOG_META = {
       "date": "2026-09-07"
     },
     {
-      "id": "2026-09-07-web-authentication-basics",
-      "title": "Web Authentication Basics",
+      "id": "2026-09-07-web-authentication-part-1",
+      "title": "Web Authentication Part 1",
       "date": "2026-09-07"
     },
     {
