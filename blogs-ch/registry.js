@@ -25,7 +25,8 @@ window.BLOG_REGISTRY_ZH.push({
   "contentType": "html",
   "autoRead": true,
   "pinned": false,
-  "showHome": true
+  "showHome": true,
+  "freeAccess": true
 });
 window.BLOG_REGISTRY_ZH.push({
   "id": "2026-08-03-ten-reason-to-move-to-austin",
