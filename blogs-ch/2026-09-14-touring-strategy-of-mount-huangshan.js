@@ -7,7 +7,7 @@ window.BLOG_REGISTRY_ZH.push({
   "category": "Travel",
   "tags": [],
   "excerpt": "黄山奇松云海，漫步其间，感受世事无常，万物流转。",
-  "content": "<p>黄山虽不在五岳之中，却与庐山和雁荡山并称三山。在皖南层层山岭之间的黄山，以奇松和云海闻名。 攀登黄山更像是一路走进云里。山路渐高，村庄渐远，松树从岩缝里伸出来，雾气在峰与峰之间流动。你常常看不见远方，却因此更愿意往前走。也许有些地方的意义，正是在于它不肯一下子把自己全部交给你。<span style=\"font-style: normal; font-variant-caps: normal; font-width: normal; font-size: 16px; line-height: normal; font-size-adjust: none; font-kerning: auto; font-variant-alternates: normal; font-variant-ligatures: normal; font-variant-numeric: normal; font-variant-east-asian: normal; font-variant-position: normal; font-variant-emoji: normal; font-feature-settings: normal; font-optical-sizing: auto; font-variation-settings: normal; color: rgb(0, 0, 0);\">黄山也因此教人一种很安静的道理：</span>有些答案不必急着看清，有些路只需要继续走。</p><p>黄山古名“黟（yī）山”。相传轩辕黄帝曾在这里炼丹、求仙，唐天宝年间，山名改为“黄山”，后世也就把这座山与黄帝的传说连在了一起。传说当然未必是历史，但人很奇怪，总喜欢把最高的山、最深的水，与长生、神仙和天意联系起来。大概因为站在那样的地方，人会突然觉得，日常生活里的得失太小，而天地又太大，于是自然生出一种想要越过有限生命的愿望。</p>",
+  "content": "<p>黄山虽不在五岳之中，却与庐山和雁荡山并称“三山”。跻身于皖南层层山岭之间的黄山，以奇松、怪石、云海和温泉这“黄山四绝”而闻名。 攀登黄山更像是一路走进云里。山路渐高，村庄渐远，松树从岩缝里伸出来，雾气在峰与峰之间流动。你常常看不见远方，却因此更愿意往前走。也许有些地方的意义，正是在于它不肯一下子把自己全部交给你。黄山也因此教人一种很安静的道理：有些答案不必急着看清，有些路只需要继续走。</p><p>黄山古名“黟（yī）山”。相传轩辕黄帝曾在这里炼丹、求仙，唐天宝年间，山名改为“黄山”，后世也就把这座山与黄帝的传说连在了一起。传说当然未必是历史，但人很奇怪，总喜欢把最高的山、最深的水，与长生、神仙和天意联系起来。大概因为站在那样的地方，人会突然觉得，日常生活里的得失太小，而天地又太大，于是自然生出一种想要越过有限生命的愿望。</p><p>黄山的松多则千年，少则百年，可鉴时光流逝。黄山的怪石千奇百怪，嶙峋中可以激发无尽奇想。黄山的云变幻莫测，有如流转变迁的世事。黄山的温泉，则是潺潺细流，轻柔抚慰，从容川流。漫步其间，是让人流连忘返的自然之美和颇具感悟人生体验。</p>",
   "contentType": "html",
   "autoRead": true,
   "pinned": false,
