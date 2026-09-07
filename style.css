@@ -283,6 +283,7 @@ body.player-active main { padding-bottom: 5.5rem; }
 
 .post-card {
   background: var(--surface);
+  border-radius: 12px;
   padding: 2rem 2.5rem;
   margin-bottom: 1rem;
   cursor: pointer;
@@ -1081,6 +1082,8 @@ footer a:hover { color: var(--gold-dark); }
   max-width: 680px;
   margin: 0.5rem auto 0;
   background: var(--surface);
+  border-radius: 12px;
+  overflow: hidden;
 }
 
 .cal-toggle {
