@@ -82,7 +82,7 @@ window.BLOG_META = {
     },
     {
       "id": "2026-09-07-web-authentication-basic-auth-bearer-tokens-and-jwt",
-      "title": "Web Authentication: Basic Auth, Bearer Tokens and JWT",
+      "title": "Web Authentication: Basic, Bearer Tokens and JWT",
       "date": "2026-09-07"
     },
     {
