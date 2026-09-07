@@ -976,6 +976,15 @@ $('mpTitle').addEventListener('click', function() {
   if (article) openBlog(article.id);
 });
 
+function _runEmbeddedScripts(container) {
+  container.querySelectorAll('script').forEach(old => {
+    const s = document.createElement('script');
+    [...old.attributes].forEach(a => s.setAttribute(a.name, a.value));
+    s.textContent = old.textContent;
+    old.replaceWith(s);
+  });
+}
+
 /* === Blog Feed === */
 const PAGE_SIZE = 10;
 let feedBlogs = [];
@@ -1434,6 +1443,7 @@ window.openBlog = function(id, opts) {
   if (tagsEl) tagsEl.innerHTML = tagPillsHtml(blog.tags, '');
 
   $('modalContent').innerHTML = contentToHtml(blog);
+  _runEmbeddedScripts($('modalContent'));
   initFaqToggles($('modalContent'));
   initInternalLinks($('modalContent'));
 
