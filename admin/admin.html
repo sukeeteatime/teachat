@@ -256,6 +256,14 @@
     }
 
     /* Search */
+    .lang-filter-btn {
+      font-size: 0.75rem; font-weight: 600; padding: 3px 12px;
+      border: 1.5px solid var(--border); border-radius: 20px;
+      background: #fff; color: var(--text-muted); cursor: pointer;
+      font-family: var(--sans); transition: all 0.15s;
+    }
+    .lang-filter-btn:hover { border-color: var(--gold); color: var(--gold); }
+    .lang-filter-btn.active { background: var(--gold); color: #fff; border-color: var(--gold); }
     .search-wrap {
       position: relative;
       margin-bottom: 1rem;
@@ -346,6 +354,11 @@
       <input type="search" id="adminSearch" class="search-input" placeholder="Search articles by title, content, or category…" autocomplete="off" autocorrect="off" spellcheck="false">
       <button class="search-clear" id="adminSearchClear" style="display:none">✕</button>
     </div>
+    <div style="display:flex;gap:6px;margin:8px 0 12px">
+      <button class="lang-filter-btn active" data-lang="all" onclick="setAdminLang(this)">All</button>
+      <button class="lang-filter-btn" data-lang="en" onclick="setAdminLang(this)">EN</button>
+      <button class="lang-filter-btn" data-lang="zh" onclick="setAdminLang(this)">中文</button>
+    </div>
 
     <div id="articleList">
       <div class="empty-state">
@@ -365,16 +378,35 @@
         <div class="empty-state"><span class="ei" style="font-size:1.5rem">👤</span><p>Loading users…</p></div>
       </div>
     </div>
+
+    <!-- Chat report -->
+    <div style="margin-top:2.5rem">
+      <div style="display:flex;align-items:baseline;gap:0.5rem;margin-bottom:0.35rem">
+        <h1 class="page-title">Chat Report</h1>
+        <span class="article-count" id="roomCount">—</span>
+      </div>
+      <p class="page-sub">Tea chat rooms created by users.</p>
+      <div id="roomList">
+        <div class="empty-state"><span class="ei" style="font-size:1.5rem">💬</span><p>Loading rooms…</p></div>
+      </div>
+    </div>
   </main>
 
   <!-- Load blog registries — bundled by pre-commit hook -->
-  <script src="../blogs/registry.js?v=67"></script>
-  <script src="../blogs-ch/registry.js?v=67"></script>
+  <script src="../blogs/registry.js?v=76"></script>
+  <script src="../blogs-ch/registry.js?v=76"></script>
 
   <script>
     const WPM = 150;
     let allBlogs = [];
     let searchQuery = '';
+    let langFilter = 'all';
+
+    window.setAdminLang = function(btn) {
+      langFilter = btn.dataset.lang;
+      document.querySelectorAll('.lang-filter-btn').forEach(b => b.classList.toggle('active', b === btn));
+      renderFiltered();
+    };
 
     function stripHtml(html) {
       const d = document.createElement('div');
@@ -469,11 +501,12 @@
     }
 
     function renderFiltered() {
-      const total = allBlogs.length;
+      const pool = langFilter === 'all' ? allBlogs : allBlogs.filter(b => b._lang === langFilter);
+      const total = pool.length;
 
       document.getElementById('articleCount').textContent =
         searchQuery
-          ? `${allBlogs.filter(b => matchesSearch(b, searchQuery)).length} of ${total} article${total !== 1 ? 's' : ''}`
+          ? `${pool.filter(b => matchesSearch(b, searchQuery)).length} of ${total} article${total !== 1 ? 's' : ''}`
           : `${total} article${total !== 1 ? 's' : ''}`;
 
       if (!total) {
@@ -487,14 +520,14 @@
 
       // Build parent→children map
       const childrenOf = {};
-      allBlogs.filter(b => b.parentId).forEach(b => {
+      pool.filter(b => b.parentId).forEach(b => {
         (childrenOf[b.parentId] = childrenOf[b.parentId] || []).push(b);
       });
       Object.values(childrenOf).forEach(arr =>
         arr.sort((a, b) => (a.subpageSeq ?? 0) - (b.subpageSeq ?? 0))
       );
 
-      const parents = allBlogs.filter(b => !b.parentId);
+      const parents = pool.filter(b => !b.parentId);
       const addedChildIds = new Set();
 
       if (searchQuery) {
@@ -504,7 +537,7 @@
           allOrdered.push({ blog: p, isChild: false });
           (childrenOf[p.id] || []).forEach(c => { allOrdered.push({ blog: c, isChild: true }); addedChildIds.add(c.id); });
         });
-        allBlogs.filter(b => b.parentId && !addedChildIds.has(b.id)).forEach(b => allOrdered.push({ blog: b, isChild: true }));
+        pool.filter(b => b.parentId && !addedChildIds.has(b.id)).forEach(b => allOrdered.push({ blog: b, isChild: true }));
         const display = allOrdered.filter(({ blog }) => matchesSearch(blog, searchQuery));
         if (!display.length) {
           document.getElementById('articleList').innerHTML =
@@ -528,7 +561,7 @@
         }
       });
       // Orphan children
-      allBlogs.filter(b => b.parentId && !addedChildIds.has(b.id))
+      pool.filter(b => b.parentId && !addedChildIds.has(b.id))
         .forEach(b => { html += articleRowHtml(b, true, false); });
 
       document.getElementById('articleList').innerHTML = html;
@@ -560,24 +593,33 @@
     const _SB_URL = 'https://gsqjhxvjfnwugsivgzah.supabase.co';
     const _SB_KEY = 'sb_publishable_6AMzgqb7WpsEDWPnhcKBRw_zTObt1O1';
 
-    async function loadUsers() {
+    const STATUS_LABEL = { open:'Open', active:'Active', scheduled:'Scheduled', pending:'Pending', closed:'Closed' };
+    const STATUS_COLOR = { open:'#6b8e6b', active:'#c49a28', scheduled:'#7a8eb0', pending:'#c47a6a', closed:'#9b9486' };
+
+    async function loadReports() {
+      let sb;
+      try { sb = supabase.createClient(_SB_URL, _SB_KEY); } catch(e) { return; }
+      // Restore existing session (shared localStorage with index.html / chatroom)
+      await sb.auth.getSession();
+
+      await Promise.all([loadUsers(sb), loadRooms(sb)]);
+    }
+
+    async function loadUsers(sb) {
       const el = document.getElementById('userList');
       const countEl = document.getElementById('userCount');
       try {
-        const sb = supabase.createClient(_SB_URL, _SB_KEY);
         const { data, error } = await sb
           .from('profiles')
           .select('id, display_name, avatar_color, created_at')
           .order('created_at', { ascending: false });
-        if (error || !data) { el.innerHTML = '<div class="empty-state"><p>Could not load users.</p></div>'; return; }
+        if (error) { el.innerHTML = `<div class="empty-state"><p>Could not load users: ${escHtml(error.message)}</p></div>`; return; }
+        if (!data || !data.length) { countEl.textContent = '0 users'; el.innerHTML = '<div class="empty-state"><span class="ei" style="font-size:1.5rem">👤</span><p>No users yet.</p></div>'; return; }
         countEl.textContent = data.length + ' user' + (data.length !== 1 ? 's' : '');
-        if (!data.length) { el.innerHTML = '<div class="empty-state"><span class="ei" style="font-size:1.5rem">👤</span><p>No users yet.</p></div>'; return; }
-        el.innerHTML = data.map((u, i) => {
+        el.innerHTML = data.map(u => {
           const name = u.display_name || '(no name)';
           const initial = name[0].toUpperCase();
-          const since = u.created_at
-            ? new Date(u.created_at).toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' })
-            : '—';
+          const since = u.created_at ? new Date(u.created_at).toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' }) : '—';
           const color = u.avatar_color || '#c49a28';
           const shortId = u.id ? u.id.slice(0, 8) + '…' : '—';
           return `<div class="article-row" style="padding:0.65rem 1rem;align-items:center">
@@ -596,7 +638,41 @@
       }
     }
 
-    window.addEventListener('load', loadUsers);
+    async function loadRooms(sb) {
+      const el = document.getElementById('roomList');
+      const countEl = document.getElementById('roomCount');
+      try {
+        const { data, error } = await sb
+          .from('rooms')
+          .select('id, title, status, created_at, creator:profiles!created_by(display_name)')
+          .order('created_at', { ascending: false })
+          .limit(50);
+        if (error) { el.innerHTML = `<div class="empty-state"><p>Could not load rooms: ${escHtml(error.message)}</p></div>`; return; }
+        if (!data || !data.length) { countEl.textContent = '0 rooms'; el.innerHTML = '<div class="empty-state"><span class="ei" style="font-size:1.5rem">💬</span><p>No rooms yet.</p></div>'; return; }
+        countEl.textContent = data.length + ' room' + (data.length !== 1 ? 's' : '');
+        el.innerHTML = data.map(r => {
+          const title = r.title || '(untitled)';
+          const creator = r.creator?.display_name || '—';
+          const when = r.created_at ? new Date(r.created_at).toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' }) : '—';
+          const statusColor = STATUS_COLOR[r.status] || '#9b9486';
+          const statusLabel = STATUS_LABEL[r.status] || r.status;
+          return `<div class="article-row" style="padding:0.65rem 1rem;align-items:center">
+            <div style="flex:1;min-width:0">
+              <div class="row-title">${escHtml(title)}</div>
+              <div style="font-size:0.72rem;color:var(--text-light);margin-top:2px">by ${escHtml(creator)}</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:0.65rem;flex-shrink:0">
+              <span style="font-size:0.68rem;font-weight:700;padding:0.18rem 0.55rem;border-radius:20px;background:${statusColor}22;color:${statusColor}">${escHtml(statusLabel)}</span>
+              <div style="font-size:0.75rem;color:var(--text-muted);white-space:nowrap">${when}</div>
+            </div>
+          </div>`;
+        }).join('');
+      } catch(e) {
+        el.innerHTML = '<div class="empty-state"><p>Error loading rooms.</p></div>';
+      }
+    }
+
+    window.addEventListener('load', loadReports);
   </script>
 
 </body>
