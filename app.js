@@ -991,7 +991,7 @@ function _pagerWindow(allPages, activeId, offset, onPageClick, onShift) {
 }
 
 window.shiftPager = function(newOffset) {
-  const pager = document.querySelector('#modalOverlay .subpage-pager');
+  const pager = document.getElementById('modalPager');
   if (!pager) return;
   const rootId = pager.dataset.rootId;
   const blogId = pager.dataset.blogId;
@@ -1491,27 +1491,26 @@ window.openBlog = function(id, opts) {
   initInternalLinks($('modalContent'));
 
   // Subpage pagination: build [Home][1][2]… for multi-part articles
-  const existingPager = document.querySelector('#modalOverlay .subpage-pager');
-  if (existingPager) existingPager.remove();
-
   const rootId    = blog.parentId || blog.id;
   const allPages  = activeRegistry()
     .filter(b => b.id === rootId || b.parentId === rootId)
     .sort((a, b) => (a.subpageSeq ?? -1) - (b.subpageSeq ?? -1));
 
-  if (allPages.length > 1) {
-    const currentIdx = allPages.findIndex(p => p.id === blog.id);
-    const offset = Math.floor(Math.max(currentIdx, 0) / 5) * 5;
-    const pager = document.createElement('div');
-    pager.className = 'subpage-pager';
-    pager.dataset.rootId = rootId;
-    pager.dataset.blogId = blog.id;
-    pager.innerHTML = _pagerWindow(allPages, blog.id, offset,
-      p => `openBlog('${p.id}')`,
-      o => `shiftPager(${o})`);
-    const tagsRow = $('modalTags');
-    if (tagsRow && tagsRow.parentNode) tagsRow.parentNode.insertBefore(pager, tagsRow.nextSibling);
-    else $('modalContent').prepend(pager);
+  const modalPager = $('modalPager');
+  if (modalPager) {
+    if (allPages.length > 1) {
+      const currentIdx = allPages.findIndex(p => p.id === blog.id);
+      const offset = Math.floor(Math.max(currentIdx, 0) / 5) * 5;
+      modalPager.className = 'subpage-pager';
+      modalPager.dataset.rootId = rootId;
+      modalPager.dataset.blogId = blog.id;
+      modalPager.innerHTML = _pagerWindow(allPages, blog.id, offset,
+        p => `openBlog('${p.id}')`,
+        o => `shiftPager(${o})`);
+    } else {
+      modalPager.className = '';
+      modalPager.innerHTML = '';
+    }
   }
 
   $('modalOverlay').classList.add('open');
