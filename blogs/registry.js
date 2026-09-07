@@ -8227,8 +8227,8 @@ window.BLOG_REGISTRY.push({
   "subpageSeq": 2
 });
 window.BLOG_REGISTRY.push({
-  "id": "2026-09-07-why-you-would-work-with-the-team",
-  "title": "Why You Would Work with the Team",
+  "id": "2026-09-07-why-youd-want-to-work-with-the-team",
+  "title": "Why You’d Want to Work with the Team",
   "author": "Sukee Parker",
   "date": "2026-09-07",
   "category": "Career",
