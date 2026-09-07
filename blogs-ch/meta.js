@@ -23,6 +23,11 @@ window.BLOG_META_ZH = {
       "date": "2026-08-03"
     },
     {
+      "id": "2025-04-09-zeigarnik-effect",
+      "title": "Zeigarnik Effect",
+      "date": "2025-04-09"
+    },
+    {
       "id": "2023-06-18-understand-minimalism",
       "title": "生活的艺术流派｜极简主义",
       "date": "2023-06-18"
