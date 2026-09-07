@@ -91,6 +91,11 @@ window.BLOG_META = {
       "date": "2026-09-07"
     },
     {
+      "id": "2026-09-07-web-development-fundamental-understanding-git",
+      "title": "Web Development Fundamental | Understanding Git",
+      "date": "2026-09-07"
+    },
+    {
       "id": "2026-09-07-why-youd-want-to-work-with-the-team",
       "title": "Why You’d Want to Work with the Team",
       "date": "2026-09-07"
