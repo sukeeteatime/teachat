@@ -1396,7 +1396,9 @@ function renderFeed() {
 
 /* === Article Modal === */
 window.openBlog = function(id) {
-  const blog = activeRegistry().find(b => b.id === id);
+  const blog = activeRegistry().find(b => b.id === id)
+    || (window.BLOG_REGISTRY || []).find(b => b.id === id)
+    || (window.BLOG_REGISTRY_ZH || []).find(b => b.id === id);
   if (!blog) return;
   state.openBlog = blog;
 
@@ -1472,7 +1474,8 @@ $('modalContent').addEventListener('click', function(e) {
   const a = e.target.closest('a[href^="#"]');
   if (!a) return;
   const id = a.getAttribute('href').slice(1);
-  const blog = activeRegistry().find(b => b.id === id);
+  const allRegs = [...(window.BLOG_REGISTRY || []), ...(window.BLOG_REGISTRY_ZH || [])];
+  const blog = allRegs.find(b => b.id === id);
   if (blog) {
     e.preventDefault();
     openBlog(id);
@@ -1484,7 +1487,8 @@ window.addEventListener('hashchange', function() {
   const id = window.location.hash.slice(1);
   if (!id) return; // hash removed by _closeModalUI — modal is already closing
   if (state.openBlog && state.openBlog.id === id) return; // already showing this article
-  const blog = deduped().find(b => b.id === id);
+  const allRegs = [...(window.BLOG_REGISTRY || []), ...(window.BLOG_REGISTRY_ZH || [])];
+  const blog = allRegs.find(b => b.id === id);
   if (blog) openBlog(id);
 });
 
