@@ -1820,6 +1820,13 @@ function init() {
   applyLang();
   renderCalendar();
   renderFeed();
+  // If a saved date/year filter left the feed empty, fall back to unfiltered
+  if (feedBlogs.length === 0 && (state.calDateFilter || state.calYearFilter)) {
+    state.calDateFilter = null;
+    state.calYearFilter = null;
+    renderCalendar();
+    renderFeed();
+  }
   renderSidebar();
 
   const hash = window.location.hash.slice(1);
