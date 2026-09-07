@@ -4,7 +4,7 @@ window.BLOG_REGISTRY_ZH.push({
   "title": "奥斯汀生活｜2026 定居奥斯汀的十个理由",
   "author": "叶子🍃",
   "date": "2026-08-03",
-  "category": "Lifestyle",
+  "category": "奥斯汀生活",
   "tags": [
     "Decision Making"
   ],

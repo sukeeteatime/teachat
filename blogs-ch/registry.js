@@ -31,7 +31,7 @@ window.BLOG_REGISTRY_ZH.push({
 });
 window.BLOG_REGISTRY_ZH.push({
   "id": "2026-09-06-ten-reasons-to-leave-austin-texas",
-  "title": "奥斯汀生活｜离开奥斯汀的十个理由",
+  "title": "奥斯汀生活｜2026 离开奥斯汀的十个理由",
   "author": "叶子🍃",
   "date": "2026-09-06",
   "category": "奥斯汀生活",

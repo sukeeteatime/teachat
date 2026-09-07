@@ -4,7 +4,7 @@ window.BLOG_META_ZH = {
   "posts": [
     {
       "id": "2026-09-06-ten-reasons-to-leave-austin-texas",
-      "title": "奥斯汀生活｜离开奥斯汀的十个理由",
+      "title": "奥斯汀生活｜2026 离开奥斯汀的十个理由",
       "date": "2026-09-06"
     },
     {
