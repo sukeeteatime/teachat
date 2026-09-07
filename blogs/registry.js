@@ -8238,7 +8238,8 @@ window.BLOG_REGISTRY.push({
   "contentType": "html",
   "autoRead": false,
   "pinned": false,
-  "showHome": true
+  "showHome": true,
+  "noListen": true
 });
 window.BLOG_REGISTRY.push({
   "id": "2026-09-07-web-authentication-basics",

@@ -11,5 +11,6 @@ window.BLOG_REGISTRY.push({
   "contentType": "html",
   "autoRead": false,
   "pinned": false,
-  "showHome": true
+  "showHome": true,
+  "noListen": true
 });
