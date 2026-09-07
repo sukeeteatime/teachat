@@ -86,6 +86,11 @@ window.BLOG_META = {
       "date": "2026-09-07"
     },
     {
+      "id": "2026-09-07-web-authentication-part-2-",
+      "title": "Web Authentication Part 2",
+      "date": "2026-09-07"
+    },
+    {
       "id": "2026-09-07-why-youd-want-to-work-with-the-team",
       "title": "Why You’d Want to Work with the Team",
       "date": "2026-09-07"
