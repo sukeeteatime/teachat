@@ -1333,7 +1333,6 @@ footer a:hover { color: var(--gold-dark); }
     letter-spacing: 0.12em;
   }
   .header-username { display: none !important; }
-  #authChip { display: none !important; }
   .auth-btn { font-size: 10px; padding: 3px 8px; }
 
   main { padding: 0.75rem 0 6rem; }

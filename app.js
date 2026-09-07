@@ -1234,8 +1234,6 @@ function _initAuth() {
   });
 
   const _doSignOut = async () => { await _sb.auth.signOut(); };
-  $('signOutBtn').addEventListener('click', _doSignOut);
-  if ($('signOutBtnMobile')) $('signOutBtnMobile').addEventListener('click', _doSignOut);
 
   // Profile modal wiring
   const profileOv = $('profileOverlay');
@@ -1243,6 +1241,7 @@ function _initAuth() {
     const closeProfile = () => { profileOv.style.display = 'none'; };
     $('profileModalClose').addEventListener('click', closeProfile);
     profileOv.addEventListener('click', e => { if (e.target === profileOv) closeProfile(); });
+    $('profileSignOutBtn').addEventListener('click', async () => { closeProfile(); await _doSignOut(); });
     $('profileSaveBtn').addEventListener('click', async () => {
       const name = $('profileName').value.trim();
       const errEl = $('profileError');
@@ -1297,12 +1296,11 @@ function _openProfileModal() {
 }
 
 function _updateAuthUI() {
-  const chip = $('authChip');
   const signInBtn = $('signInHeaderBtn');
   const avBtn = $('authAvatar');
   const mobileRow = $('headerAuthRow');
   const mobileNameEl = $('authNameMobile');
-  if (!chip || !signInBtn) return;
+  if (!signInBtn) return;
   if (_authUser) {
     const name = _authUser.user_metadata?.display_name || _authUser.email?.split('@')[0] || '';
     if (avBtn) {
@@ -1313,13 +1311,11 @@ function _updateAuthUI() {
     }
     if (mobileNameEl) mobileNameEl.textContent = name;
     if (mobileRow) mobileRow.classList.add('auth-visible');
-    chip.style.display = 'flex';
     signInBtn.style.display = 'none';
   } else {
     if (avBtn) { avBtn.style.display = 'none'; avBtn.onclick = null; }
     if (mobileNameEl) mobileNameEl.textContent = '';
     if (mobileRow) mobileRow.classList.remove('auth-visible');
-    chip.style.display = 'none';
     signInBtn.style.display = '';
   }
 }

@@ -22,7 +22,7 @@
   <link rel="icon" href="images/favicon-32.png" type="image/png" sizes="32x32">
   <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=127">
+  <link rel="stylesheet" href="style.css?v=128">
 </head>
 <body>
 
@@ -42,15 +42,11 @@
         </svg>
       </button>
       <button class="lang-toggle" id="langToggle" aria-label="Switch language">中文</button>
-      <div id="authChip" style="display:none;align-items:center;gap:6px">
-        <button class="auth-btn auth-btn-ghost" id="signOutBtn">Sign out</button>
-      </div>
       <button class="auth-btn" id="signInHeaderBtn">Sign in</button>
     </div>
-    <!-- Mobile second row: name + sign out -->
+    <!-- Mobile second row: name only (avatar in header-right opens profile + sign out) -->
     <div class="header-auth-row" id="headerAuthRow" style="display:none">
       <span id="authNameMobile" class="header-username-mobile"></span>
-      <button class="auth-btn auth-btn-ghost header-signout-mobile" id="signOutBtnMobile">Sign out</button>
     </div>
   </header>
 
@@ -213,6 +209,7 @@
       </div>
       <div class="auth-error" id="profileError" style="display:none"></div>
       <button class="auth-submit" id="profileSaveBtn">Save</button>
+      <button class="auth-btn auth-btn-ghost" id="profileSignOutBtn" style="width:100%;margin-top:0.5rem;justify-content:center">Sign out</button>
     </div>
   </div>
 
@@ -224,9 +221,9 @@
           onload="if(window._chatRoomsReady)window._chatRoomsReady();if(window._authReady)window._authReady()"></script>
 
   <!-- All posts bundled into one file by the pre-commit hook (was 365 separate requests) -->
-  <script src="blogs/registry.js?v=170" defer></script>
-  <script src="blogs-ch/registry.js?v=170" defer></script>
-  <script src="app.js?v=173" defer></script>
+  <script src="blogs/registry.js?v=171" defer></script>
+  <script src="blogs-ch/registry.js?v=171" defer></script>
+  <script src="app.js?v=174" defer></script>
 
 </body>
 </html>
