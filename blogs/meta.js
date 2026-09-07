@@ -76,6 +76,11 @@ window.BLOG_META = {
       "date": "2026-09-08"
     },
     {
+      "id": "2026-09-07-daily-exercise",
+      "title": "Daily Exercise",
+      "date": "2026-09-07"
+    },
+    {
       "id": "2026-09-07-web-authentication-basics",
       "title": "Web Authentication Basics",
       "date": "2026-09-07"
