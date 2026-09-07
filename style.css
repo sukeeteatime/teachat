@@ -1534,6 +1534,8 @@ footer a:hover { color: var(--gold-dark); }
   padding: 28px 24px 24px;
   width: 100%;
   max-width: 360px;
+  max-height: calc(100dvh - 40px);
+  overflow-y: auto;
   position: relative;
   box-shadow: 0 8px 40px rgba(0,0,0,0.18);
 }
