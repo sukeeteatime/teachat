@@ -1509,8 +1509,8 @@ window.openBlog = function(id, opts) {
     pager.innerHTML = _pagerWindow(allPages, blog.id, offset,
       p => `openBlog('${p.id}')`,
       o => `shiftPager(${o})`);
-    const divider = document.querySelector('#modalOverlay .modal-divider');
-    if (divider) divider.before(pager);
+    const tagsRow = $('modalTags');
+    if (tagsRow && tagsRow.parentNode) tagsRow.parentNode.insertBefore(pager, tagsRow.nextSibling);
     else $('modalContent').prepend(pager);
   }
 
