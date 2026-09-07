@@ -316,6 +316,7 @@ button { cursor: pointer; font-family: var(--sans); }
   max-width: 420px;
   max-height: calc(100vh - 40px);
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
   box-shadow: var(--shadow-lg);
   position: relative;
@@ -739,6 +740,7 @@ button { cursor: pointer; font-family: var(--sans); }
 @media (max-width: 480px) {
   .modal-overlay { align-items: flex-start; padding: 12px 10px; }
   .modal { padding: 14px; border-radius: 14px; max-height: calc(100vh - 24px); }
+  .access-type-grid { grid-template-columns: repeat(2, 1fr); }
   /* Sidebar becomes a slide-in drawer */
   .room-sidebar {
     position: fixed;
