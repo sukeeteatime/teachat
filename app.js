@@ -976,6 +976,46 @@ $('mpTitle').addEventListener('click', function() {
   if (article) openBlog(article.id);
 });
 
+function _pagerWindow(allPages, activeId, offset, onPageClick, onShift) {
+  let html = '';
+  if (offset > 0)
+    html += `<button class="subpage-pager-btn subpage-pager-nav" onclick="${onShift(offset - 5)}">&#8249;</button>`;
+  allPages.slice(offset, offset + 5).forEach((p, i) => {
+    const gi = offset + i;
+    const cls = p.id === activeId ? ' active' : '';
+    html += `<button class="subpage-pager-btn${cls}" onclick="${onPageClick(p)}">${gi === 0 ? 'Home' : gi}</button>`;
+  });
+  if (offset + 5 < allPages.length)
+    html += `<button class="subpage-pager-btn subpage-pager-nav" onclick="${onShift(offset + 5)}">&#8250;</button>`;
+  return html;
+}
+
+window.shiftPager = function(newOffset) {
+  const pager = document.querySelector('#modalOverlay .subpage-pager');
+  if (!pager) return;
+  const rootId = pager.dataset.rootId;
+  const blogId = pager.dataset.blogId;
+  const allPages = activeRegistry()
+    .filter(b => b.id === rootId || b.parentId === rootId)
+    .sort((a, b) => (a.subpageSeq ?? -1) - (b.subpageSeq ?? -1));
+  pager.innerHTML = _pagerWindow(allPages, blogId, newOffset,
+    p => `openBlog('${p.id}')`,
+    o => `shiftPager(${o})`);
+};
+
+window.shiftCardPager = function(btn, newOffset) {
+  const pager = btn.closest('.subpage-pager');
+  if (!pager) return;
+  const rootId = pager.dataset.rootId;
+  const blogId = pager.dataset.blogId;
+  const allPages = activeRegistry()
+    .filter(b => b.id === rootId || b.parentId === rootId)
+    .sort((a, b) => (a.subpageSeq ?? -1) - (b.subpageSeq ?? -1));
+  pager.innerHTML = _pagerWindow(allPages, blogId, newOffset,
+    p => `event.stopPropagation();switchCardPage(this,'${p.id}')`,
+    o => `event.stopPropagation();shiftCardPager(this,${o})`);
+};
+
 function _runEmbeddedScripts(container) {
   container.querySelectorAll('script').forEach(old => {
     const s = document.createElement('script');
@@ -1059,13 +1099,15 @@ function blogCardHtml(blog) {
   const allPages = activeRegistry()
     .filter(b => b.id === rootId || b.parentId === rootId)
     .sort((a, b) => (a.subpageSeq ?? -1) - (b.subpageSeq ?? -1));
-  const cardPagerHtml = allPages.length > 1
-    ? '<div class="subpage-pager">' +
-        allPages.map((p, i) =>
-          `<button class="subpage-pager-btn${p.id === blog.id ? ' active' : ''}" onclick="event.stopPropagation();switchCardPage(this,'${p.id}')">${i === 0 ? 'Home' : i}</button>`
-        ).join('') +
-      '</div>'
-    : '';
+  const cardPagerHtml = (() => {
+    if (allPages.length <= 1) return '';
+    const ci = allPages.findIndex(p => p.id === blog.id);
+    const offset = Math.floor(Math.max(ci, 0) / 5) * 5;
+    const inner = _pagerWindow(allPages, blog.id, offset,
+      p => `event.stopPropagation();switchCardPage(this,'${p.id}')`,
+      o => `event.stopPropagation();shiftCardPager(this,${o})`);
+    return `<div class="subpage-pager" data-root-id="${rootId}" data-blog-id="${blog.id}">${inner}</div>`;
+  })();
   return `
     <article class="post-card${blog.pinned ? ' post-card--pinned' : ''}${locked ? ' post-card--locked' : ''}">
       <div class="post-cat-row">
@@ -1075,10 +1117,10 @@ function blogCardHtml(blog) {
       <h2 class="post-title">${titleHtml}</h2>
       <div class="post-date-row">
         <span class="post-date">${date}</span>
-        <button class="modal-listen-mini" onclick="readArticle('${blog.id}')">
+        ${blog.noListen ? '' : `<button class="modal-listen-mini" onclick="readArticle('${blog.id}')">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
           ${t('listenCardBtn', listenMins(blog))}
-        </button>
+        </button>`}
       </div>
       <hr class="post-hr">
       ${cardPagerHtml}
@@ -1434,10 +1476,11 @@ window.openBlog = function(id, opts) {
   const mins = listenMins(blog);
   $('modalByline').innerHTML =
     t('byline', blog.author, fmtDate(blog.date)) +
-    `<button class="modal-listen-mini" onclick="readArticle('${blog.id}')">` +
-      `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>` +
-      ` ${t('modalListenBtn')} · ~${mins} min` +
-    `</button>`;
+    (blog.noListen ? '' :
+      `<button class="modal-listen-mini" onclick="readArticle('${blog.id}')">` +
+        `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>` +
+        ` ${t('modalListenBtn')} · ~${mins} min` +
+      `</button>`);
 
   const tagsEl = document.getElementById('modalTags');
   if (tagsEl) tagsEl.innerHTML = tagPillsHtml(blog.tags, '');
@@ -1447,8 +1490,8 @@ window.openBlog = function(id, opts) {
   initFaqToggles($('modalContent'));
   initInternalLinks($('modalContent'));
 
-  // Subpage pagination: build [1][2][3]… for multi-part articles
-  const existingPager = $('modalContent').querySelector('.subpage-pager');
+  // Subpage pagination: build [Home][1][2]… for multi-part articles
+  const existingPager = document.querySelector('#modalOverlay .subpage-pager');
   if (existingPager) existingPager.remove();
 
   const rootId    = blog.parentId || blog.id;
@@ -1457,13 +1500,18 @@ window.openBlog = function(id, opts) {
     .sort((a, b) => (a.subpageSeq ?? -1) - (b.subpageSeq ?? -1));
 
   if (allPages.length > 1) {
+    const currentIdx = allPages.findIndex(p => p.id === blog.id);
+    const offset = Math.floor(Math.max(currentIdx, 0) / 5) * 5;
     const pager = document.createElement('div');
     pager.className = 'subpage-pager';
-    pager.innerHTML = allPages.map((p, i) => {
-      const isCurrent = p.id === blog.id;
-      return `<button class="subpage-pager-btn${isCurrent ? ' active' : ''}" onclick="openBlog('${p.id}')">${i === 0 ? 'Home' : i}</button>`;
-    }).join('');
-    $('modalContent').prepend(pager);
+    pager.dataset.rootId = rootId;
+    pager.dataset.blogId = blog.id;
+    pager.innerHTML = _pagerWindow(allPages, blog.id, offset,
+      p => `openBlog('${p.id}')`,
+      o => `shiftPager(${o})`);
+    const divider = document.querySelector('#modalOverlay .modal-divider');
+    if (divider) divider.before(pager);
+    else $('modalContent').prepend(pager);
   }
 
   $('modalOverlay').classList.add('open');
