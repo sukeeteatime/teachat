@@ -1409,11 +1409,12 @@ function renderFeed() {
 }
 
 /* === Article Modal === */
-window.openBlog = function(id) {
+window.openBlog = function(id, opts) {
   const blog = activeRegistry().find(b => b.id === id)
     || (window.BLOG_REGISTRY || []).find(b => b.id === id)
     || (window.BLOG_REGISTRY_ZH || []).find(b => b.id === id);
   if (!blog) return;
+  const prevBlogId = state.openBlog ? state.openBlog.id : null;
   state.openBlog = blog;
 
   $('modalCategory').textContent = blog.category;
@@ -1456,7 +1457,8 @@ window.openBlog = function(id) {
   $('modalOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
   const shareUrl = location.href.split('#')[0] + '#' + blog.id;
-  history.replaceState(null, '', location.pathname + location.search + '#' + blog.id);
+  const historyMethod = (!opts?.noHistory && prevBlogId && prevBlogId !== blog.id) ? 'pushState' : 'replaceState';
+  history[historyMethod](null, '', location.pathname + location.search + '#' + blog.id);
   updateOgMeta(blog, shareUrl);
 
   // If this article is currently being read aloud, activate highlighting in the modal
@@ -1500,11 +1502,15 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeBlog();
 
 window.addEventListener('hashchange', function() {
   const id = window.location.hash.slice(1);
-  if (!id) return; // hash removed by _closeModalUI — modal is already closing
+  if (!id) {
+    // Back-navigation to no hash while modal is open → close it
+    if ($('modalOverlay').classList.contains('open')) _closeModalUI();
+    return;
+  }
   if (state.openBlog && state.openBlog.id === id) return; // already showing this article
   const allRegs = [...(window.BLOG_REGISTRY || []), ...(window.BLOG_REGISTRY_ZH || [])];
   const blog = allRegs.find(b => b.id === id);
-  if (blog) openBlog(id);
+  if (blog) openBlog(id, { noHistory: true });
 });
 
 /* === Calendar === */
