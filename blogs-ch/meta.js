@@ -23,6 +23,11 @@ window.BLOG_META_ZH = {
       "date": "2026-08-03"
     },
     {
+      "id": "2025-05-01-information-cocoon",
+      "title": "信息茧房（Information Cocoon）",
+      "date": "2025-05-01"
+    },
+    {
       "id": "2025-04-09-zeigarnik-effect",
       "title": "蔡格尼克效应（Zeigarnik Effect）",
       "date": "2025-04-09"
