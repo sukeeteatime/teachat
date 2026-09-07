@@ -8242,8 +8242,8 @@ window.BLOG_REGISTRY.push({
   "noListen": true
 });
 window.BLOG_REGISTRY.push({
-  "id": "2026-09-07-web-authentication-basic-authentication-tokens-and-jwt",
-  "title": "Web Authentication: Basic Authentication, Tokens and JWT",
+  "id": "2026-09-07-web-authentication-basic-tokens-and-jwt",
+  "title": "Web Authentication: Basic, Tokens and JWT",
   "author": "Sukee Parker",
   "date": "2026-09-07",
   "category": "Technology",
