@@ -22,7 +22,7 @@
   <link rel="icon" href="images/favicon-32.png" type="image/png" sizes="32x32">
   <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
-  <link rel="stylesheet" href="style.css?v=146">
+  <link rel="stylesheet" href="style.css?v=147">
 </head>
 <body>
 
@@ -41,7 +41,9 @@
         </svg>
       </button>
       <button class="lang-toggle" id="langToggle" aria-label="Switch language">中文</button>
-      <button class="auth-btn" id="signInHeaderBtn">Sign in</button>
+      <button class="auth-btn" id="signInHeaderBtn" title="Sign in" aria-label="Sign in">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </button>
       <button id="authAvatar" class="header-avatar" style="display:none" title="My profile"></button>
     </div>
     <!-- Mobile second row: name only (avatar in header-right opens profile + sign out) -->
@@ -221,9 +223,9 @@
           onload="if(window._chatRoomsReady)window._chatRoomsReady();if(window._authReady)window._authReady()"></script>
 
   <!-- All posts bundled into one file by the pre-commit hook (was 365 separate requests) -->
-  <script src="blogs/registry.js?v=189" defer></script>
-  <script src="blogs-ch/registry.js?v=189" defer></script>
-  <script src="app.js?v=192" defer></script>
+  <script src="blogs/registry.js?v=190" defer></script>
+  <script src="blogs-ch/registry.js?v=190" defer></script>
+  <script src="app.js?v=193" defer></script>
 
 </body>
 </html>
