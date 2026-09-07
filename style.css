@@ -833,6 +833,7 @@ body.player-active main { padding-bottom: 5.5rem; }
 .subpage-pager-btn:hover { border-color: var(--gold); color: var(--gold-dark); background: var(--gold-light); }
 .subpage-pager-btn.active { border-color: var(--gold); background: var(--gold); color: #fff; cursor: default; }
 .subpage-pager-btn.subpage-pager-nav { color: var(--text-muted); font-size: 1rem; min-width: 24px; }
+.modal-byline-pager { margin-left: auto; margin-top: 0; margin-bottom: 0; }
 
 .modal-body::before { content: ''; display: block; height: 1px; background: var(--border); margin-bottom: 1.25rem; }
 

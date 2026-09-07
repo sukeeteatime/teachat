@@ -991,7 +991,7 @@ function _pagerWindow(allPages, activeId, offset, onPageClick, onShift) {
 }
 
 window.shiftPager = function(newOffset) {
-  const pager = document.getElementById('modalPager');
+  const pager = document.querySelector('#modalByline .modal-byline-pager');
   if (!pager) return;
   const rootId = pager.dataset.rootId;
   const blogId = pager.dataset.blogId;
@@ -1473,6 +1473,23 @@ window.openBlog = function(id, opts) {
   $('modalCategory').textContent = blog.category;
   $('modalTitle').textContent = blog.title;
 
+  // Compute subpages first so pager can go inline in the byline row
+  const rootId   = blog.parentId || blog.id;
+  const allPages = activeRegistry()
+    .filter(b => b.id === rootId || b.parentId === rootId)
+    .sort((a, b) => (a.subpageSeq ?? -1) - (b.subpageSeq ?? -1));
+
+  let pagerHtml = '';
+  if (allPages.length > 1) {
+    const currentIdx = allPages.findIndex(p => p.id === blog.id);
+    const offset = Math.floor(Math.max(currentIdx, 0) / 5) * 5;
+    pagerHtml = `<div class="subpage-pager modal-byline-pager" data-root-id="${rootId}" data-blog-id="${blog.id}">` +
+      _pagerWindow(allPages, blog.id, offset,
+        p => `openBlog('${p.id}')`,
+        o => `shiftPager(${o})`) +
+      `</div>`;
+  }
+
   const mins = listenMins(blog);
   $('modalByline').innerHTML =
     t('byline', blog.author, fmtDate(blog.date)) +
@@ -1480,7 +1497,8 @@ window.openBlog = function(id, opts) {
       `<button class="modal-listen-mini" onclick="readArticle('${blog.id}')">` +
         `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>` +
         ` ${t('modalListenBtn')} · ~${mins} min` +
-      `</button>`);
+      `</button>`) +
+    pagerHtml;
 
   const tagsEl = document.getElementById('modalTags');
   if (tagsEl) tagsEl.innerHTML = tagPillsHtml(blog.tags, '');
@@ -1489,29 +1507,6 @@ window.openBlog = function(id, opts) {
   _runEmbeddedScripts($('modalContent'));
   initFaqToggles($('modalContent'));
   initInternalLinks($('modalContent'));
-
-  // Subpage pagination: build [Home][1][2]… for multi-part articles
-  const rootId    = blog.parentId || blog.id;
-  const allPages  = activeRegistry()
-    .filter(b => b.id === rootId || b.parentId === rootId)
-    .sort((a, b) => (a.subpageSeq ?? -1) - (b.subpageSeq ?? -1));
-
-  const modalPager = $('modalPager');
-  if (modalPager) {
-    if (allPages.length > 1) {
-      const currentIdx = allPages.findIndex(p => p.id === blog.id);
-      const offset = Math.floor(Math.max(currentIdx, 0) / 5) * 5;
-      modalPager.className = 'subpage-pager';
-      modalPager.dataset.rootId = rootId;
-      modalPager.dataset.blogId = blog.id;
-      modalPager.innerHTML = _pagerWindow(allPages, blog.id, offset,
-        p => `openBlog('${p.id}')`,
-        o => `shiftPager(${o})`);
-    } else {
-      modalPager.className = '';
-      modalPager.innerHTML = '';
-    }
-  }
 
   $('modalOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
