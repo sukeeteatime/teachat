@@ -994,8 +994,10 @@ function deduped() {
 
 function tagPillsHtml(tags, query) {
   if (!tags || !tags.length) return '';
+  const visible = tags.filter(t => t !== '中文');
+  if (!visible.length) return '';
   return '<div class="post-tags">' +
-    tags.map(tag => `<button class="post-tag" onclick="filterByTag(${JSON.stringify(tag)})">${query ? highlightStr(tag, query) : escHtml(tag)}</button>`).join('') +
+    visible.map(tag => `<button class="post-tag" onclick="filterByTag(${JSON.stringify(tag)})">${query ? highlightStr(tag, query) : escHtml(tag)}</button>`).join('') +
     '</div>';
 }
 
