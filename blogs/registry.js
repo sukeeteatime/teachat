@@ -8274,14 +8274,14 @@ window.BLOG_REGISTRY.push({
   "showHome": true
 });
 window.BLOG_REGISTRY.push({
-  "id": "2026-09-07-web-authentication-part-2-",
-  "title": "Web Authentication Part 2",
+  "id": "2026-09-07-web-authentication-oauth-20-tutorial-with-pkce",
+  "title": "Web Authentication: OAuth 2.0 tutorial with PKCE",
   "author": "Sukee Parker",
   "date": "2026-09-07",
   "category": "Technology",
   "tags": [],
   "excerpt": "Advanced topics",
-  "content": "<div class=\"yt-embed\"><iframe src=\"https://www.youtube.com/embed/gEIfV3ZSt-8\" title=\"YouTube video\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen=\"\"></iframe></div>",
+  "content": "<div class=\"yt-embed\"><iframe src=\"https://www.youtube.com/embed/gEIfV3ZSt-8\" title=\"YouTube video\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen=\"\"></iframe></div><div class=\"yt-embed\"><iframe src=\"https://www.youtube.com/embed/ie8RLSpZ2SA\" title=\"YouTube video\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" allowfullscreen=\"\"></iframe></div>",
   "contentType": "html",
   "autoRead": true,
   "pinned": false,
