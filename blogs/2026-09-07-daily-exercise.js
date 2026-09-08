@@ -12,5 +12,6 @@ window.BLOG_REGISTRY.push({
   "autoRead": false,
   "pinned": false,
   "showHome": true,
-  "noListen": true
+  "noListen": true,
+  "membersOnly": true
 });

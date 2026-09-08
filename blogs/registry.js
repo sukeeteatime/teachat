@@ -8252,7 +8252,8 @@ window.BLOG_REGISTRY.push({
   "autoRead": false,
   "pinned": false,
   "showHome": true,
-  "noListen": true
+  "noListen": true,
+  "membersOnly": true
 });
 window.BLOG_REGISTRY.push({
   "id": "2026-09-07-web-authentication-basic-tokens-and-jwt",
