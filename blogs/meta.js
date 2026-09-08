@@ -76,6 +76,11 @@ window.BLOG_META = {
       "date": "2026-09-08"
     },
     {
+      "id": "2026-09-08-system-design-design-principles",
+      "title": "System Design: Design Principles",
+      "date": "2026-09-08"
+    },
+    {
       "id": "2026-09-08-system-design-request-flow-database-and-load-balancer",
       "title": "System Design: Request Flow, Database and Load Balancer",
       "date": "2026-09-08"
