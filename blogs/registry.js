@@ -8243,7 +8243,7 @@ window.BLOG_REGISTRY.push({
 });
 window.BLOG_REGISTRY.push({
   "id": "2026-09-07-web-authentication-basic-bearer-tokens-and-jwt",
-  "title": "Web Authentication: Basic, Bearer Tokens and JWT",
+  "title": "Web Authentication: Basic, Tokens and JWT",
   "author": "Sukee Parker",
   "date": "2026-09-07",
   "category": "Technology",
