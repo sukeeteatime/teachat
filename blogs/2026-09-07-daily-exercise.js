@@ -11,7 +11,9 @@ window.BLOG_REGISTRY.push({
   "contentType": "html",
   "autoRead": false,
   "pinned": false,
-  "showHome": true,
+  "showHome": false,
   "noListen": true,
-  "membersOnly": true
+  "membersOnly": true,
+  "parentId": "2026-01-01-daily-tea-time",
+  "subpageSeq": 1
 });
