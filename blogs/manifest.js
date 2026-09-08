@@ -404,5 +404,6 @@ window.BLOG_MANIFEST = [
   "2026-09-07-web-authentication-fully-explained.js",
   "2026-09-07-web-authentication-part-2.js",
   "2026-09-07-web-development-fundamental-understanding-git.js",
-  "2026-09-07-why-you-would-work-with-the-team.js"
+  "2026-09-07-why-you-would-work-with-the-team.js",
+  "2026-09-08-web-authentication-single-sign-on-sso.js"
 ];
