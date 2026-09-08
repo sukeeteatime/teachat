@@ -11,7 +11,5 @@ window.BLOG_REGISTRY.push({
   "contentType": "html",
   "autoRead": true,
   "pinned": false,
-  "showHome": false,
-  "parentId": "2026-09-07-web-authentication-fully-explained",
-  "subpageSeq": 3
+  "showHome": true
 });

@@ -8301,9 +8301,7 @@ window.BLOG_REGISTRY.push({
   "contentType": "html",
   "autoRead": true,
   "pinned": false,
-  "showHome": false,
-  "parentId": "2026-09-07-web-authentication-fully-explained",
-  "subpageSeq": 3
+  "showHome": true
 });
 window.BLOG_REGISTRY.push({
   "id": "2026-09-07-why-youd-want-to-work-with-the-team",
