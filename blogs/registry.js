@@ -8271,9 +8271,7 @@ window.BLOG_REGISTRY.push({
   "contentType": "html",
   "autoRead": false,
   "pinned": false,
-  "showHome": false,
-  "parentId": "2026-09-07-daily-exercise",
-  "subpageSeq": 1
+  "showHome": true
 });
 window.BLOG_REGISTRY.push({
   "id": "2026-09-07-web-authentication-oauth-20-tutorial-with-pkce",

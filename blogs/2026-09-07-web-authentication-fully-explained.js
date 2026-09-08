@@ -11,7 +11,5 @@ window.BLOG_REGISTRY.push({
   "contentType": "html",
   "autoRead": false,
   "pinned": false,
-  "showHome": false,
-  "parentId": "2026-09-07-daily-exercise",
-  "subpageSeq": 1
+  "showHome": true
 });
