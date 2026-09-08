@@ -336,7 +336,7 @@ window.BLOG_META = {
       "date": "2026-05-12"
     },
     {
-      "id": "2026-04-28-chat-ai-stress",
+      "id": "2026-04-28-ai-stress",
       "title": "AI Stress",
       "date": "2026-04-28"
     },
