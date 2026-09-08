@@ -354,6 +354,7 @@ window.BLOG_MANIFEST = [
   "2026-05-12-a-garden-pruning-scissor.js",
   "2026-05-26-chat-the-art-of-less.js",
   "2026-05-27-chat-mini-trash-can.js",
+  "2026-06-15-system-design-fully-explained.js",
   "2026-07-08-meaning-of-work.js",
   "2026-07-09-a-stone-on-the-street.js",
   "2026-07-13-dont-tell-me-adhd-is-a-disorder.js",
