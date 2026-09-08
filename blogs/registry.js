@@ -7365,7 +7365,7 @@ window.BLOG_REGISTRY.push({
 });
 window.BLOG_REGISTRY.push({
   "id": "2026-01-01-daily-tea-time",
-  "title": "Daily Tea Time",
+  "title": "2026 Daily Tea Time",
   "author": "Sukee Parker",
   "date": "2026-01-01",
   "category": "Lifestyle",

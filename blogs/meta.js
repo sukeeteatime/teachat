@@ -407,7 +407,7 @@ window.BLOG_META = {
     },
     {
       "id": "2026-01-01-daily-tea-time",
-      "title": "Daily Tea Time",
+      "title": "2026 Daily Tea Time",
       "date": "2026-01-01"
     },
     {
