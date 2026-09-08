@@ -1071,7 +1071,7 @@ window.switchCardPage = function(btn, blogId) {
   const wrapper = document.createElement('div');
   wrapper.innerHTML = blogCardHtml(blog);
   const newCard = wrapper.querySelector('article');
-  if (newCard) { card.replaceWith(newCard); initFaqToggles(newCard); initInternalLinks(newCard); }
+  if (newCard) { card.replaceWith(newCard); _runEmbeddedScripts(newCard); initFaqToggles(newCard); initInternalLinks(newCard); }
 };
 
 function blogCardHtml(blog) {
