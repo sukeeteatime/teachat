@@ -341,6 +341,11 @@ window.BLOG_META = {
       "date": "2026-04-28"
     },
     {
+      "id": "2026-04-06-management-competency-model",
+      "title": "Management Competency Model",
+      "date": "2026-04-06"
+    },
+    {
       "id": "2026-03-26-woop-for-dreamers",
       "title": "WOOP for Dreamers",
       "date": "2026-03-26"
