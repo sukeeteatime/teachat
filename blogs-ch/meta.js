@@ -23,6 +23,11 @@ window.BLOG_META_ZH = {
       "date": "2026-08-03"
     },
     {
+      "id": "2026-07-27-craft-omakase-reviews",
+      "title": "奥斯汀的米其林｜手艺日餐厅 （Craft）",
+      "date": "2026-07-27"
+    },
+    {
       "id": "2025-05-01-information-cocoon",
       "title": "信息茧房（Information Cocoon）",
       "date": "2025-05-01"
