@@ -1637,6 +1637,17 @@ footer a:hover { color: var(--gold-dark); }
    Locked article gate
    ============================================================ */
 .post-card--locked .post-body { position: relative; }
+.post-members-badge {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--gold-dark, #a07d1c);
+  background: rgba(196,154,40,0.1);
+  border-radius: 20px;
+  padding: 0.15rem 0.5rem;
+  white-space: nowrap;
+}
+.modal-locked-gate { margin: 2rem 0; }
 .post-excerpt-locked {
   color: var(--text-muted, #888);
   font-style: italic;

@@ -1078,14 +1078,17 @@ function blogCardHtml(blog) {
   const date = fmtDate(blog.date);
   const q = state.searchQuery;
   const titleHtml = q ? highlightStr(blog.title, q) : escHtml(blog.title);
-  const locked = _isOldArticle(blog) && !_authUser && !blog.freeAccess;
+  const locked = !_authUser && (blog.membersOnly || (_isOldArticle(blog) && !blog.freeAccess));
+  const lockMsg = blog.membersOnly
+    ? 'This article is for members only.'
+    : 'This article is over 6 months old.';
   let bodyHtml;
   if (locked) {
     const excerptText = blog.excerpt || stripHtml(blog.content || '').slice(0, 200);
     bodyHtml = `<p class="post-excerpt-locked">${escHtml(excerptText)}</p>
       <div class="post-locked-gate">
         <span class="post-locked-icon">🔒</span>
-        <span class="post-locked-msg">This article is over 6 months old. <button class="post-locked-signin" onclick="window._openSignIn&&window._openSignIn()">Sign in</button> to read the full content.</span>
+        <span class="post-locked-msg">${lockMsg} <button class="post-locked-signin" onclick="window._openSignIn&&window._openSignIn()">Sign in</button> to read the full content.</span>
       </div>`;
   } else if (q) {
     const snippet = searchSnippet(blog, q);
@@ -1113,11 +1116,12 @@ function blogCardHtml(blog) {
       <div class="post-cat-row">
         <span class="post-cat">${escHtml(blog.category)}</span>
         ${blog.pinned ? '<span class="post-pin-badge">📌 Pinned</span>' : ''}
+        ${blog.membersOnly ? '<span class="post-members-badge">🔒 Members</span>' : ''}
       </div>
       <h2 class="post-title">${titleHtml}</h2>
       <div class="post-date-row">
         <span class="post-date">${date}</span>
-        ${blog.noListen ? '' : `<button class="modal-listen-mini" onclick="readArticle('${blog.id}')">
+        ${(blog.noListen || locked) ? '' : `<button class="modal-listen-mini" onclick="readArticle('${blog.id}')">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
           ${t('listenCardBtn', listenMins(blog))}
         </button>`}
@@ -1490,10 +1494,11 @@ window.openBlog = function(id, opts) {
       `</div>`;
   }
 
+  const modalLocked = blog.membersOnly && !_authUser;
   const mins = listenMins(blog);
   $('modalByline').innerHTML =
     t('byline', blog.author, fmtDate(blog.date)) +
-    (blog.noListen ? '' :
+    ((blog.noListen || modalLocked) ? '' :
       `<button class="modal-listen-mini" onclick="readArticle('${blog.id}')">` +
         `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>` +
         ` ${t('modalListenBtn')} · ~${mins} min` +
@@ -1503,10 +1508,20 @@ window.openBlog = function(id, opts) {
   const tagsEl = document.getElementById('modalTags');
   if (tagsEl) tagsEl.innerHTML = tagPillsHtml(blog.tags, '');
 
-  $('modalContent').innerHTML = contentToHtml(blog);
-  _runEmbeddedScripts($('modalContent'));
-  initFaqToggles($('modalContent'));
-  initInternalLinks($('modalContent'));
+  if (modalLocked) {
+    $('modalContent').innerHTML =
+      `<div class="post-locked-gate modal-locked-gate">` +
+        `<span class="post-locked-icon">🔒</span>` +
+        `<span class="post-locked-msg">This article is for members only. ` +
+          `<button class="post-locked-signin" onclick="window._openSignIn&&window._openSignIn()">Sign in</button> to read the full content.` +
+        `</span>` +
+      `</div>`;
+  } else {
+    $('modalContent').innerHTML = contentToHtml(blog);
+    _runEmbeddedScripts($('modalContent'));
+    initFaqToggles($('modalContent'));
+    initInternalLinks($('modalContent'));
+  }
 
   $('modalOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
