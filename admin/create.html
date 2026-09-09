@@ -12,6 +12,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script src="../blogs/meta.js"></script>
+  <script src="../blogs-ch/meta.js"></script>
   <script src="../blogs/registry.js"></script>
   <script src="../blogs-ch/registry.js"></script>
   <style>
@@ -615,6 +616,14 @@
     .link-post-picker { margin-top: 0.4rem; border-top: 1px solid var(--border-subtle); padding-top: 0.4rem; }
     .link-post-picker-label { font-size: 0.72rem; font-weight: 600; color: var(--text-dim);
       text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.3rem; }
+    .link-lang-filters { display: flex; gap: 4px; margin-bottom: 0.3rem; }
+    .link-lang-btn {
+      font-size: 0.72rem; font-weight: 600; padding: 2px 8px;
+      border: 1px solid var(--border); border-radius: 4px;
+      background: var(--surface2); color: var(--text-dim);
+      cursor: pointer; font-family: var(--font);
+    }
+    .link-lang-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
     #linkPostSearch {
       width: 100%; box-sizing: border-box; font-size: 0.82rem;
       padding: 0.35rem 0.55rem; border: 1px solid var(--border);
@@ -762,6 +771,28 @@
     .faq-btn-cancel:hover { border-color: var(--accent2); color: var(--accent2); }
 
     /* ── FAQ preview in editor ──────────────────────────────────── */
+    #fieldContent .raw-html-block {
+      border: 2px dashed var(--border);
+      border-radius: 6px;
+      padding: 0.5rem 0.75rem;
+      margin: 0.75rem 0;
+      background: var(--bg);
+      font-family: monospace;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      cursor: default;
+      position: relative;
+    }
+    #fieldContent .raw-html-block::before {
+      content: '📄 HTML';
+      display: block;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.35rem;
+    }
     #fieldContent .faq-block {
       border: 1px solid var(--border);
       border-radius: 8px;
@@ -787,6 +818,32 @@
       padding: 0.4rem 0.75rem; font-size: 0.82rem; color: var(--text-muted);
     }
     #fieldContent .faq-a::before { content: "A: "; color: var(--accent3); font-size: 0.7rem; font-weight: 700; }
+
+    /* ── Slideshow preview in editor ───────────────────────────── */
+    #fieldContent .slideshow-block {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin: 0.75rem 0;
+      overflow: hidden;
+      background: var(--surface2);
+      position: relative;
+    }
+    #fieldContent .ss-editor-label {
+      font-size: 0.62rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.1em; color: var(--text-dim);
+      padding: 0.4rem 0.75rem; background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+    #fieldContent .ss-editor-strip {
+      display: flex; gap: 6px; padding: 0.5rem 0.75rem; overflow-x: auto;
+    }
+    #fieldContent .ss-editor-strip img {
+      height: 80px; width: auto; border-radius: 4px; object-fit: cover; flex-shrink: 0;
+    }
+    /* hide runtime controls in editor */
+    #fieldContent .ss-prev, #fieldContent .ss-next,
+    #fieldContent .ss-dots, #fieldContent .ss-slide { all: unset; }
+    #fieldContent .ss-slide { display: block !important; }
   </style>
 </head>
 <body>
@@ -867,6 +924,7 @@
               <div class="tb-sep"></div>
               <button class="tb-btn" onclick="execBlock('h2')" title="Heading">H2</button>
               <button class="tb-btn" onclick="execBlock('p')" title="Normal paragraph">¶</button>
+              <button class="tb-btn" onmousedown="event.preventDefault()" onclick="insertLineBreak()" title="Insert line break (Shift+Enter)" style="font-size:0.72rem">↵ BR</button>
               <button class="tb-btn" onclick="exec('formatBlock','blockquote')" title="Quote">"</button>
               <div class="tb-sep"></div>
               <div class="tb-color-wrap" id="colorWrap">
@@ -889,6 +947,8 @@
               <button class="tb-btn" onmousedown="event.preventDefault()" onclick="attachFile()" title="Attach file">📎</button>
               <div class="tb-sep"></div>
               <button class="tb-btn" id="faqBtn" onmousedown="event.preventDefault()" onclick="openFaqDialog()" title="Add FAQ item" style="font-size:0.72rem;font-weight:700">❓ FAQ</button>
+              <button class="tb-btn" onmousedown="event.preventDefault()" onclick="openSlideshowDialog()" title="Insert slideshow" style="font-size:0.72rem;font-weight:700">🎞 Slides</button>
+              <button class="tb-btn" onmousedown="event.preventDefault()" onclick="openRawHtmlDialog()" title="Insert raw HTML block" style="font-size:0.68rem;font-weight:700">📄 HTML</button>
             </div>
             <div id="fieldContent"
                  contenteditable="true"
@@ -937,11 +997,43 @@
           </label>
         </div>
 
+        <div class="field">
+          <label>Free Access</label>
+          <label class="toggle-row" for="fieldFreeAccess">
+            <input type="checkbox" id="fieldFreeAccess">
+            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+            <span class="toggle-label" id="freeAccessLabel">OFF — older articles require sign-in</span>
+          </label>
+        </div>
+
+        <div class="field">
+          <label>Disable Reading</label>
+          <label class="toggle-row" for="fieldNoListen">
+            <input type="checkbox" id="fieldNoListen">
+            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+            <span class="toggle-label" id="noListenLabel">OFF — Listen button shown on this article</span>
+          </label>
+        </div>
+
+        <div class="field">
+          <label>Members Only</label>
+          <label class="toggle-row" for="fieldMembersOnly">
+            <input type="checkbox" id="fieldMembersOnly">
+            <span class="toggle-track"><span class="toggle-thumb"></span></span>
+            <span class="toggle-label" id="membersOnlyLabel">OFF — Article is public</span>
+          </label>
+        </div>
+
         <!-- Subpage settings (shown when showHome is OFF) -->
         <div id="subpageFields" style="display:none;border:1px solid var(--border);border-radius:var(--radius-xs);padding:1rem;background:var(--surface2);display:none;flex-direction:column;gap:1rem">
           <div class="field">
             <label>Parent Page <span class="req">*</span></label>
             <div style="position:relative">
+              <div style="display:flex;gap:4px;margin-bottom:6px">
+                <button type="button" class="link-lang-btn active" data-lang="all" onclick="setParentLang(this)">All</button>
+                <button type="button" class="link-lang-btn" data-lang="en" onclick="setParentLang(this)">EN</button>
+                <button type="button" class="link-lang-btn" data-lang="zh" onclick="setParentLang(this)">中文</button>
+              </div>
               <input type="text" id="fieldParentSearch" placeholder="Search by title…" autocomplete="off"
                      style="width:100%;margin-bottom:4px"
                      oninput="filterParentList()">
@@ -1039,6 +1131,43 @@
     </div>
   </div>
 
+  <!-- Slideshow dialog -->
+  <div id="ssDialog" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:9000;align-items:center;justify-content:center">
+    <div style="background:var(--surface);border-radius:var(--radius);padding:1.25rem 1.35rem;width:min(520px,96vw);max-height:90vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,0.22);display:flex;flex-direction:column;gap:0.85rem">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <strong style="font-size:0.95rem">Insert Slideshow</strong>
+        <button onclick="closeSlideshowDialog()" style="background:none;border:none;font-size:1.2rem;cursor:pointer;color:var(--text-muted)">✕</button>
+      </div>
+      <p style="font-size:0.78rem;color:var(--text-muted);margin:0">Pick images from uploaded files. Click to add; drag rows to reorder.</p>
+      <div id="ssImagePicker" style="display:flex;flex-wrap:wrap;gap:8px;min-height:60px;border:1px solid var(--border);border-radius:var(--radius-xs);padding:0.5rem;background:var(--surface2)"></div>
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <span style="font-size:0.75rem;color:var(--text-muted);font-weight:600">SELECTED ORDER</span>
+        <button type="button" onclick="ssUploadExtra()" style="font-size:0.72rem;background:none;border:1px solid var(--border);border-radius:5px;padding:2px 9px;cursor:pointer;color:var(--text-muted)">+ Upload image</button>
+      </div>
+      <div id="ssSelectedList" style="display:flex;flex-direction:column;gap:6px;min-height:36px"></div>
+      <div style="display:flex;gap:0.6rem;justify-content:flex-end">
+        <button onclick="closeSlideshowDialog()" style="background:none;border:1px solid var(--border);border-radius:var(--radius-xs);padding:0.35rem 1rem;cursor:pointer;color:var(--text-muted)">Cancel</button>
+        <button onclick="applySlideshowInsert()" style="background:var(--accent);color:#fff;border:none;border-radius:var(--radius-xs);padding:0.35rem 1.2rem;cursor:pointer;font-weight:700">Insert Slideshow</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Raw HTML dialog -->
+  <div id="rawHtmlDialog" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:9000;align-items:center;justify-content:center">
+    <div style="background:var(--surface);border-radius:var(--radius);padding:1.5rem;width:min(600px,94vw);box-shadow:0 8px 32px rgba(0,0,0,0.22);display:flex;flex-direction:column;gap:0.9rem">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <strong style="font-size:1rem">Insert Raw HTML Block</strong>
+        <button onclick="closeRawHtmlDialog()" style="background:none;border:none;font-size:1.2rem;cursor:pointer;color:var(--text-muted)">✕</button>
+      </div>
+      <p style="font-size:0.8rem;color:var(--text-muted);margin:0">Paste any HTML — iframes, embeds, custom widgets. It will render as-is in the published article.</p>
+      <textarea id="rawHtmlInput" rows="10" placeholder="&lt;iframe src=&quot;…&quot;&gt;&lt;/iframe&gt;" style="font-family:monospace;font-size:0.82rem;resize:vertical;width:100%;box-sizing:border-box;border:1px solid var(--border);border-radius:var(--radius-xs);padding:0.6rem;background:var(--surface2);color:var(--text)"></textarea>
+      <div style="display:flex;gap:0.6rem;justify-content:flex-end">
+        <button onclick="closeRawHtmlDialog()" style="background:none;border:1px solid var(--border);border-radius:var(--radius-xs);padding:0.35rem 1rem;cursor:pointer;color:var(--text-muted)">Cancel</button>
+        <button onclick="applyRawHtml()" style="background:var(--accent);color:#fff;border:none;border-radius:var(--radius-xs);padding:0.35rem 1.2rem;cursor:pointer;font-weight:700">Insert</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Link dialog — must be before the inline script so $('linkUrlInput') exists during init -->
   <div id="linkDialog">
     <div class="link-dialog-row">
@@ -1048,6 +1177,11 @@
     </div>
     <div class="link-post-picker">
       <div class="link-post-picker-label">Or link to a post</div>
+      <div class="link-lang-filters">
+        <button class="link-lang-btn active" data-lang="all" onclick="setLinkLang(this)">All</button>
+        <button class="link-lang-btn" data-lang="en" onclick="setLinkLang(this)">EN</button>
+        <button class="link-lang-btn" data-lang="zh" onclick="setLinkLang(this)">中文</button>
+      </div>
       <input id="linkPostSearch" type="search" placeholder="Search posts…" autocomplete="off" spellcheck="false">
       <div id="linkPostList"></div>
     </div>
@@ -1169,12 +1303,13 @@
       if (!hasFiles) return;
       const d = getFormData();
       const id = (d.date && d.title) ? `${d.date}-${getSlugBase()}` : '[date-title]';
+      const dir = hasCjkTitle() ? 'blogs-ch' : 'blogs';
       const list = $('filesList');
       list.innerHTML = '';
       articleImages.forEach(function({ idx, ext }) {
         const div = document.createElement('div');
         div.className = 'file-item';
-        div.innerHTML = `<span>🖼</span><span class="file-item-name">blogs/images/${id}_img${idx + 1}.${ext}</span>`;
+        div.innerHTML = `<span>🖼</span><span class="file-item-name">${dir}/images/${id}_img${idx + 1}.${ext}</span>`;
         const btn = document.createElement('button');
         btn.className = 'btn-file-dl';
         btn.textContent = '⬇ Save';
@@ -1185,7 +1320,7 @@
       articleFiles.forEach(function({ idx, filename }) {
         const div = document.createElement('div');
         div.className = 'file-item';
-        div.innerHTML = `<span>📄</span><span class="file-item-name">blogs/files/${filename}</span>`;
+        div.innerHTML = `<span>📄</span><span class="file-item-name">${dir}/files/${filename}</span>`;
         const btn = document.createElement('button');
         btn.className = 'btn-file-dl';
         btn.textContent = '⬇ Save';
@@ -1220,14 +1355,24 @@
       setTimeout(function() { URL.revokeObjectURL(url); }, 2000);
     }
 
+    // Rewrite blog media paths so they resolve from the admin/ subfolder during editing
+    function editorPathsIn(html) {
+      return html.replace(/((?:src|href)=")blogs\//g, '$1../blogs/');
+    }
+    // Strip the admin-only ../ prefix before saving to the .js file
+    function editorPathsOut(html) {
+      return html.replace(/((?:src|href)=")\.\.\/blogs\//g, '$1blogs/');
+    }
+
     function resolveMediaInContent(artId, html) {
+      const dir = hasCjkTitle() ? 'blogs-ch' : 'blogs';
       const div = document.createElement('div');
       div.innerHTML = html;
       div.querySelectorAll('img[data-img-idx]').forEach(function(img) {
         const idx = parseInt(img.getAttribute('data-img-idx'), 10);
         const item = articleImages.find(function(a) { return a.idx === idx; });
         if (item) {
-          img.src = `blogs/images/${artId}_img${idx + 1}.${item.ext}`;
+          img.src = `${dir}/images/${artId}_img${idx + 1}.${item.ext}`;
           img.removeAttribute('data-img-idx');
         }
       });
@@ -1235,7 +1380,7 @@
         const idx = parseInt(a.getAttribute('data-file-idx'), 10);
         const item = articleFiles.find(function(f) { return f.idx === idx; });
         if (item) {
-          a.href = `blogs/files/${item.filename}`;
+          a.href = `${dir}/files/${item.filename}`;
           a.removeAttribute('data-file-idx');
         }
       });
@@ -1281,8 +1426,15 @@
     function sanitizeContent(html) {
       const div = document.createElement('div');
       div.innerHTML = html;
-      // Remove nodes that are purely empty (no visible content, no media)
+      // Strip trailing cursor-anchor <br>
+      div.querySelectorAll('p, li').forEach(function(el) {
+        if (el.lastChild && el.lastChild.nodeName === 'BR') el.removeChild(el.lastChild);
+      });
+      // Strip editor-only slideshow preview elements
+      div.querySelectorAll('.ss-editor-label, .ss-editor-strip').forEach(function(el) { el.remove(); });
       div.querySelectorAll('div, p').forEach(function(el) {
+        if (el.classList.contains('raw-html-block')) return;
+        if (el.closest('.slideshow-block')) return; // protect slideshow internals
         if (el.querySelector('img, iframe, pre, code, a')) return;
         const text = el.textContent.replace(/​/g, '').trim();
         if (!text && !el.querySelector('[data-img-idx]')) el.remove();
@@ -1291,7 +1443,7 @@
     }
 
     function getFormData() {
-      const rawHtml = sanitizeContent($('fieldContent').innerHTML.trim());
+      const rawHtml = sanitizeContent(editorPathsOut($('fieldContent').innerHTML.trim()));
       const content = (rawHtml === '<br>' || rawHtml === '<p><br></p>') ? '' : rawHtml;
       const showHome = $('fieldShowHome').checked;
       const parentId = showHome ? null : ($('fieldParentIdValue').value || null);
@@ -1308,6 +1460,9 @@
         contentType: 'html',
         autoRead:    $('fieldAutoRead').checked,
         pinned:      $('fieldPinned').checked,
+        freeAccess:  $('fieldFreeAccess').checked || undefined,
+        noListen:    $('fieldNoListen').checked || undefined,
+        membersOnly: $('fieldMembersOnly').checked || undefined,
         showHome,
         parentId,
         subpageSeq,
@@ -1586,10 +1741,34 @@
       $('fieldContent').focus();
     }
 
+    function insertLineBreak() {
+      const sel = window.getSelection();
+      if (!sel || !sel.rangeCount) return;
+      const range = sel.getRangeAt(0);
+      range.deleteContents();
+      const br = document.createElement('br');
+      range.insertNode(br);
+      // A trailing <br> is required so cursor has a visible line after the break
+      // when the inserted <br> is the last child of its block
+      const after = br.nextSibling;
+      if (!after || (after.nodeName === 'BR' && !after.nextSibling)) {
+        br.parentNode.insertBefore(document.createElement('br'), after || null);
+      }
+      range.setStartAfter(br);
+      range.collapse(true);
+      sel.removeAllRanges();
+      sel.addRange(range);
+      $('fieldContent').focus();
+    }
+
     $('fieldContent').addEventListener('keydown', function(e) {
       if ((e.metaKey || e.ctrlKey) && e.key === 'b') {
         e.preventDefault();
         exec('bold');
+      }
+      if (e.key === 'Enter' && e.shiftKey) {
+        e.preventDefault();
+        insertLineBreak();
       }
     });
 
@@ -1694,15 +1873,27 @@
     });
 
     /* ── Post picker in link dialog ──────────────────────────── */
-    var _allPosts = (window.BLOG_META && window.BLOG_META.posts) ? window.BLOG_META.posts : [];
+    var _enPosts  = (window.BLOG_META && window.BLOG_META.posts) ? window.BLOG_META.posts : [];
+    var _zhPosts  = (window.BLOG_META_ZH && window.BLOG_META_ZH.posts) ? window.BLOG_META_ZH.posts : [];
+    var _allPosts = [..._enPosts, ..._zhPosts].sort(function(a, b) { return b.date.localeCompare(a.date); });
+    var _linkLang = 'all';
+
+    window.setLinkLang = function(btn) {
+      _linkLang = btn.dataset.lang;
+      btn.closest('.link-lang-filters').querySelectorAll('.link-lang-btn').forEach(function(b) {
+        b.classList.toggle('active', b === btn);
+      });
+      renderPostPicker($('linkPostSearch').value);
+    };
 
     function renderPostPicker(query) {
       var list = $('linkPostList');
       if (!list) return;
+      var pool = _linkLang === 'en' ? _enPosts : _linkLang === 'zh' ? _zhPosts : _allPosts;
       var q = (query || '').toLowerCase().trim();
       var filtered = q
-        ? _allPosts.filter(function(p) { return p.title.toLowerCase().includes(q); })
-        : _allPosts;
+        ? pool.filter(function(p) { return p.title.toLowerCase().includes(q); })
+        : pool;
       var shown = filtered.slice(0, 40);
       list.innerHTML = shown.map(function(p) {
         return '<div class="link-post-opt" data-id="' + p.id + '" title="' + p.title + '">'
@@ -1802,6 +1993,22 @@
         : 'OFF — article appears in normal date order';
     });
 
+    $('fieldFreeAccess').addEventListener('change', function() {
+      $('freeAccessLabel').textContent = this.checked
+        ? 'ON — article is always public (bypasses 6-month sign-in gate)'
+        : 'OFF — older articles require sign-in';
+    });
+    $('fieldNoListen').addEventListener('change', function() {
+      $('noListenLabel').textContent = this.checked
+        ? 'ON — Listen button is hidden on this article'
+        : 'OFF — Listen button shown on this article';
+    });
+    $('fieldMembersOnly').addEventListener('change', function() {
+      $('membersOnlyLabel').textContent = this.checked
+        ? 'ON — only signed-in users can read this article'
+        : 'OFF — Article is public';
+    });
+
     /* ── showHome toggle + subpage fields ──────────────────────── */
     function updateSubpageVisibility() {
       const show = $('fieldShowHome').checked;
@@ -1814,19 +2021,30 @@
     }
 
     let _allParents = [];
+    let _enParents = [];
+    let _zhParents = [];
+    let _parentLang = 'all';
+
+    window.setParentLang = function(btn) {
+      _parentLang = btn.dataset.lang;
+      btn.closest('div').querySelectorAll('.link-lang-btn').forEach(b => b.classList.toggle('active', b === btn));
+      renderParentList($('fieldParentSearch').value);
+    };
 
     function populateParentSelect() {
-      _allParents = [...(window.BLOG_REGISTRY || []), ...(window.BLOG_REGISTRY_ZH || [])]
-        .sort((a, b) => b.date.localeCompare(a.date));
+      _enParents = [...(window.BLOG_REGISTRY || [])].sort((a, b) => b.date.localeCompare(a.date));
+      _zhParents = [...(window.BLOG_REGISTRY_ZH || [])].sort((a, b) => b.date.localeCompare(a.date));
+      _allParents = [..._enParents, ..._zhParents].sort((a, b) => b.date.localeCompare(a.date));
       renderParentList('');
     }
 
     function renderParentList(query) {
       const listEl = $('fieldParentId');
+      const pool = _parentLang === 'en' ? _enParents : _parentLang === 'zh' ? _zhParents : _allParents;
       const q = query.toLowerCase().trim();
       const filtered = q
-        ? _allParents.filter(b => b.title.toLowerCase().includes(q) || b.date.includes(q) || (b.category||'').toLowerCase().includes(q))
-        : _allParents;
+        ? pool.filter(b => b.title.toLowerCase().includes(q) || b.date.includes(q) || (b.category||'').toLowerCase().includes(q))
+        : pool;
       const currentVal = $('fieldParentIdValue').value;
       listEl.innerHTML = filtered.slice(0, 80).map(b => {
         const sel = b.id === currentVal;
@@ -1962,6 +2180,9 @@
                     autoRead: post.autoRead !== false,
                     pinned: post.pinned === true,
                     showHome: post.showHome !== false };
+      if (post.freeAccess)   obj.freeAccess   = true;
+      if (post.noListen)     obj.noListen     = true;
+      if (post.membersOnly)  obj.membersOnly  = true;
       if (post.parentId)    obj.parentId    = post.parentId;
       if (post.subpageSeq != null) obj.subpageSeq = post.subpageSeq;
       const reg = hasCjkTitle() ? 'BLOG_REGISTRY_ZH' : 'BLOG_REGISTRY';
@@ -2073,6 +2294,12 @@
       $('autoReadLabel').textContent = 'ON — article will be picked up in timed sessions';
       $('fieldPinned').checked = false;
       $('pinnedLabel').textContent = 'OFF — article appears in normal date order';
+      $('fieldFreeAccess').checked = false;
+      $('freeAccessLabel').textContent = 'OFF — older articles require sign-in';
+      $('fieldNoListen').checked = false;
+      $('noListenLabel').textContent = 'OFF — Listen button shown on this article';
+      $('fieldMembersOnly').checked = false;
+      $('membersOnlyLabel').textContent = 'OFF — Article is public';
       $('fieldShowHome').checked = true;
       $('showHomeLabel').textContent = 'ON — article appears in the main feed';
       $('subpageFields').style.display = 'none';
@@ -2105,7 +2332,7 @@
       styleStripper.disconnect();
       try {
         if (post.contentType === 'html') {
-          $('fieldContent').innerHTML = post.content || '';
+          $('fieldContent').innerHTML = editorPathsIn(post.content || '');
         } else {
           $('fieldContent').innerHTML = (post.content || '')
             .split(/\n+/).filter(function(p) { return p.trim(); })
@@ -2130,6 +2357,21 @@
       $('pinnedLabel').textContent = pinned
         ? 'ON — article appears at the top of the feed'
         : 'OFF — article appears in normal date order';
+      const freeAccess = post.freeAccess === true;
+      $('fieldFreeAccess').checked = freeAccess;
+      $('freeAccessLabel').textContent = freeAccess
+        ? 'ON — article is always public (bypasses 6-month sign-in gate)'
+        : 'OFF — older articles require sign-in';
+      const noListen = post.noListen === true;
+      $('fieldNoListen').checked = noListen;
+      $('noListenLabel').textContent = noListen
+        ? 'ON — Listen button is hidden on this article'
+        : 'OFF — Listen button shown on this article';
+      const membersOnly = post.membersOnly === true;
+      $('fieldMembersOnly').checked = membersOnly;
+      $('membersOnlyLabel').textContent = membersOnly
+        ? 'ON — only signed-in users can read this article'
+        : 'OFF — Article is public';
       const showHome = post.showHome !== false;
       $('fieldShowHome').checked = showHome;
       $('showHomeLabel').textContent = showHome
@@ -2214,13 +2456,26 @@
     renderPreview();
 
     /* ── FAQ insertion ─────────────────────────────────────────── */
+    function _faqBlockAtCursor() {
+      const editor = $('fieldContent');
+      const sel = window.getSelection();
+      if (!sel || !sel.rangeCount) return null;
+      let n = sel.getRangeAt(0).startContainer;
+      while (n && n !== editor) {
+        if (n.nodeType === Node.ELEMENT_NODE && n.classList && n.classList.contains('faq-block')) return n;
+        n = n.parentNode;
+      }
+      return null;
+    }
+
     function openFaqDialog() {
       const dlg = $('faqDialog');
       const btn = $('faqBtn');
       const r = btn.getBoundingClientRect();
-      const hasExisting = !!$('fieldContent').querySelector('.faq-block');
-      $('faqTitleWrap').style.display = hasExisting ? 'none' : '';
-      const dlgH = hasExisting ? 230 : 300;
+      const cursorBlock = _faqBlockAtCursor();
+      dlg._targetBlock = cursorBlock;
+      $('faqTitleWrap').style.display = cursorBlock ? 'none' : '';
+      const dlgH = cursorBlock ? 230 : 300;
       const spaceBelow = window.innerHeight - r.bottom;
       const top = spaceBelow >= dlgH
         ? r.bottom + 6
@@ -2228,13 +2483,14 @@
       dlg.style.top  = top + 'px';
       dlg.style.left = Math.min(r.left, window.innerWidth - 376) + 'px';
       dlg.classList.add('open');
-      if (!hasExisting) $('faqTitleInput').value = 'FAQ';
+      if (!cursorBlock) $('faqTitleInput').value = 'FAQ';
       $('faqQInput').value = '';
       $('faqAInput').value = '';
-      setTimeout(function() { (hasExisting ? $('faqQInput') : $('faqTitleInput')).focus(); }, 10);
+      setTimeout(function() { (cursorBlock ? $('faqQInput') : $('faqTitleInput')).focus(); }, 10);
     }
 
     function closeFaqDialog() {
+      $('faqDialog')._targetBlock = null;
       $('faqDialog').classList.remove('open');
     }
 
@@ -2247,24 +2503,22 @@
         return;
       }
       const editor = $('fieldContent');
-      // Build the FAQ item HTML
       const aHtml = a.split(/\n+/).filter(l => l.trim()).map(l => `<p>${l.trim()}</p>`).join('');
       const itemHtml = `<div class="faq-item"><div class="faq-q">${q}</div><div class="faq-a">${aHtml}</div></div>`;
 
-      // Check if a faq-block already exists — append to it
-      const existing = editor.querySelector('.faq-block');
-      if (existing) {
+      const targetBlock = $('faqDialog')._targetBlock;
+      if (targetBlock && targetBlock.isConnected) {
+        // Append to the block the cursor was in
         const tmp = document.createElement('div');
         tmp.innerHTML = itemHtml;
-        existing.appendChild(tmp.firstChild);
+        targetBlock.appendChild(tmp.firstChild);
       } else {
-        // Create a new faq-block and insert it after the current cursor position
+        // Create a new faq-block at cursor position
         const block = document.createElement('div');
         const blockTitle = ($('faqTitleInput').value.trim()) || 'FAQ';
         block.className = 'faq-block';
         block.innerHTML = '<div class="faq-block-label">' + blockTitle + '</div>' + itemHtml;
         insertBlockNode(block);
-        // Add a trailing paragraph so cursor can escape
         const p = document.createElement('p');
         p.innerHTML = '<br>';
         block.parentNode.insertBefore(p, block.nextSibling);
@@ -2303,6 +2557,205 @@
       if (dlg.classList.contains('open') && !dlg.contains(e.target) && e.target.id !== 'faqBtn') {
         closeFaqDialog();
       }
+    });
+
+    /* ── Slideshow insertion ───────────────────────────────────── */
+    var _ssSelected = []; // [{idx, objectUrl, ext}]
+
+    function _ssRenderPicker() {
+      const grid = $('ssImagePicker');
+      grid.innerHTML = '';
+      if (!articleImages.length) {
+        grid.innerHTML = '<span style="font-size:0.78rem;color:var(--text-muted)">No images uploaded yet — use "Upload image" below.</span>';
+        return;
+      }
+      articleImages.forEach(function(item) {
+        const already = _ssSelected.some(function(s) { return s.idx === item.idx; });
+        const thumb = document.createElement('div');
+        thumb.style.cssText = 'position:relative;cursor:pointer';
+        thumb.title = 'Click to ' + (already ? 'remove' : 'add');
+        const img = document.createElement('img');
+        img.src = item.objectUrl;
+        img.style.cssText = 'width:72px;height:56px;object-fit:cover;border-radius:5px;border:2px solid ' + (already ? 'var(--accent)' : 'var(--border)') + ';display:block';
+        thumb.appendChild(img);
+        if (already) {
+          const badge = document.createElement('span');
+          badge.textContent = '✓';
+          badge.style.cssText = 'position:absolute;top:2px;right:2px;background:var(--accent);color:#fff;border-radius:50%;font-size:0.6rem;width:14px;height:14px;display:flex;align-items:center;justify-content:center';
+          thumb.appendChild(badge);
+        }
+        thumb.addEventListener('click', function() {
+          if (already) {
+            _ssSelected = _ssSelected.filter(function(s) { return s.idx !== item.idx; });
+          } else {
+            _ssSelected.push({ idx: item.idx, objectUrl: item.objectUrl, ext: item.ext });
+          }
+          _ssRenderPicker();
+          _ssRenderSelected();
+        });
+        grid.appendChild(thumb);
+      });
+    }
+
+    function _ssRenderSelected() {
+      const list = $('ssSelectedList');
+      list.innerHTML = '';
+      if (!_ssSelected.length) {
+        list.innerHTML = '<span style="font-size:0.78rem;color:var(--text-muted)">No images selected yet.</span>';
+        return;
+      }
+      _ssSelected.forEach(function(item, i) {
+        const row = document.createElement('div');
+        row.style.cssText = 'display:flex;align-items:center;gap:8px;background:var(--surface2);border-radius:5px;padding:4px 8px';
+        const img = document.createElement('img');
+        img.src = item.objectUrl;
+        img.style.cssText = 'width:48px;height:38px;object-fit:cover;border-radius:4px;flex-shrink:0';
+        const num = document.createElement('span');
+        num.textContent = (i + 1) + '.';
+        num.style.cssText = 'font-size:0.78rem;color:var(--text-muted);min-width:18px';
+        const btns = document.createElement('div');
+        btns.style.cssText = 'margin-left:auto;display:flex;gap:4px';
+        if (i > 0) {
+          const up = document.createElement('button');
+          up.textContent = '▲'; up.title = 'Move up';
+          up.style.cssText = 'font-size:0.65rem;background:none;border:1px solid var(--border);border-radius:3px;padding:1px 5px;cursor:pointer;color:var(--text-muted)';
+          up.addEventListener('click', function() {
+            const tmp = _ssSelected[i - 1]; _ssSelected[i - 1] = _ssSelected[i]; _ssSelected[i] = tmp;
+            _ssRenderSelected(); _ssRenderPicker();
+          });
+          btns.appendChild(up);
+        }
+        if (i < _ssSelected.length - 1) {
+          const dn = document.createElement('button');
+          dn.textContent = '▼'; dn.title = 'Move down';
+          dn.style.cssText = 'font-size:0.65rem;background:none;border:1px solid var(--border);border-radius:3px;padding:1px 5px;cursor:pointer;color:var(--text-muted)';
+          dn.addEventListener('click', function() {
+            const tmp = _ssSelected[i + 1]; _ssSelected[i + 1] = _ssSelected[i]; _ssSelected[i] = tmp;
+            _ssRenderSelected(); _ssRenderPicker();
+          });
+          btns.appendChild(dn);
+        }
+        const rm = document.createElement('button');
+        rm.textContent = '✕'; rm.title = 'Remove';
+        rm.style.cssText = 'font-size:0.65rem;background:none;border:1px solid var(--border);border-radius:3px;padding:1px 5px;cursor:pointer;color:var(--text-muted)';
+        rm.addEventListener('click', function() {
+          _ssSelected.splice(i, 1);
+          _ssRenderSelected(); _ssRenderPicker();
+        });
+        btns.appendChild(rm);
+        row.appendChild(img); row.appendChild(num); row.appendChild(btns);
+        list.appendChild(row);
+      });
+    }
+
+    function openSlideshowDialog() {
+      _ssSelected = [];
+      _ssRenderPicker();
+      _ssRenderSelected();
+      $('ssDialog').style.display = 'flex';
+    }
+
+    function closeSlideshowDialog() {
+      $('ssDialog').style.display = 'none';
+      _ssSelected = [];
+    }
+
+    function ssUploadExtra() {
+      const input = document.createElement('input');
+      input.type = 'file'; input.accept = 'image/*'; input.multiple = true;
+      input.onchange = function() {
+        Array.from(input.files).forEach(function(file) {
+          const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
+          const idx = imgCounter++;
+          const objectUrl = URL.createObjectURL(file);
+          articleImages.push({ file, idx, ext, objectUrl });
+          _ssSelected.push({ idx, objectUrl, ext });
+        });
+        _ssRenderPicker();
+        _ssRenderSelected();
+        updateFilesPanel();
+        updateSaveImagesBtn();
+      };
+      input.click();
+    }
+
+    function applySlideshowInsert() {
+      if (!_ssSelected.length) { alert('Select at least one image.'); return; }
+      const slidesHtml = _ssSelected.map(function(item, i) {
+        const img = `<img src="${item.objectUrl}" data-img-idx="${item.idx}" alt="Slide ${i + 1}">`;
+        return `<div class="ss-slide${i === 0 ? ' active' : ''}">${img}</div>`;
+      }).join('');
+      const dotsHtml = _ssSelected.length > 1
+        ? '<div class="ss-dots">' + _ssSelected.map(function(_, i) {
+            return `<span class="ss-dot${i === 0 ? ' active' : ''}"></span>`;
+          }).join('') + '</div>'
+        : '';
+      const navHtml = _ssSelected.length > 1
+        ? '<button class="ss-prev" aria-label="Previous">&#8249;</button><button class="ss-next" aria-label="Next">&#8250;</button>'
+        : '';
+      // Editor preview: label + strip of all images
+      const stripHtml = '<div class="ss-editor-label">🎞 Slideshow (' + _ssSelected.length + ' images)</div>' +
+        '<div class="ss-editor-strip">' +
+        _ssSelected.map(function(item) {
+          return `<img src="${item.objectUrl}" data-img-idx="${item.idx}" alt="">`;
+        }).join('') + '</div>';
+
+      const block = document.createElement('div');
+      block.className = 'slideshow-block';
+      block.innerHTML = slidesHtml + navHtml + dotsHtml + stripHtml;
+      insertBlockNode(block);
+      const p = document.createElement('p'); p.innerHTML = '<br>';
+      block.parentNode.insertBefore(p, block.nextSibling);
+      closeSlideshowDialog();
+      onContentInput();
+    }
+
+    $('ssDialog').addEventListener('mousedown', function(e) {
+      if (e.target === $('ssDialog')) closeSlideshowDialog();
+    });
+
+    // Raw HTML block dialog
+    function openRawHtmlDialog() {
+      $('rawHtmlInput').value = '';
+      const d = $('rawHtmlDialog');
+      d.style.display = 'flex';
+      setTimeout(function() { $('rawHtmlInput').focus(); }, 50);
+    }
+
+    function closeRawHtmlDialog() {
+      $('rawHtmlDialog').style.display = 'none';
+    }
+
+    function applyRawHtml() {
+      const html = $('rawHtmlInput').value.trim();
+      if (!html) { closeRawHtmlDialog(); return; }
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'raw-html-block';
+      wrapper.setAttribute('contenteditable', 'false');
+      wrapper.setAttribute('data-raw-html', '1');
+      wrapper.innerHTML = html;
+      wrapper.querySelectorAll('script').forEach(old => {
+        const s = document.createElement('script');
+        [...old.attributes].forEach(a => s.setAttribute(a.name, a.value));
+        s.textContent = old.textContent;
+        old.replaceWith(s);
+      });
+
+      const escape = document.createElement('p');
+      escape.innerHTML = '<br>';
+
+      insertBlockNode(wrapper);
+      const editor = $('fieldContent');
+      const ref = wrapper.nextSibling;
+      editor.insertBefore(escape, ref || null);
+
+      closeRawHtmlDialog();
+      onContentInput();
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && $('rawHtmlDialog').style.display === 'flex') closeRawHtmlDialog();
     });
   </script>
 

@@ -196,6 +196,7 @@
     .badge-noread { background: rgba(198,40,40,0.08); color: #c62828; }
     .badge-zh { background: rgba(59,130,246,0.1); color: #1d4ed8; }
     .badge-sub { background: rgba(100,100,100,0.1); color: var(--text-muted); }
+    .badge-members { background: rgba(196,154,40,0.12); color: var(--gold-dark); }
 
     .group-toggle {
       flex-shrink: 0;
@@ -354,11 +355,12 @@
       <input type="search" id="adminSearch" class="search-input" placeholder="Search articles by title, content, or category…" autocomplete="off" autocorrect="off" spellcheck="false">
       <button class="search-clear" id="adminSearchClear" style="display:none">✕</button>
     </div>
-    <div style="display:flex;gap:6px;margin:8px 0 12px">
+    <div style="display:flex;gap:6px;margin:8px 0 8px">
       <button class="lang-filter-btn active" data-lang="all" onclick="setAdminLang(this)">All</button>
       <button class="lang-filter-btn" data-lang="en" onclick="setAdminLang(this)">EN</button>
       <button class="lang-filter-btn" data-lang="zh" onclick="setAdminLang(this)">中文</button>
     </div>
+    <div id="catFilterRow" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px"></div>
 
     <div id="articleList">
       <div class="empty-state">
@@ -393,18 +395,34 @@
   </main>
 
   <!-- Load blog registries — bundled by pre-commit hook -->
-  <script src="../blogs/registry.js?v=76"></script>
-  <script src="../blogs-ch/registry.js?v=76"></script>
+  <script src="../blogs/registry.js?v=210"></script>
+  <script src="../blogs-ch/registry.js?v=210"></script>
 
   <script>
     const WPM = 150;
     let allBlogs = [];
     let searchQuery = '';
     let langFilter = 'all';
+    let categoryFilter = 'all';
 
     window.setAdminLang = function(btn) {
       langFilter = btn.dataset.lang;
-      document.querySelectorAll('.lang-filter-btn').forEach(b => b.classList.toggle('active', b === btn));
+      document.querySelectorAll('.lang-filter-btn:not(.cat-filter-btn)').forEach(b => b.classList.toggle('active', b === btn));
+      // Rebuild category chips for the new lang slice
+      const pool = langFilter === 'all' ? allBlogs : allBlogs.filter(b => b._lang === langFilter);
+      const catCounts = {};
+      pool.forEach(b => { if (b.category) catCounts[b.category] = (catCounts[b.category] || 0) + 1; });
+      const cats = Object.entries(catCounts).sort((a, b) => b[1] - a[1]).map(([c]) => c);
+      const row = document.getElementById('catFilterRow');
+      categoryFilter = 'all';
+      row.innerHTML = `<button class="lang-filter-btn cat-filter-btn active" data-cat="all" onclick="setCatFilter(this)">All</button>` +
+        cats.map(c => `<button class="lang-filter-btn cat-filter-btn" data-cat="${escHtml(c)}" onclick="setCatFilter(this)">${escHtml(c)}</button>`).join('');
+      renderFiltered();
+    };
+
+    window.setCatFilter = function(btn) {
+      categoryFilter = btn.dataset.cat;
+      document.querySelectorAll('.cat-filter-btn').forEach(b => b.classList.toggle('active', b === btn));
       renderFiltered();
     };
 
@@ -456,6 +474,14 @@
         return b.date.localeCompare(a.date);
       });
 
+      // Build category chips from unique categories, sorted by count desc
+      const catCounts = {};
+      allBlogs.forEach(b => { if (b.category) catCounts[b.category] = (catCounts[b.category] || 0) + 1; });
+      const cats = Object.entries(catCounts).sort((a, b) => b[1] - a[1]).map(([c]) => c);
+      const row = document.getElementById('catFilterRow');
+      row.innerHTML = `<button class="lang-filter-btn cat-filter-btn active" data-cat="all" onclick="setCatFilter(this)">All</button>` +
+        cats.map(c => `<button class="lang-filter-btn cat-filter-btn" data-cat="${escHtml(c)}" onclick="setCatFilter(this)">${escHtml(c)}</button>`).join('');
+
       renderFiltered();
     }
 
@@ -489,6 +515,7 @@
               ${subBadge}
               ${blog._lang === 'zh' ? '<span class="row-badge badge-zh">中文</span>' : ''}
               ${blog.pinned ? '<span class="row-badge badge-pin">📌 Pinned</span>' : ''}
+              ${blog.membersOnly ? '<span class="row-badge badge-members">🔒 Members</span>' : ''}
               ${blog.autoRead === false ? '<span class="row-badge badge-noread">🔇 No auto-read</span>' : ''}
             </div>
           </div>
@@ -501,7 +528,8 @@
     }
 
     function renderFiltered() {
-      const pool = langFilter === 'all' ? allBlogs : allBlogs.filter(b => b._lang === langFilter);
+      let pool = langFilter === 'all' ? allBlogs : allBlogs.filter(b => b._lang === langFilter);
+      if (categoryFilter !== 'all') pool = pool.filter(b => b.category === categoryFilter);
       const total = pool.length;
 
       document.getElementById('articleCount').textContent =

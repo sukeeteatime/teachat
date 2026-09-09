@@ -170,6 +170,28 @@ function initInternalLinks(container) {
   });
 }
 
+function initSlideshows(container) {
+  container.querySelectorAll('.slideshow-block').forEach(function(block) {
+    const slides = Array.from(block.querySelectorAll('.ss-slide'));
+    const dots   = Array.from(block.querySelectorAll('.ss-dot'));
+    const prev   = block.querySelector('.ss-prev');
+    const next   = block.querySelector('.ss-next');
+    if (!slides.length) return;
+    block.setAttribute('data-count', slides.length);
+    let cur = 0;
+    function go(n) {
+      slides[cur].classList.remove('active');
+      dots[cur] && dots[cur].classList.remove('active');
+      cur = ((n % slides.length) + slides.length) % slides.length;
+      slides[cur].classList.add('active');
+      dots[cur] && dots[cur].classList.add('active');
+    }
+    prev && prev.addEventListener('click', function(e) { e.stopPropagation(); go(cur - 1); });
+    next && next.addEventListener('click', function(e) { e.stopPropagation(); go(cur + 1); });
+    dots.forEach(function(d, i) { d.addEventListener('click', function(e) { e.stopPropagation(); go(i); }); });
+  });
+}
+
 function initFaqToggles(container) {
   container.querySelectorAll('.faq-q').forEach(q => {
     q.addEventListener('click', () => {
@@ -976,17 +998,20 @@ $('mpTitle').addEventListener('click', function() {
   if (article) openBlog(article.id);
 });
 
+function _pagerWinSize() { return window.innerWidth >= 768 ? 10 : 5; }
+
 function _pagerWindow(allPages, activeId, offset, onPageClick, onShift) {
+  const ws = _pagerWinSize();
   let html = '';
   if (offset > 0)
-    html += `<button class="subpage-pager-btn subpage-pager-nav" onclick="${onShift(offset - 5)}">&#8249;</button>`;
-  allPages.slice(offset, offset + 5).forEach((p, i) => {
+    html += `<button class="subpage-pager-btn subpage-pager-nav" onclick="${onShift(offset - ws)}">&#8249;</button>`;
+  allPages.slice(offset, offset + ws).forEach((p, i) => {
     const gi = offset + i;
     const cls = p.id === activeId ? ' active' : '';
     html += `<button class="subpage-pager-btn${cls}" onclick="${onPageClick(p)}">${gi === 0 ? 'Home' : gi}</button>`;
   });
-  if (offset + 5 < allPages.length)
-    html += `<button class="subpage-pager-btn subpage-pager-nav" onclick="${onShift(offset + 5)}">&#8250;</button>`;
+  if (offset + ws < allPages.length)
+    html += `<button class="subpage-pager-btn subpage-pager-nav" onclick="${onShift(offset + ws)}">&#8250;</button>`;
   return html;
 }
 
@@ -1071,7 +1096,7 @@ window.switchCardPage = function(btn, blogId) {
   const wrapper = document.createElement('div');
   wrapper.innerHTML = blogCardHtml(blog);
   const newCard = wrapper.querySelector('article');
-  if (newCard) { card.replaceWith(newCard); _runEmbeddedScripts(newCard); initFaqToggles(newCard); initInternalLinks(newCard); }
+  if (newCard) { card.replaceWith(newCard); _runEmbeddedScripts(newCard); initSlideshows(newCard); initFaqToggles(newCard); initInternalLinks(newCard); }
 };
 
 function blogCardHtml(blog) {
@@ -1105,7 +1130,8 @@ function blogCardHtml(blog) {
   const cardPagerHtml = (() => {
     if (allPages.length <= 1) return '';
     const ci = allPages.findIndex(p => p.id === blog.id);
-    const offset = Math.floor(Math.max(ci, 0) / 5) * 5;
+    const ws = _pagerWinSize();
+    const offset = Math.floor(Math.max(ci, 0) / ws) * ws;
     const inner = _pagerWindow(allPages, blog.id, offset,
       p => `event.stopPropagation();switchCardPage(this,'${p.id}')`,
       o => `event.stopPropagation();shiftCardPager(this,${o})`);
@@ -1402,6 +1428,7 @@ function appendFeedPage() {
   const div = document.createElement('div');
   div.innerHTML = batch.map(blogCardHtml).join('');
   $('blogFeed').appendChild(div);
+  initSlideshows(div);
   initFaqToggles(div);
   initInternalLinks(div);
   feedRendered += batch.length;
@@ -1486,7 +1513,8 @@ window.openBlog = function(id, opts) {
   let pagerHtml = '';
   if (allPages.length > 1) {
     const currentIdx = allPages.findIndex(p => p.id === blog.id);
-    const offset = Math.floor(Math.max(currentIdx, 0) / 5) * 5;
+    const ws = _pagerWinSize();
+    const offset = Math.floor(Math.max(currentIdx, 0) / ws) * ws;
     pagerHtml = `<div class="subpage-pager modal-byline-pager" data-root-id="${rootId}" data-blog-id="${blog.id}">` +
       _pagerWindow(allPages, blog.id, offset,
         p => `openBlog('${p.id}')`,
@@ -1519,6 +1547,7 @@ window.openBlog = function(id, opts) {
   } else {
     $('modalContent').innerHTML = contentToHtml(blog);
     _runEmbeddedScripts($('modalContent'));
+    initSlideshows($('modalContent'));
     initFaqToggles($('modalContent'));
     initInternalLinks($('modalContent'));
   }

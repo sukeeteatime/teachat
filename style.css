@@ -958,6 +958,77 @@ code {
 .faq-block.all-collapsed .faq-item { display: none; }
 .faq-block.all-collapsed { border-bottom: none; }
 
+/* ── Slideshow ─────────────────────────────────────────────── */
+.slideshow-block {
+  position: relative;
+  width: 100%;
+  margin: 1.75rem 0;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #111;
+  user-select: none;
+}
+.ss-slide { display: none; }
+.ss-slide.active { display: block; }
+.ss-slide img {
+  width: 100%;
+  display: block;
+  max-height: 520px;
+  object-fit: contain;
+}
+.ss-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0.45rem 0.75rem;
+  background: rgba(0,0,0,0.45);
+  color: #fff;
+  font-size: 0.78rem;
+  text-align: center;
+  pointer-events: none;
+}
+.ss-prev, .ss-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.38);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-size: 1.7rem;
+  line-height: 1;
+  padding: 0.25rem 0.55rem 0.3rem;
+  border-radius: 6px;
+  z-index: 2;
+  transition: background 0.15s;
+}
+.ss-prev:hover, .ss-next:hover { background: rgba(0,0,0,0.65); }
+.ss-prev { left: 8px; }
+.ss-next { right: 8px; }
+.ss-dots {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 7px;
+  z-index: 2;
+}
+.ss-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.45);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.ss-dot.active { background: #fff; }
+/* hide nav when only one slide */
+.slideshow-block[data-count="1"] .ss-prev,
+.slideshow-block[data-count="1"] .ss-next,
+.slideshow-block[data-count="1"] .ss-dots { display: none; }
+
 .faq-item {
   border-bottom: 1px solid var(--border);
 }
