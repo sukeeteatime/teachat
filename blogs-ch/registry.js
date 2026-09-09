@@ -117,7 +117,7 @@ window.BLOG_REGISTRY_ZH.push({
 });
 window.BLOG_REGISTRY_ZH.push({
   "id": "2026-09-08-touring-strategy-of-mount-tai",
-  "title": "登泰山之旅",
+  "title": "登泰山游记",
   "author": "Sukee Parker",
   "date": "2026-09-08",
   "category": "蔓行游记",

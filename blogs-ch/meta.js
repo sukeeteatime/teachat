@@ -19,7 +19,7 @@ window.BLOG_META_ZH = {
     },
     {
       "id": "2026-09-08-touring-strategy-of-mount-tai",
-      "title": "登泰山之旅",
+      "title": "登泰山游记",
       "date": "2026-09-08"
     },
     {
