@@ -411,5 +411,6 @@ window.BLOG_MANIFEST = [
   "2026-09-07-why-you-would-work-with-the-team.js",
   "2026-09-08-system-design-design-principles.js",
   "2026-09-08-system-design-request-flow-database-and-load-balancer.js",
-  "2026-09-08-web-authentication-single-sign-on-sso.js"
+  "2026-09-08-web-authentication-single-sign-on-sso.js",
+  "2026-09-09-system-design-application-protocols.js"
 ];
