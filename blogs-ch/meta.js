@@ -28,6 +28,11 @@ window.BLOG_META_ZH = {
       "date": "2026-07-27"
     },
     {
+      "id": "2026-04-24-travel-to-nanjing-china",
+      "title": "古都南京历史与美食",
+      "date": "2026-04-24"
+    },
+    {
       "id": "2025-05-01-information-cocoon",
       "title": "信息茧房（Information Cocoon）",
       "date": "2025-05-01"
