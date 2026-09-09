@@ -172,6 +172,26 @@ function initInternalLinks(container) {
 
 function initSlideshows(container) {
   container.querySelectorAll('.slideshow-block').forEach(function(block) {
+    // Migrate old structure (flat children) to .ss-slides + .ss-controls wrappers
+    if (!block.querySelector('.ss-slides')) {
+      const slidesWrap = document.createElement('div');
+      slidesWrap.className = 'ss-slides';
+      Array.from(block.querySelectorAll('.ss-slide')).forEach(function(s) {
+        slidesWrap.appendChild(s);
+      });
+      block.insertBefore(slidesWrap, block.firstChild);
+      const prev = block.querySelector('.ss-prev');
+      const dotsEl = block.querySelector('.ss-dots');
+      const next = block.querySelector('.ss-next');
+      if (prev || dotsEl || next) {
+        const ctrl = document.createElement('div');
+        ctrl.className = 'ss-controls';
+        if (prev) ctrl.appendChild(prev);
+        if (dotsEl) ctrl.appendChild(dotsEl);
+        if (next) ctrl.appendChild(next);
+        block.appendChild(ctrl);
+      }
+    }
     const slides = Array.from(block.querySelectorAll('.ss-slide'));
     const dots   = Array.from(block.querySelectorAll('.ss-dot'));
     const prev   = block.querySelector('.ss-prev');
