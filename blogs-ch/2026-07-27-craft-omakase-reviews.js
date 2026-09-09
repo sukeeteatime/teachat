@@ -1,7 +1,7 @@
 window.BLOG_REGISTRY_ZH = window.BLOG_REGISTRY_ZH || [];
 window.BLOG_REGISTRY_ZH.push({
   "id": "2026-07-27-craft-omakase-reviews",
-  "title": "奥斯汀的米其林｜手艺日餐厅 （Craft）",
+  "title": "奥斯汀的米其林｜手艺日餐厅 （Craft Omakase）",
   "author": "Sukee Parker",
   "date": "2026-07-27",
   "category": "Food",

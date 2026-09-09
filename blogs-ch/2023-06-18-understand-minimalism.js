@@ -1,7 +1,7 @@
 window.BLOG_REGISTRY_ZH = window.BLOG_REGISTRY_ZH || [];
 window.BLOG_REGISTRY_ZH.push({
   "id": "2023-06-18-understand-minimalism",
-  "title": "生活的艺术流派｜极简主义",
+  "title": "生活的艺术｜极简主义",
   "author": "Sukee Parker",
   "date": "2023-06-18",
   "category": "生活方式",

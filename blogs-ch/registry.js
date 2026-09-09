@@ -1,7 +1,7 @@
 window.BLOG_REGISTRY_ZH = window.BLOG_REGISTRY_ZH || [];
 window.BLOG_REGISTRY_ZH.push({
   "id": "2023-06-18-understand-minimalism",
-  "title": "生活的艺术流派｜极简主义",
+  "title": "生活的艺术｜极简主义",
   "author": "Sukee Parker",
   "date": "2023-06-18",
   "category": "生活方式",
@@ -45,7 +45,7 @@ window.BLOG_REGISTRY_ZH.push({
 });
 window.BLOG_REGISTRY_ZH.push({
   "id": "2026-04-24-travel-to-nanjing-china",
-  "title": "旧巷古城逛南京",
+  "title": "蔓行游记｜旧巷古城逛南京",
   "author": "Sukee Parker",
   "date": "2026-04-24",
   "category": "蔓行游记",
@@ -59,7 +59,7 @@ window.BLOG_REGISTRY_ZH.push({
 });
 window.BLOG_REGISTRY_ZH.push({
   "id": "2026-07-27-craft-omakase-reviews",
-  "title": "奥斯汀的米其林｜手艺日餐厅 （Craft）",
+  "title": "奥斯汀的米其林｜手艺日餐厅 （Craft Omakase）",
   "author": "Sukee Parker",
   "date": "2026-07-27",
   "category": "Food",
@@ -89,7 +89,7 @@ window.BLOG_REGISTRY_ZH.push({
 });
 window.BLOG_REGISTRY_ZH.push({
   "id": "2026-09-06-ten-reasons-to-leave-austin-texas",
-  "title": "奥斯汀生活｜2026 搬离奥斯汀的十个理由",
+  "title": "2026 搬离奥斯汀的十个理由",
   "author": "叶子",
   "date": "2026-09-06",
   "category": "奥斯汀生活",
@@ -117,7 +117,7 @@ window.BLOG_REGISTRY_ZH.push({
 });
 window.BLOG_REGISTRY_ZH.push({
   "id": "2026-09-14-touring-strategy-of-mount-huangshan",
-  "title": "蔓行游记｜黄山游记",
+  "title": "黄山的云海奇松",
   "author": "Sukee Parker",
   "date": "2026-09-14",
   "category": "蔓行游记",
