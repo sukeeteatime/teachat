@@ -45,7 +45,7 @@ window.BLOG_REGISTRY_ZH.push({
 });
 window.BLOG_REGISTRY_ZH.push({
   "id": "2026-04-24-travel-to-nanjing-china",
-  "title": "古都南京历史与美食",
+  "title": "旧巷古城逛南京",
   "author": "Sukee Parker",
   "date": "2026-04-24",
   "category": "蔓行游记",

@@ -29,7 +29,7 @@ window.BLOG_META_ZH = {
     },
     {
       "id": "2026-04-24-travel-to-nanjing-china",
-      "title": "古都南京历史与美食",
+      "title": "旧巷古城逛南京",
       "date": "2026-04-24"
     },
     {
