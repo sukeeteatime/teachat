@@ -43,6 +43,11 @@ window.BLOG_META_ZH = {
       "date": "2026-04-24"
     },
     {
+      "id": "2026-01-04-chinese-medicine-for-healthy-living",
+      "title": "中医养生",
+      "date": "2026-01-04"
+    },
+    {
       "id": "2025-05-01-information-cocoon",
       "title": "信息茧房（Information Cocoon）",
       "date": "2025-05-01"
