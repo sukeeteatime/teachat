@@ -3,6 +3,11 @@ window.BLOG_META_ZH = {
   "tags": [],
   "posts": [
     {
+      "id": "2026-09-16-travel-to-wu-zhen",
+      "title": "乌镇的水乡江南",
+      "date": "2026-09-16"
+    },
+    {
       "id": "2026-09-14-touring-strategy-of-mount-huangshan",
       "title": "黄山的云海奇松",
       "date": "2026-09-14"
