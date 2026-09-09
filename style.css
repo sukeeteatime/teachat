@@ -979,9 +979,9 @@ code {
 .ss-controls {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
   padding: 0.4rem 0.65rem;
-  border-top: 1px solid var(--border);
   background: var(--surface);
 }
 .ss-prev, .ss-next {
@@ -1002,7 +1002,6 @@ code {
   gap: 6px;
   align-items: center;
   justify-content: center;
-  flex: 1;
 }
 .ss-dot {
   width: 7px;
