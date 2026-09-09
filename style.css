@@ -965,6 +965,7 @@ code {
   border-radius: 10px;
   overflow: hidden;
   border: 1px solid var(--border);
+  border-top: none;
   user-select: none;
 }
 .ss-slides { background: #111; }
