@@ -76,6 +76,11 @@ window.BLOG_META = {
       "date": "2026-09-09"
     },
     {
+      "id": "2026-09-09-system-design-example-interview-",
+      "title": "System Design: Example Interview",
+      "date": "2026-09-09"
+    },
+    {
       "id": "2026-09-09-system-design-osi-network-model",
       "title": "System Design: OSI Network Model",
       "date": "2026-09-09"
