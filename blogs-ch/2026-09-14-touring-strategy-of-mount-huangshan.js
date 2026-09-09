@@ -1,7 +1,7 @@
 window.BLOG_REGISTRY_ZH = window.BLOG_REGISTRY_ZH || [];
 window.BLOG_REGISTRY_ZH.push({
   "id": "2026-09-14-touring-strategy-of-mount-huangshan",
-  "title": "漫步于黄山的云海奇松",
+  "title": "黄山的云海奇松",
   "author": "Sukee Parker",
   "date": "2026-09-14",
   "category": "蔓行游记",

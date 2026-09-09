@@ -4,7 +4,7 @@ window.BLOG_META_ZH = {
   "posts": [
     {
       "id": "2026-09-14-touring-strategy-of-mount-huangshan",
-      "title": "漫步于黄山的云海奇松",
+      "title": "黄山的云海奇松",
       "date": "2026-09-14"
     },
     {
