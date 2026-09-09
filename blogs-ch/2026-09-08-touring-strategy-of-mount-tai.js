@@ -1,7 +1,7 @@
 window.BLOG_REGISTRY_ZH = window.BLOG_REGISTRY_ZH || [];
 window.BLOG_REGISTRY_ZH.push({
   "id": "2026-09-08-touring-strategy-of-mount-tai",
-  "title": "蔓行游记｜泰山攻略",
+  "title": "泰山日出之旅",
   "author": "Sukee Parker",
   "date": "2026-09-08",
   "category": "蔓行游记",

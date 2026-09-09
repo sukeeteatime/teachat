@@ -1,7 +1,7 @@
 window.BLOG_REGISTRY_ZH = window.BLOG_REGISTRY_ZH || [];
 window.BLOG_REGISTRY_ZH.push({
   "id": "2026-04-24-travel-to-nanjing-china",
-  "title": "蔓行游记｜旧巷古城逛南京",
+  "title": "旧巷古城逛南京",
   "author": "Sukee Parker",
   "date": "2026-04-24",
   "category": "蔓行游记",

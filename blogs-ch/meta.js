@@ -9,7 +9,7 @@ window.BLOG_META_ZH = {
     },
     {
       "id": "2026-09-08-touring-strategy-of-mount-tai",
-      "title": "蔓行游记｜泰山攻略",
+      "title": "泰山日出之旅",
       "date": "2026-09-08"
     },
     {
@@ -29,7 +29,7 @@ window.BLOG_META_ZH = {
     },
     {
       "id": "2026-04-24-travel-to-nanjing-china",
-      "title": "蔓行游记｜旧巷古城逛南京",
+      "title": "旧巷古城逛南京",
       "date": "2026-04-24"
     },
     {
