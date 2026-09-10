@@ -116,6 +116,11 @@ window.BLOG_META = {
       "date": "2026-09-07"
     },
     {
+      "id": "2026-09-07-understanding-git-and-github",
+      "title": "Understanding Git and GitHub",
+      "date": "2026-09-07"
+    },
+    {
       "id": "2026-09-07-web-authentication-basic-tokens-and-jwt",
       "title": "Web Authentication: Basic, Tokens and JWT",
       "date": "2026-09-07"
