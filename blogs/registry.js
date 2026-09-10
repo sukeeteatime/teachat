@@ -8335,7 +8335,9 @@ window.BLOG_REGISTRY.push({
   "contentType": "html",
   "autoRead": false,
   "pinned": false,
-  "showHome": true
+  "showHome": false,
+  "parentId": "2026-06-15-system-design-fully-explained",
+  "subpageSeq": 7
 });
 window.BLOG_REGISTRY.push({
   "id": "2026-09-07-web-authentication-oauth-20-tutorial-with-pkce",
