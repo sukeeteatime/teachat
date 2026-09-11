@@ -73,6 +73,11 @@ window.BLOG_META_ZH = {
       "date": "2026-01-25"
     },
     {
+      "id": "2026-01-24-weekend-visiting-las-vegas",
+      "title": "拉斯维加斯的周末旅行",
+      "date": "2026-01-24"
+    },
+    {
       "id": "2026-01-04-chinese-medicine-for-healthy-living",
       "title": "中医养生",
       "date": "2026-01-04"
