@@ -43,6 +43,11 @@ window.BLOG_META_ZH = {
       "date": "2026-04-24"
     },
     {
+      "id": "2026-04-01-visit-shizuoka-for-fuji-mountain",
+      "title": "初到静冈",
+      "date": "2026-04-01"
+    },
+    {
       "id": "2026-03-31-2026-trip-to-japan-for-the-cherry-blossom",
       "title": "2026 日本樱花之旅",
       "date": "2026-03-31"
