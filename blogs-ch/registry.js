@@ -87,7 +87,10 @@ window.BLOG_REGISTRY_ZH.push({
   "contentType": "html",
   "autoRead": true,
   "pinned": false,
-  "showHome": true
+  "showHome": false,
+  "freeAccess": true,
+  "parentId": "2026-01-24-weekend-visiting-las-vegas",
+  "subpageSeq": 1
 });
 window.BLOG_REGISTRY_ZH.push({
   "id": "2026-03-31-2026-trip-to-japan-for-the-cherry-blossom",

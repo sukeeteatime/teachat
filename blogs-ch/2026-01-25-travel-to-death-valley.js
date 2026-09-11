@@ -13,5 +13,8 @@ window.BLOG_REGISTRY_ZH.push({
   "contentType": "html",
   "autoRead": true,
   "pinned": false,
-  "showHome": true
+  "showHome": false,
+  "freeAccess": true,
+  "parentId": "2026-01-24-weekend-visiting-las-vegas",
+  "subpageSeq": 1
 });
