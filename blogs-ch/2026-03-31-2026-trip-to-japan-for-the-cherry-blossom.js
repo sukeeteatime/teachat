@@ -1,7 +1,7 @@
 window.BLOG_REGISTRY_ZH = window.BLOG_REGISTRY_ZH || [];
 window.BLOG_REGISTRY_ZH.push({
   "id": "2026-03-31-2026-trip-to-japan-for-the-cherry-blossom",
-  "title": "2026 日本樱花之旅",
+  "title": "日本樱花之旅",
   "author": "Sukee Parker",
   "date": "2026-03-31",
   "category": "蔓行游记",
