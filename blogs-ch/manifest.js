@@ -11,6 +11,7 @@ window.BLOG_MANIFEST_ZH = [
   "2026-08-03-ten-reason-to-move-to-austin.js",
   "2026-09-06-ten-reasons-to-leave-austin-texas.js",
   "2026-09-08-touring-strategy-of-mount-tai.js",
+  "2026-09-11-2026-travel-to-china.js",
   "2026-09-14-touring-strategy-of-mount-huangshan.js",
   "2026-09-15-travel-to-jiaxing.js",
   "2026-09-16-travel-to-wu-zhen.js"
