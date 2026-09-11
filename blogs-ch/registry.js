@@ -104,7 +104,9 @@ window.BLOG_REGISTRY_ZH.push({
   "contentType": "html",
   "autoRead": true,
   "pinned": false,
-  "showHome": true
+  "showHome": false,
+  "parentId": "2026-03-31-2026-trip-to-japan-for-the-cherry-blossom",
+  "subpageSeq": 2
 });
 window.BLOG_REGISTRY_ZH.push({
   "id": "2026-04-24-travel-to-nanjing-china",
