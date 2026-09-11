@@ -18,14 +18,14 @@ window.BLOG_META_ZH = {
       "date": "2026-09-14"
     },
     {
-      "id": "2026-09-11-2026-travel-to-china",
-      "title": "2026 中国行",
-      "date": "2026-09-11"
-    },
-    {
       "id": "2026-09-11-2026-vancouver",
       "title": "温哥华的初秋",
       "date": "2026-09-11"
+    },
+    {
+      "id": "2026-09-10-2026-travel-to-china",
+      "title": "2026 中国行",
+      "date": "2026-09-10"
     },
     {
       "id": "2026-09-08-touring-strategy-of-mount-tai",
