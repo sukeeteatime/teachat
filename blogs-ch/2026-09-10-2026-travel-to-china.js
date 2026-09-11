@@ -1,7 +1,7 @@
 window.BLOG_REGISTRY_ZH = window.BLOG_REGISTRY_ZH || [];
 window.BLOG_REGISTRY_ZH.push({
   "id": "2026-09-10-2026-travel-to-china",
-  "title": "2026 中国行",
+  "title": "2026 初秋中国行",
   "author": "Sukee Parker",
   "date": "2026-09-10",
   "category": "蔓行游记",

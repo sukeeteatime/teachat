@@ -24,7 +24,7 @@ window.BLOG_META_ZH = {
     },
     {
       "id": "2026-09-10-2026-travel-to-china",
-      "title": "2026 中国行",
+      "title": "2026 初秋中国行",
       "date": "2026-09-10"
     },
     {
