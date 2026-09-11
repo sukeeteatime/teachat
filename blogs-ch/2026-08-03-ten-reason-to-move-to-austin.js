@@ -1,7 +1,7 @@
 window.BLOG_REGISTRY_ZH = window.BLOG_REGISTRY_ZH || [];
 window.BLOG_REGISTRY_ZH.push({
   "id": "2026-08-03-ten-reason-to-move-to-austin",
-  "title": "奥斯汀生活｜2026 定居奥斯汀的十个理由",
+  "title": "定居奥斯汀的十个理由",
   "author": "叶子🍃",
   "date": "2026-08-03",
   "category": "奥斯汀生活",

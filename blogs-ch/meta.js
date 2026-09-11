@@ -24,7 +24,7 @@ window.BLOG_META_ZH = {
     },
     {
       "id": "2026-09-10-2026-travel-to-china",
-      "title": "2026 初秋中国行",
+      "title": "初秋中国行",
       "date": "2026-09-10"
     },
     {
@@ -34,17 +34,17 @@ window.BLOG_META_ZH = {
     },
     {
       "id": "2026-09-06-ten-reasons-to-leave-austin-texas",
-      "title": "2026 搬离奥斯汀的十个理由",
+      "title": "搬离奥斯汀的十个理由",
       "date": "2026-09-06"
     },
     {
       "id": "2026-08-03-ten-reason-to-move-to-austin",
-      "title": "奥斯汀生活｜2026 定居奥斯汀的十个理由",
+      "title": "定居奥斯汀的十个理由",
       "date": "2026-08-03"
     },
     {
       "id": "2026-07-27-craft-omakase-reviews",
-      "title": "奥斯汀的米其林｜手艺日餐厅 （Craft Omakase）",
+      "title": "奥斯汀的米其林｜手艺日餐厅 Craft Omakase",
       "date": "2026-07-27"
     },
     {
