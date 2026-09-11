@@ -3,6 +3,7 @@ window.BLOG_MANIFEST_ZH = [
   "2025-04-09-zeigarnik-effect.js",
   "2025-05-01-information-cocoon.js",
   "2026-01-04-chinese-medicine-for-healthy-living.js",
+  "2026-01-25-travel-to-death-valley.js",
   "2026-03-31-2026-trip-to-japan-for-the-cherry-blossom.js",
   "2026-03-31-zip-air-flight-out-from-houston.js",
   "2026-04-01-visit-shizuoka-for-fuji-mountain.js",
