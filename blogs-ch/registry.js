@@ -178,7 +178,9 @@ window.BLOG_REGISTRY_ZH.push({
   "contentType": "html",
   "autoRead": true,
   "pinned": false,
-  "showHome": true
+  "showHome": false,
+  "parentId": "2026-09-10-2026-travel-to-china",
+  "subpageSeq": 5
 });
 window.BLOG_REGISTRY_ZH.push({
   "id": "2026-09-10-2026-travel-to-china",
