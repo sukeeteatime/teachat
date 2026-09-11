@@ -206,7 +206,9 @@ window.BLOG_REGISTRY_ZH.push({
   "contentType": "html",
   "autoRead": true,
   "pinned": false,
-  "showHome": true
+  "showHome": false,
+  "parentId": "2026-09-10-2026-travel-to-china",
+  "subpageSeq": 1
 });
 window.BLOG_REGISTRY_ZH.push({
   "id": "2026-09-14-touring-strategy-of-mount-huangshan",
