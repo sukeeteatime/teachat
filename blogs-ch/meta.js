@@ -23,6 +23,11 @@ window.BLOG_META_ZH = {
       "date": "2026-09-11"
     },
     {
+      "id": "2026-09-11-2026-vancouver",
+      "title": "温哥华的初秋",
+      "date": "2026-09-11"
+    },
+    {
       "id": "2026-09-08-touring-strategy-of-mount-tai",
       "title": "登泰山游记",
       "date": "2026-09-08"
