@@ -71,11 +71,6 @@ window.BLOG_META = {
   ],
   "posts": [
     {
-      "id": "2026-09-08-2026-new-graduate-job-openings-2",
-      "title": "2026 New Graduate | Job Openings (2)",
-      "date": "2026-09-08"
-    },
-    {
       "id": "2026-09-07-daily-exercise",
       "title": "Daily Exercise",
       "date": "2026-09-07"
@@ -84,21 +79,6 @@ window.BLOG_META = {
       "id": "2026-09-07-why-youd-want-to-work-with-the-team",
       "title": "Why You’d Want to Work with the Team",
       "date": "2026-09-07"
-    },
-    {
-      "id": "2026-09-07-why-youd-want-to-work-with-the-team",
-      "title": "Why You’d Want to Work with the Team",
-      "date": "2026-09-07"
-    },
-    {
-      "id": "2026-09-06-2026-new-graduate-how-to-find-your-first-job",
-      "title": "2026 New Graduate | How to Find Your First Job",
-      "date": "2026-09-06"
-    },
-    {
-      "id": "2026-09-06-2026-new-graduate-job-openings-1",
-      "title": "2026 New Graduate |  Job Openings (1)",
-      "date": "2026-09-06"
     },
     {
       "id": "2026-09-05-when-you-dont-know-what-to-do",
