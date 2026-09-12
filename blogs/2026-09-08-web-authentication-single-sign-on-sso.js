@@ -12,6 +12,6 @@ window.BLOG_REGISTRY.push({
   "autoRead": false,
   "pinned": false,
   "showHome": false,
-  "parentId": "2026-09-07-web-authentication-fully-explained",
-  "subpageSeq": 4
+  "parentId": "2026-06-15-system-design-fully-explained",
+  "subpageSeq": 9
 });

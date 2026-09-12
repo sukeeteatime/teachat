@@ -126,8 +126,18 @@ window.BLOG_META = {
       "date": "2026-09-07"
     },
     {
+      "id": "2026-09-07-web-authentication-basic-tokens-and-jwt",
+      "title": "Web Authentication: Basic, Tokens and JWT",
+      "date": "2026-09-07"
+    },
+    {
       "id": "2026-09-07-web-authentication-fully-explained",
       "title": "Web Authentication Fully Explained",
+      "date": "2026-09-07"
+    },
+    {
+      "id": "2026-09-07-web-authentication-oauth-20-tutorial-with-pkce",
+      "title": "Web Authentication: OAuth 2.0 tutorial with PKCE",
       "date": "2026-09-07"
     },
     {
