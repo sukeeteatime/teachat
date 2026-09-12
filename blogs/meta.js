@@ -71,33 +71,8 @@ window.BLOG_META = {
   ],
   "posts": [
     {
-      "id": "2026-09-09-system-design-application-protocols",
-      "title": "System Design: Application Protocols",
-      "date": "2026-09-09"
-    },
-    {
-      "id": "2026-09-09-system-design-example-interview-",
-      "title": "System Design: Example Interview",
-      "date": "2026-09-09"
-    },
-    {
-      "id": "2026-09-09-system-design-osi-network-model",
-      "title": "System Design: OSI Network Model",
-      "date": "2026-09-09"
-    },
-    {
       "id": "2026-09-08-2026-new-graduate-job-openings-2",
       "title": "2026 New Graduate | Job Openings (2)",
-      "date": "2026-09-08"
-    },
-    {
-      "id": "2026-09-08-system-design-design-principles",
-      "title": "System Design: Design Principles",
-      "date": "2026-09-08"
-    },
-    {
-      "id": "2026-09-08-system-design-request-flow-database-and-load-balancer",
-      "title": "System Design: Request Flow, Database and Load Balancer",
       "date": "2026-09-08"
     },
     {
@@ -108,46 +83,6 @@ window.BLOG_META = {
     {
       "id": "2026-09-07-daily-exercise",
       "title": "Daily Exercise",
-      "date": "2026-09-07"
-    },
-    {
-      "id": "2026-09-07-system-design-web-authentication",
-      "title": "System Design: Web Authentication",
-      "date": "2026-09-07"
-    },
-    {
-      "id": "2026-09-07-understanding-git-and-github",
-      "title": "Understanding Git and GitHub",
-      "date": "2026-09-07"
-    },
-    {
-      "id": "2026-09-07-web-authentication-basic-tokens-and-jwt",
-      "title": "Web Authentication: Basic, Tokens and JWT",
-      "date": "2026-09-07"
-    },
-    {
-      "id": "2026-09-07-web-authentication-basic-tokens-and-jwt",
-      "title": "Web Authentication: Basic, Tokens and JWT",
-      "date": "2026-09-07"
-    },
-    {
-      "id": "2026-09-07-web-authentication-fully-explained",
-      "title": "Web Authentication Fully Explained",
-      "date": "2026-09-07"
-    },
-    {
-      "id": "2026-09-07-web-authentication-oauth-20-tutorial-with-pkce",
-      "title": "Web Authentication: OAuth 2.0 tutorial with PKCE",
-      "date": "2026-09-07"
-    },
-    {
-      "id": "2026-09-07-web-authentication-oauth-20-tutorial-with-pkce",
-      "title": "Web Authentication: OAuth 2.0 tutorial with PKCE",
-      "date": "2026-09-07"
-    },
-    {
-      "id": "2026-09-07-understanding-git-and-github",
-      "title": "Understanding Git and GitHub",
       "date": "2026-09-07"
     },
     {
