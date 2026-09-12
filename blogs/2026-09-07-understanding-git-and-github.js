@@ -13,5 +13,5 @@ window.BLOG_REGISTRY.push({
   "pinned": false,
   "showHome": false,
   "parentId": "2026-06-15-system-design-fully-explained",
-  "subpageSeq": 9
+  "subpageSeq": 6
 });
