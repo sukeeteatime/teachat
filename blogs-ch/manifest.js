@@ -9,6 +9,7 @@ window.BLOG_MANIFEST_ZH = [
   "2026-03-31-zip-air-flight-out-from-houston.js",
   "2026-04-01-visit-shizuoka-for-fuji-mountain.js",
   "2026-04-24-travel-to-nanjing-china.js",
+  "2026-06-27-visit-joshua-tree-national-park.js",
   "2026-07-27-craft-omakase-reviews.js",
   "2026-08-03-ten-reason-to-move-to-austin.js",
   "2026-09-06-ten-reasons-to-leave-austin-texas.js",
