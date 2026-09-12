@@ -76,11 +76,6 @@ window.BLOG_META = {
       "date": "2026-09-08"
     },
     {
-      "id": "2026-09-08-web-authentication-single-sign-on-sso",
-      "title": "Web Authentication: Single Sign-on (SSO)",
-      "date": "2026-09-08"
-    },
-    {
       "id": "2026-09-07-daily-exercise",
       "title": "Daily Exercise",
       "date": "2026-09-07"
