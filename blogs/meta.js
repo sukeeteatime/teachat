@@ -91,6 +91,11 @@ window.BLOG_META = {
       "date": "2026-09-07"
     },
     {
+      "id": "2026-09-07-why-youd-want-to-work-with-the-team",
+      "title": "Why You’d Want to Work with the Team",
+      "date": "2026-09-07"
+    },
+    {
       "id": "2026-09-06-2026-new-graduate-how-to-find-your-first-job",
       "title": "2026 New Graduate | How to Find Your First Job",
       "date": "2026-09-06"
