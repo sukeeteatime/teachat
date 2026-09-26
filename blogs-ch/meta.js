@@ -9,7 +9,7 @@ window.BLOG_META_ZH = {
     },
     {
       "id": "2026-09-21-living-philosophy-of-nanjing",
-      "title": "南京的难得糊涂",
+      "title": "南京人的难得糊涂",
       "date": "2026-09-21"
     },
     {
