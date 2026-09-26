@@ -3,6 +3,11 @@ window.BLOG_META_ZH = {
   "tags": [],
   "posts": [
     {
+      "id": "2026-09-26-ridge-beasts-in-china",
+      "title": "迷上屋脊兽",
+      "date": "2026-09-26"
+    },
+    {
       "id": "2026-09-22-hometown-of-confucius",
       "title": "孔子的曲阜",
       "date": "2026-09-22"
