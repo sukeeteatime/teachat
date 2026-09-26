@@ -8,6 +8,11 @@ window.BLOG_META_ZH = {
       "date": "2026-09-22"
     },
     {
+      "id": "2026-09-21-living-philosophy-of-nanjing",
+      "title": "南京的难得糊涂",
+      "date": "2026-09-21"
+    },
+    {
       "id": "2026-09-16-travel-to-wu-zhen",
       "title": "乌镇的水乡江南",
       "date": "2026-09-16"
