@@ -20,5 +20,6 @@ window.BLOG_MANIFEST_ZH = [
   "2026-09-11-review-of-austin-michelin-restaurants.js",
   "2026-09-14-touring-strategy-of-mount-huangshan.js",
   "2026-09-15-travel-to-jiaxing.js",
-  "2026-09-16-travel-to-wu-zhen.js"
+  "2026-09-16-travel-to-wu-zhen.js",
+  "2026-09-22-hometown-of-confucius.js"
 ];

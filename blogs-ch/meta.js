@@ -3,6 +3,11 @@ window.BLOG_META_ZH = {
   "tags": [],
   "posts": [
     {
+      "id": "2026-09-22-hometown-of-confucius",
+      "title": "孔子的曲阜",
+      "date": "2026-09-22"
+    },
+    {
       "id": "2026-09-16-travel-to-wu-zhen",
       "title": "乌镇的水乡江南",
       "date": "2026-09-16"
