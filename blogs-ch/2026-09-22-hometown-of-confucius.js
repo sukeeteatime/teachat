@@ -11,7 +11,7 @@ window.BLOG_REGISTRY_ZH.push({
   "contentType": "html",
   "autoRead": true,
   "pinned": false,
-  "showHome": false,
+  "showHome": true,
   "parentId": "2026-09-10-2026-travel-to-china",
   "subpageSeq": 7
 });
